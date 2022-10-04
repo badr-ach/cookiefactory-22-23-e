@@ -1,0 +1,25 @@
+
+@startuml
+skinparam style strictuml
+
+actor StoreEmployee as store_employee order 0
+boundary BackOfficeSystem as backoffice_controller order 2
+participant OrderService as order_service order 3 
+participant Order as order order 4 
+
+activate store_employee
+
+store_employee -> backoffice_controller++: getOrders()
+
+'backoffice_controller --> order_service**: new()
+backoffice_controller -> order_service ++: getOrders()
+'order_service --> order**: new()
+order_service --> backoffice_controller--: order
+
+store_employee -> backoffice_controller : updateOrder()
+backoffice_controller -> order_service ++: updateStatus()
+order_service -> order ++: setStatus()
+order --> order_service --: OK
+order_service --> backoffice_controller --: OK
+
+@enduml

@@ -1,0 +1,32 @@
+@startuml
+skinparam style strictuml
+
+actor Customer as customer order 0
+boundary "UI" as user_interface order 1
+participant OrderService as order_service order 2
+participant OrderScheduler as order_scheduler order 4
+participant PaymentService as payment_service order 5
+actor "Payment API" as payment_api order 10
+
+activate customer
+
+customer -> user_interface: new order
+user_interface -> order_service: createOrder()
+create participant Order as order order 3 
+order_service -> order: new()
+order_service -> order: getPreparationTime()
+order_service -> order_scheduler: getAvailableTimeSlots(preparationTime)
+order_service --> user_interface: availabletimeSlots
+customer -> user_interface : select pickup date
+user_interface -> order_service : selectTimeSlot()
+order_service -> order_scheduler: selectTimeSlot()
+order_service -> order: setPickupDate()
+order_service --> user_interface : pay
+customer -> user_interface : pay
+user_interface -> order_service: makePayment()
+order_service -> payment_service: makePayment()
+payment_service -> payment_api: makePayment()
+
+
+
+@enduml
