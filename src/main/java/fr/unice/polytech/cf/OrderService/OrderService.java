@@ -5,15 +5,16 @@ import fr.unice.polytech.cf.CookieService.Entities.Cookie;
 import fr.unice.polytech.cf.OrderService.Entities.Order;
 import fr.unice.polytech.cf.OrderService.Entities.Receipt;
 import fr.unice.polytech.cf.OrderService.Enums.EOrderStatus;
-
 import java.util.ArrayList;
 
 public class OrderService {
   private PaymentService paymentService;
-  private ArrayList<Order> orders;
+  private OrderScheduler orderScheduler;
+  private ArrayList<Order> orders = new ArrayList<Order>();
 
   public OrderService() {
     paymentService = new PaymentService();
+    orderScheduler = new OrderScheduler();
   }
 
   public Order startOrder() {
@@ -31,7 +32,18 @@ public class OrderService {
   }
 
   public Receipt makePayment(String cardNumber, Order order) {
-    return paymentService.makePayment(cardNumber, order);
+    Receipt receipt = null;
+
+    try {
+      receipt = paymentService.makePayment(cardNumber, order);
+      order.setStatus(EOrderStatus.PAYED);
+      orderScheduler.selectTimeSlot(order);
+
+    } catch (Exception e) {
+
+    }
+
+    return receipt;
   }
 
   public ArrayList<Order> getOrders(EOrderStatus status) {
@@ -46,6 +58,12 @@ public class OrderService {
 
   public ArrayList<Order> getOrders(ContactCoordinates contact, EOrderStatus status) {
     return new ArrayList<Order>(
-        orders.stream().filter(order -> (order.getContact() == contact && order.getStatus() == status)).toList());
+        orders.stream()
+            .filter(order -> (order.getContact() == contact && order.getStatus() == status))
+            .toList());
+  }
+
+  public Order getOrder(int id) {
+    return orders.stream().filter(order -> (order.getId() == id)).findFirst().orElse(null);
   }
 }

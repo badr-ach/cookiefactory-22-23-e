@@ -3,7 +3,7 @@ package fr.unice.polytech.cf.OrderService.Entities;
 import fr.unice.polytech.cf.AccountService.Entities.ContactCoordinates;
 import fr.unice.polytech.cf.CookieService.Entities.Cookie;
 import fr.unice.polytech.cf.OrderService.Enums.EOrderStatus;
-
+import fr.unice.polytech.cf.StoreService.Entities.Store;
 import java.util.ArrayList;
 
 public class Order {
@@ -11,6 +11,7 @@ public class Order {
   private EOrderStatus status;
   private ContactCoordinates contact;
   private ArrayList<OrderItem> orderItems = new ArrayList<OrderItem>();
+  private Store store;
   private static int ID = 0;
 
   public Order() {
@@ -57,7 +58,7 @@ public class Order {
             .orElse(null);
     if (foundItem == null) return;
     foundItem.decrease();
-    if(foundItem.getQuantity() == 0) orderItems.remove(foundItem);
+    if (foundItem.getQuantity() == 0) orderItems.remove(foundItem);
   }
 
   public EOrderStatus getStatus() {
@@ -81,11 +82,19 @@ public class Order {
         .reduce(0.0, (subtotal, orderItem) -> subtotal + orderItem.getPrice(), Double::sum);
   }
 
+  public Store getStore() {
+    return store;
+  }
+
   public ContactCoordinates getContact() {
     return contact;
   }
 
   public void setContact(ContactCoordinates contact) {
     this.contact = contact;
+  }
+
+  public void setStore(Store store) {
+    this.store = store;
   }
 }

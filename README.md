@@ -17,58 +17,135 @@ Sur cette version initiale seule un test Junit5 est déclenché pour vérifier q
        - JDK 17
 
 
-
 ## User stories 
 La liste des fonctionnalités livrées par user story.<br>
-### **As a** Customer **I want to** order 1 basic recipe **in order** to buy cookies<br>
+
+### US: Place an Order WITHOUT store choice WITHOUT time choice
+**As a** Customer **I want to** order 1 basic recipe **in order** to buy cookies<br>
+:star2: **Priorité/Priority :** Must have
+:star2: **Estimation/Estimate :** M
 **Acceptance criterias:**<br>
-- **Background:**<br>
-  **Given** a customer named Bob <br>
-- **Scenario:** Bob retrieves the basic cookie list<br>
-  **When** Bob retrieves the cookie list<br>
-  **Then** 1 basic recipe is returned<br>
-- **Scenario:** Bob adds a cookie to the cart<br>
-  **When** Bob orders 1 basic recipes named "recipe1"<br>
-  **Then** the cookies are added to the cart<br>
-- **Scenario:** Bob retrieves the cart price<br>
-  **When** Bob retrieves the total from the cart<br>
-  **Then** the correct price is returned<br>
-- **Scenario:** Bob pays the order<br>
-  **When** Bob pays the order<br>
-  **Then** the order is confirmed<br>
 
-### **As a** Customer **I want to** select my cookies **in order** choose my cookies and buy multiple cookies<br>
+_** Background: **_
+```
+  Given a newly created order
+  And a customer named "Bob"
+  And a cookie named "Chocolalala" priced 10.0
+```
+
+_**Scénario: A new cookie is added to the order**_<br>
+```
+    When the customer adds the cookie
+    Then a new order item is added to the order
+    Then the order item quantity is 1
+```
+_**Scénario: An existing cookie is added to the order**_<br>
+```
+    Given the order already contains the cookie to be added
+    When the customer adds the same cookie
+    Then a new order item is not added to the order
+    Then the order item quantity is 2
+```
+_**Scénario: The customer verifies his cart**_<br>
+```
+    Given the order contains two cookies
+    When the customer verifies his cart
+    Then the calculated price is equal to 20.00
+```
+
+### US: Order validation WITHOUT scheduling WITHOUT store choice
+**As a** Customer **I want to** order 1 basic recipe **in order** to buy cookies<br>
+:star2: **Priorité/Priority :** Must have
+:star2: **Estimation/Estimate :** S
+
 **Acceptance criterias:**<br>
-- **Background:**<br>
-  **Given** a customer named Bob<br>
-- **Scenario:** Bob retrieves the full cookies list<br>
-  **When** Bob retrieves the cookie list<br>
-  **Then** different cookie types are returned<br>
-- **Scenario:** Bob updates his cart<br>
-  **When** Bob updated his cart<br>
-  **Then** the cart is updated<br>
+```
+- The total is correct (without taxes)
+- If the payment was successful the order is payed if not the order stays pending (transaction simulation)
+- The receipt is returned
+```
 
+_**Background:**_<br>
+```
+GIVEN a Cookie named Chocololala price 5.0 $
+AND a Customer named Bob
+AND a Cook name Joe
+AND a payment service
+AND an order
+```
 
-### **As a** Cook **I want to** be able to know the orders that were assigned to me  **in order** to prepare them<br>
+_**Scénario:**_<br>
+```
+WHEN the customer adds 2 “Chocolalala” cookies priced 5.0 $ to his order	
+THEN the cart total is 10.0 $
+```
+
+_**Scénario:**_<br>
+```
+WHEN the customer proceeds to pay the order with a correct credit card number "123456789"
+THEN the customer receives the receipt
+THEN the order status is PAYED
+THEN the order is assigned to a Cook
+```
+
+_**Scénario:**_<br>
+```
+WHEN the customer pays the order with a wrong credit card number "0000000000"
+THEN the customer receives an error
+THEN the order status is PENDING
+```
+
+### US: 
+**As a** placeholder **I want to** placeholder **in order** placeholder<br>
+:star2: **Priorité/Priority :** 
+:star2: **Estimation/Estimate :** 
+
 **Acceptance criterias:**<br>
-- **Background:**<br>
-  **Given:** an order has been submited to be cooked<br>
-- **Scenario:** The order is assigned to a cook<br>
-  **Given:** the list of cooks that are working in the store<br>
-  **When:** the order suits the schedule of some of these cooks<br>
-  **Then:** the order is assigned to one cook and one only of the free cooks<br>
-- **Scenario:** A cook retrieves the orders that he was assigned<br>
-  **When:** A cook wants to retrieve the orders that he has to prepare<br>
-  **Then:** the orders that were assigned to this cook are returned<br>
+```
+- 
+- 
+- 
+```
+
+_**Background:**_<br>
+```
+GIVEN 
+AND 
+AND 
+```
+
+_**Scénario:**_<br>
+```
+WHEN 
+THEN 
+```
 
 
-### **As a** Store Employee **I want to** mark order fulfilled **in order** declutter the order list<br>
+### US: 
+**As a** placeholder **I want to** placeholder **in order** placeholder<br>
+:star2: **Priorité/Priority :** 
+:star2: **Estimation/Estimate :** 
+
 **Acceptance criterias:**<br>
-- **Background:**<br>
-  **Given** a store employee named John<br>
-- **Scenario:** John fulfills the order<br>
-  **When** John marks the order as fulfilled<br>
-  **Then** the order is not returned in the pending order list<br>
+```
+- 
+- 
+- 
+```
+
+_**Background:**_<br>
+```
+GIVEN 
+AND 
+AND 
+```
+
+_**Scénario:**_<br>
+```
+WHEN 
+THEN 
+```
+
 
 ### Milestone X
 

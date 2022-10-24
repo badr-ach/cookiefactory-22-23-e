@@ -1,22 +1,36 @@
 package fr.unice.polytech.cf.OrderService.Entities;
+import java.util.ArrayList;
 
 public class Receipt {
   private int id;
   private double price;
+  private int orderId;
+  private ArrayList<OrderItem> orderItems;
   private String customerName;
   private String customerAddress;
   private double taxes;
   private static int ID = 0;
 
-  public Receipt(String customerName, String customerAddress, double price, double taxes){
-    this.customerName = customerName;
-    this.customerAddress = customerAddress;
+  public Receipt(Order order){
+    this.customerName = order.getContact().getName();
+    this.customerAddress = order.getContact().getAdress();
+    this.orderItems = order.getOrderItems();
+    this.price = order.getPrice();
+    this.orderId = order.getId();
     this.id = ID;
     ID++;
   }
 
   public int getId() {
     return id;
+  }
+
+  public int getOrderId() {
+    return orderId;
+  }
+
+  public ArrayList<OrderItem> getOrderItems() {
+    return orderItems;
   }
 
   public void setId(int id) {
