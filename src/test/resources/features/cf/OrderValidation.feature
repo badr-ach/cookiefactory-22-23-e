@@ -1,6 +1,5 @@
 Feature: Validate the order
-
- Background:
+   Background:
    Given a CustomerSystem
    And a customer with name "John"
    And a "Chocolalala" Cookie priced 5.0

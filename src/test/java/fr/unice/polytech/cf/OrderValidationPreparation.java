@@ -1,0 +1,25 @@
+package fr.unice.polytech.cf;
+
+import fr.unice.polytech.cf.OrderService.Entities.Order;
+import fr.unice.polytech.cf.OrderService.Enums.EOrderStatus;
+import io.cucumber.java.en.Given;
+import io.cucumber.java.en.Then;
+import io.cucumber.java.en.When;
+
+public class OrderValidationPreparation {
+    private Order order;
+    @Given("an order")
+    public void anOrder() {
+        order = new Order();
+    }
+
+    @When("the order is marked as prepared")
+    public void theOrderIsMarkedAsPrepared() {
+        order.setStatus(EOrderStatus.PREPARED);
+    }
+
+    @Then("the order status is PREPARED")
+    public void theOrderStatusIsPREPARED() {
+        assert (order.getStatus().equals(EOrderStatus.PREPARED));
+    }
+}
