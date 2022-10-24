@@ -5,6 +5,7 @@ import fr.unice.polytech.cf.CookieService.Entities.Cookie;
 import fr.unice.polytech.cf.OrderService.Enums.EOrderStatus;
 import fr.unice.polytech.cf.StoreService.Entities.Store;
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class Order {
   private int id;
@@ -13,6 +14,18 @@ public class Order {
   private ArrayList<OrderItem> orderItems = new ArrayList<OrderItem>();
   private Store store;
   private static int ID = 0;
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (!(o instanceof Order order)) return false;
+    return id == order.id;
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(id);
+  }
 
   public Order() {
     status = EOrderStatus.PENDING;
