@@ -11,6 +11,9 @@ import io.cucumber.java.en.When;
 
 import java.util.ArrayList;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+
 public class BasicOrderTest {
 
     private Order order;
@@ -41,12 +44,13 @@ public class BasicOrderTest {
 
     @Then("a new order item is added to the order")
     public void aNewOrderItemIsAddedToTheOrder() {
-        assert order.getOrderItems().contains(new OrderItem(cookie));
+
+        assertTrue(order.getOrderItems().contains(new OrderItem(cookie)));
     }
 
     @Then("the order item quantity is {int}")
     public void theOrderItemQuantityIs(int quantity) {
-        assert order.getOrderItems().get(0).getQuantity() == quantity;
+        assertEquals( order.getOrderItems().get(0).getQuantity(), quantity);
     }
 
     @Given("the order already contains the cookie to be added")
@@ -61,7 +65,7 @@ public class BasicOrderTest {
 
     @Then("a new order item is not added to the order")
     public void aNewOrderItemIsNotAddedToTheOrder() {
-        assert order.getOrderItems().size() == 1;
+        assertEquals(order.getOrderItems().size(),1);
     }
 
     @Given("the order contains two cookies")
@@ -77,7 +81,7 @@ public class BasicOrderTest {
 
     @Then("the calculated price is equal to {double}")
     public void theCalculatedPriceIsEqualTo(double price) {
-        assert order.getPrice() == price;
+        assertEquals(order.getPrice(),price);
     }
 
 }

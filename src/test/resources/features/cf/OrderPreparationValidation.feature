@@ -4,4 +4,3 @@ Feature: OrderPreparationValidation
     Scenario:
       When the order is marked as prepared
       Then the order status is PREPARED
-      

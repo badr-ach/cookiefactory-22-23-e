@@ -6,6 +6,8 @@ import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 
+import static org.junit.Assert.assertEquals;
+
 public class OrderValidationPreparation {
     private Order order;
     @Given("an order")
@@ -20,6 +22,6 @@ public class OrderValidationPreparation {
 
     @Then("the order status is PREPARED")
     public void theOrderStatusIsPREPARED() {
-        assert (order.getStatus().equals(EOrderStatus.PREPARED));
+        assertEquals(order.getStatus(),EOrderStatus.PREPARED);
     }
 }

@@ -14,6 +14,9 @@ import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import java.util.ArrayList;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+
 public class OrderValidation {
   private Order order;
   private Cookie cookie;
@@ -56,25 +59,25 @@ public class OrderValidation {
 
   @Then("the order status is payed")
   public void theOrderStatusIsPayed() {
-    assert order.getStatus() == EOrderStatus.PAYED;
+    assertEquals(order.getStatus(),EOrderStatus.PAYED);
   }
 
   @Then("the order is assigned to a Cook")
   public void theOrderIsAssignedToACook() {
     Store store = order.getStore();
     Cook cook = store.getAssignedCook(order);
-    assert cook != null;
+    assertTrue(cook != null);
   }
 
   @Then("the order status is PENDING")
   public void theOrderStatusIsPENDING() {
-    assert order.getStatus() == EOrderStatus.PENDING;
+    assertEquals(order.getStatus(),EOrderStatus.PENDING);
   }
 
   @Then("the receipt is correct")
   public void theReceiptIsCorrect() {
-    assert receipt.getCustomerName().equals(contactCoordinates.getName());
-    assert receipt.getPrice() == order.getPrice();
-    assert receipt.getOrderId() == order.getId();
+    assertEquals(receipt.getCustomerName(),contactCoordinates.getName());
+    assertTrue(receipt.getPrice()==(order.getPrice()));
+    assertEquals(receipt.getOrderId(),order.getId());
   }
 }

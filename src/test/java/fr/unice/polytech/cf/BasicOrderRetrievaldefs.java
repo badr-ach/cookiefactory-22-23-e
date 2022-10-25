@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import static org.junit.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
@@ -44,7 +45,7 @@ public class BasicOrderRetrievaldefs {
 
     @Then("the prepared order exists")
     public void thePreparedOrderExists() {
-        assert(maybeOrder.isPresent());
+        assertTrue(maybeOrder.isPresent());
         this.order = maybeOrder.get();
     }
 
@@ -61,7 +62,7 @@ public class BasicOrderRetrievaldefs {
     @Given("a valid {string}")
     public void aValid(String id) {
         Optional<Order> order = preparedOrders.stream().filter(o -> o.getId() == Integer.parseInt(id)).findFirst();
-        assert(order.isPresent());
+        assertTrue(order.isPresent());
         this.order = order.get();
     }
 
@@ -73,7 +74,7 @@ public class BasicOrderRetrievaldefs {
     @Then("the status of the order is changed to fulfilled")
     public void theStatusOfTheOrderIsChangedToFulfilled() {
         Optional<Order> order = preparedOrders.stream().filter(o -> o.equals(this.order)).findFirst();
-        assert(order.isPresent() && order.get().getStatus().equals(EOrderStatus.FULFILLED));
+        assertTrue(order.isPresent() && order.get().getStatus().equals(EOrderStatus.FULFILLED));
     }
 
 
@@ -84,6 +85,6 @@ public class BasicOrderRetrievaldefs {
 
     @Then("the orders list no longer contains it")
     public void theOrdersListNoLongerContainsIt(){
-        assert(preparedOrders.stream().noneMatch(o -> o.equals(this.order)));
+        assertTrue(preparedOrders.stream().noneMatch(o -> o.equals(this.order)));
     }
 }
