@@ -5,6 +5,7 @@ import fr.unice.polytech.cf.CookieService.Entities.Cookie;
 import fr.unice.polytech.cf.OrderService.Entities.Order;
 import fr.unice.polytech.cf.OrderService.Entities.Receipt;
 import fr.unice.polytech.cf.OrderService.Enums.EOrderStatus;
+import fr.unice.polytech.cf.OrderService.Exceptions.InvalidOrderStatusUpdateException;
 import fr.unice.polytech.cf.OrderService.Exceptions.OrderNotFoundException;
 
 import java.util.ArrayList;
@@ -70,13 +71,20 @@ public class OrderService {
         return orders.stream().filter(order -> (order.getId() == id)).findFirst();
     }
 
-    public Order updateStatus(Order order, EOrderStatus status) throws OrderNotFoundException{
-        Optional<Order> updatedOrder = orders.stream().filter(o-> o.equals(order)).findFirst();
-        if(updatedOrder.isEmpty()){
-            throw new OrderNotFoundException("Order Not found");
-        }else{
-            updatedOrder.get().setStatus(status);
-            return updatedOrder.get();
+    public Order updateStatus(Order order, EOrderStatus status) throws OrderNotFoundException, InvalidOrderStatusUpdateException {
+        Optional<Order> maybeOrderToUpdate = orders.stream().filter(o-> o.equals(order)).findFirst();
+        if(maybeOrderToUpdate.isEmpty()) throw new OrderNotFoundException("Order Not found");
+
+        Order orderToUpdate = maybeOrderToUpdate.get();
+
+        if(
+          orderToUpdate.getStatus() == EOrderStatus.PENDING && status == EOrderStatus.PAYED
+          || orderToUpdate.getStatus() == EOrderStatus.PAYED && status == EOrderStatus.PREPARED
+          || orderToUpdate.getStatus() == EOrderStatus.PREPARED && status == EOrderStatus.FULFILLED
+        ){
+            orderToUpdate.setStatus(status);
+            return orderToUpdate;
         }
+        throw new InvalidOrderStatusUpdateException("Invalid status update");
     }
 }

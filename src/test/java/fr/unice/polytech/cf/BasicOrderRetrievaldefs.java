@@ -2,6 +2,7 @@ package fr.unice.polytech.cf;
 
 import fr.unice.polytech.cf.OrderService.Entities.Order;
 import fr.unice.polytech.cf.OrderService.Enums.EOrderStatus;
+import fr.unice.polytech.cf.OrderService.Exceptions.InvalidOrderStatusUpdateException;
 import fr.unice.polytech.cf.OrderService.Exceptions.OrderNotFoundException;
 import fr.unice.polytech.cf.OrderService.OrderService;
 import io.cucumber.java.en.Given;
@@ -11,80 +12,80 @@ import io.cucumber.java.en.When;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Stream;
 
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class BasicOrderRetrievaldefs {
 
-    OrderService orderService = new OrderService();
+    OrderService orderService;
     List<Order> preparedOrders = new ArrayList<>();
+
+    List<Order> filteredOrders = new ArrayList<>();
     String orderId;
     Optional<Order> maybeOrder;
     Order order;
 
-    @Given("a list of prepared orders")
-    public void aListOfPreparedOrders() {
-        Order one = orderService.startOrder();
-        Order two = orderService.startOrder();
-        one.setStatus(EOrderStatus.PREPARED);
-        one.setStatus(EOrderStatus.PREPARED);
-        preparedOrders = orderService.getOrders(EOrderStatus.PREPARED);
+    Exception caughtException;
+
+    @Given("an order service")
+    public void anOrderService() {
+        orderService = new OrderService();
     }
 
-    @Given("an {string} to be retrieved")
-    public void anToBeRetrieved(String id) {
-        this.orderId = id;
+    @Given("an order with order id {int} and status {string}")
+    public void anOrderWithOrderIdOrderIdAndStatus(int orderId, String status) {
+        Order order = orderService.startOrder();
+        order.setId(orderId);
+        order.setStatus(EOrderStatus.valueOf(status));
     }
 
-    @When("the order is looked up in the prepared order list")
-    public void theOrderIsLookedUpInThePreparedOrderList() {
-        this.maybeOrder = preparedOrders.stream().filter(o -> o.getId() == Integer.parseInt(orderId)).findFirst();
+    @When("the orders are filtered by status {string}")
+    public void theOrdersAreFilteredByStatus(String status) {
+        EOrderStatus orderStatus = EOrderStatus.valueOf(status);
+        this.filteredOrders = orderService.getOrders(orderStatus);
     }
 
-    @Then("the prepared order exists")
-    public void thePreparedOrderExists() {
-        assertTrue(maybeOrder.isPresent());
-        this.order = maybeOrder.get();
+    @Then("{int} orders are found with order id: {int}")
+    public void ordersAreFoundWithOrderId(int numberOrders, int orderId) {
+        Stream<Order> filteredById = this.filteredOrders.stream().filter(order -> order.getId() == orderId);
+        assertTrue(filteredById.count() == numberOrders);
     }
 
-    @Then("the order is not found")
-    public void theOrderIsNotFound() {
-        assert(maybeOrder.isEmpty());
+    @When("the order id: {int} is searched")
+    public void theOrderIdIsSearched(int orderId) {
+        maybeOrder = orderService.getOrder(orderId);
     }
 
-    @Then("an error is thrown")
-    public void anErrorIsDisplayedSayingThatTheOrderIsNotFoundOrNotPreparedYet() {
-        assertThrows(OrderNotFoundException.class,()->orderService.updateStatus(order,EOrderStatus.FULFILLED));
+    @Then("{int} orders are found")
+    public void OrdersAreFound(int numberOrdersFound) {
+        if(numberOrdersFound == 1){
+            assertTrue(maybeOrder.isPresent());
+        } else {
+            assertTrue(maybeOrder.isEmpty());
+        }
     }
 
-    @Given("a valid {string}")
-    public void aValid(String id) {
-        Optional<Order> order = preparedOrders.stream().filter(o -> o.getId() == Integer.parseInt(id)).findFirst();
-        assertTrue(order.isPresent());
-        this.order = order.get();
+    @When("the order with order id {int} status is set to {string}")
+    public void theOrderWithOrderIdStatusIsSetTo(int orderId, String status) {
+        Order order = orderService.getOrder(orderId).orElseThrow();
+        EOrderStatus orderStatus = EOrderStatus.valueOf(status);
+        try {
+            orderService.updateStatus(order, orderStatus);
+        } catch (OrderNotFoundException e) {
+            this.caughtException = e;
+        } catch (InvalidOrderStatusUpdateException e) {
+            this.caughtException = e;
+        }
     }
 
-    @When("the store employee marks the order as fulfilled")
-    public void theStoreEmployeeMarksTheOrderAsFulfilled() {
-        assertDoesNotThrow(() -> orderService.updateStatus(this.order,EOrderStatus.FULFILLED));
-    }
-
-    @Then("the status of the order is changed to fulfilled")
-    public void theStatusOfTheOrderIsChangedToFulfilled() {
-        Optional<Order> order = preparedOrders.stream().filter(o -> o.equals(this.order)).findFirst();
-        assertTrue(order.isPresent() && order.get().getStatus().equals(EOrderStatus.FULFILLED));
-    }
-
-
-    @Then("the order is removed from the prepared orders list")
-    public void theOrderIsRemovedFromThePreparedOrdersList() {
-        preparedOrders.remove(this.order);
-    }
-
-    @Then("the orders list no longer contains it")
-    public void theOrdersListNoLongerContainsIt(){
-        assertTrue(preparedOrders.stream().noneMatch(o -> o.equals(this.order)));
+    @Then("the order with order id {int} status is {string}")
+    public void theOrderWithOrderIdOrderIdStatusIs(int orderId, String status) {
+        Order order = orderService.getOrder(orderId).orElseThrow();
+        EOrderStatus orderStatus = EOrderStatus.valueOf(status);
+        assertTrue(order.getStatus() == orderStatus);
     }
 }

@@ -51,7 +51,7 @@ public class Order {
   public void addItem(Cookie cookie) {
     OrderItem foundItem =
         orderItems.stream()
-            .filter(orderItem -> orderItem.getCookie() == cookie)
+            .filter(orderItem -> orderItem.getCookie().getId() == cookie.getId())
             .findFirst()
             .orElse(null);
 
@@ -72,6 +72,20 @@ public class Order {
     if (foundItem == null) return;
     foundItem.decrease();
     if (foundItem.getQuantity() == 0) orderItems.remove(foundItem);
+  }
+
+  public void setItemQuantity(Cookie cookie, int quantity) {
+    OrderItem foundItem =
+            orderItems.stream()
+                    .filter(orderItem -> orderItem.getCookie() == cookie)
+                    .findFirst()
+                    .orElse(null);
+    if (foundItem == null) return;
+    if (quantity <= 0) {
+      orderItems.remove(foundItem);
+    } else {
+      foundItem.setQuantity(quantity);
+    }
   }
 
   public EOrderStatus getStatus() {
