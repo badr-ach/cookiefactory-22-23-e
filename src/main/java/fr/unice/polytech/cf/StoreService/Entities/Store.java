@@ -7,7 +7,7 @@ public class Store {
 
   private ArrayList<Cook> cooks = new ArrayList<Cook>();
   private String name;
-  private String adress;
+  private String address;
   private double taxes;
   private int id;
   private static int ID = 0;
@@ -41,12 +41,12 @@ public class Store {
     this.name = name;
   }
 
-  public String getAdress() {
-    return adress;
+  public String getAddress() {
+    return address;
   }
 
-  public void setAdress(String adress) {
-    this.adress = adress;
+  public void setAddress(String address) {
+    this.address = address;
   }
 
   public double getTaxes() {
