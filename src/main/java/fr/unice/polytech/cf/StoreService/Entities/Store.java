@@ -1,10 +1,12 @@
 package fr.unice.polytech.cf.StoreService.Entities;
 
+import fr.unice.polytech.cf.CookieService.Entities.Ingredient;
+import fr.unice.polytech.cf.IngredientStockService.IngredientStockService;
 import fr.unice.polytech.cf.OrderService.Entities.Order;
 import java.util.ArrayList;
 
 public class Store {
-
+  private IngredientStockService ingredientStock;
   private ArrayList<Cook> cooks = new ArrayList<Cook>();
   private String name;
   private String address;
@@ -13,6 +15,7 @@ public class Store {
   private static int ID = 0;
 
   public Store() {
+    ingredientStock = new IngredientStockService();
     for (int i = 0; i < 10; i++) {
       Cook cook = new Cook();
       cooks.add(cook);
@@ -59,5 +62,8 @@ public class Store {
 
   public Cook getAssignedCook(Order order) {
     return cooks.stream().filter(cook -> cook.hasOrder(order)).findFirst().orElse(null);
+  }
+  public IngredientStockService getIngredientStock(){
+    return ingredientStock;
   }
 }

@@ -17,15 +17,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class BasicStoreScheduleManagement {
-
-    Store myStore;
     Schedule currentSchedule;
-
-    @Given("a store")
-    public void aStore() {
-        myStore = new Store();
-    }
-
 
     @Given("a current store schedule")
     public void aCurrentStoreSchedule() {
