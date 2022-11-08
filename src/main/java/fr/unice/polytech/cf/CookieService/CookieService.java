@@ -1,7 +1,10 @@
 package fr.unice.polytech.cf.CookieService;
 
+import fr.unice.polytech.cf.AccountService.Entities.Account;
+import fr.unice.polytech.cf.AccountService.Enums.EAccountType;
 import fr.unice.polytech.cf.CookieService.Entities.Cookie;
 import fr.unice.polytech.cf.CookieService.Entities.Ingredient;
+import fr.unice.polytech.cf.CookieService.Enums.ECookieStatus;
 import fr.unice.polytech.cf.CookieService.Enums.EIngredientType;
 
 import java.util.ArrayList;
@@ -27,5 +30,17 @@ public class CookieService {
 
   public void deleteCookie(Cookie cookie) {
     cookies.remove(cookie);
+  }
+
+  public void validateCookie(Cookie cookie, Account account) {
+    if(!(cookie.getStatus().equals(ECookieStatus.SUBMITTED))) return; //TODO : throw exception
+    if(!(account.getType().equals(EAccountType.BRAND_MANAGER))) return; //TODO : throw exception
+    cookie.setStatus(ECookieStatus.VALIDATED);
+  }
+
+  public void activateCookie(Cookie cookie, Account account) {
+    if(!(cookie.getStatus().equals(ECookieStatus.VALIDATED))) return; //TODO : throw exception
+    if(!(account.getType().equals(EAccountType.COOK))) return; //TODO : throw exception
+    cookie.setStatus(ECookieStatus.ACTIVE);
   }
 }

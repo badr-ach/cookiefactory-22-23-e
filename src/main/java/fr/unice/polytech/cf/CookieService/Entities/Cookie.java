@@ -1,6 +1,10 @@
 package fr.unice.polytech.cf.CookieService.Entities;
 
+
+import fr.unice.polytech.cf.CookieService.Enums.ECookieStatus;
+
 import java.time.Duration;
+
 import java.util.ArrayList;
 
 public class Cookie {
@@ -9,13 +13,14 @@ public class Cookie {
   private double price;
   private Duration preparationDuration;
   private ArrayList<Ingredient> ingredients;
+  private ECookieStatus status;
   private static int ID = 0;
 
   public Cookie(String name, double price, ArrayList<Ingredient> ingredients) {
     this.name = name;
     this.price = price;
     this.ingredients = ingredients;
-
+    this.status = ECookieStatus.SUBMITTED;
     this.id = ID;
     ID++;
   }
@@ -44,6 +49,15 @@ public class Cookie {
     return price;
   }
 
+
+  public ECookieStatus getStatus() {
+    return status;
+  }
+
+  public void setStatus(ECookieStatus status) {
+    this.status = status;
+  }
+  
   public void setPreparationDuration(Duration preparationDuration) {
     this.preparationDuration = preparationDuration;
   }
