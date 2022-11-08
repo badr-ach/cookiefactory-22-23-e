@@ -1,5 +1,7 @@
 package fr.unice.polytech.cf.OrderService.Entities;
 
+import java.time.Duration;
+
 import fr.unice.polytech.cf.CookieService.Entities.Cookie;
 
 public class OrderItem {
@@ -27,6 +29,10 @@ public class OrderItem {
 
   public double getPrice() {
     return quantity * cookie.getPrice();
+  }
+
+  public Duration getPreparationDuration() {
+    return cookie.getPreparationDuration().multipliedBy(quantity);
   }
 
   public void setQuantity(int quantity) {

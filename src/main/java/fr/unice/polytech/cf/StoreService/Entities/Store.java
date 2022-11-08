@@ -3,6 +3,7 @@ package fr.unice.polytech.cf.StoreService.Entities;
 import fr.unice.polytech.cf.CookieService.Entities.Ingredient;
 import fr.unice.polytech.cf.IngredientStockService.IngredientStockService;
 import fr.unice.polytech.cf.OrderService.Entities.Order;
+
 import java.util.ArrayList;
 
 public class Store {
@@ -13,11 +14,13 @@ public class Store {
   private double taxes;
   private int id;
   private static int ID = 0;
+  private WeeklySchedule weeklySchedule;
 
   public Store() {
     ingredientStock = new IngredientStockService();
+    weeklySchedule = new WeeklySchedule();
     for (int i = 0; i < 10; i++) {
-      Cook cook = new Cook();
+      Cook cook = new Cook(weeklySchedule);
       cooks.add(cook);
     }
     this.id = ID;
@@ -34,6 +37,10 @@ public class Store {
 
   public void setCooks(ArrayList<Cook> cooks) {
     this.cooks = cooks;
+  }
+
+  public WeeklySchedule getWeeklySchedule() {
+    return weeklySchedule;
   }
 
   public String getName() {

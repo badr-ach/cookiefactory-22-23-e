@@ -1,64 +1,72 @@
 package fr.unice.polytech.cf.StoreService.Entities;
 
-import fr.unice.polytech.cf.StoreService.Exceptions.InvalidHourException;
-import fr.unice.polytech.cf.StoreService.Exceptions.InvalidMinuteException;
+import fr.unice.polytech.cf.OrderService.Entities.Order;
+import java.time.Duration;
+import java.time.LocalTime;
 
 public class TimeSlot {
 
-    public int dayOfWeek, startHour, startMinute, endHour, endMinute;
+  private LocalTime startTime;
+  private LocalTime endTime;
+  private Order order;
 
-    public TimeSlot(int startHour, int startMinute, int endHour, int endMinute) {
-        this.startHour = startHour;
-        this.startMinute = startMinute;
-        this.endHour = endHour;
-        this.endMinute = endMinute;
-    }
+  public TimeSlot(String startTime, String endTime) {
+    this.startTime = LocalTime.parse(startTime);
+    this.endTime = LocalTime.parse(endTime);
+  }
 
-    public TimeSlot() {
-    }
+  public TimeSlot(LocalTime startTime, LocalTime endTime) {
+    this.startTime = startTime;
+    this.endTime = endTime;
+  }
 
-    public int getStartHour() {
-        return startHour;
-    }
+  public TimeSlot(String startTime, Duration duration) {
+    this.startTime = LocalTime.parse(startTime);
+    this.endTime = LocalTime.parse(startTime).plus(duration);
+  }
 
-    public void setStartHour(int startHour) throws InvalidHourException {
-        if ( startHour >= 0 && startHour <= 23 ) {
-            this.startHour = startHour;
-        }
-        else throw new InvalidHourException("Invalid Hour Input");
-    }
+  public TimeSlot(LocalTime startTime, Duration duration) {
+    this.startTime = startTime;
+    this.endTime = startTime.plus(duration);
+  }
 
-    public void setStartMinute(int startMinute) throws InvalidMinuteException {
-        if ( startMinute >= 0 && startMinute <= 59 ) {
-            this.startMinute = startMinute;
-        }
-        else throw new InvalidMinuteException("Invalid Minute Input");
-    }
+  public boolean isBetween(String timeToTest) {
+    LocalTime testedTime = LocalTime.parse(timeToTest);
+    if (!startTime.isBefore(testedTime)) return false;
+    if (!endTime.isAfter(testedTime)) return false;
+    return true;
+  }
 
-    public int getStartMinute() {
-        return startMinute;
-    }
+  public Duration duration() {
+    return Duration.between(startTime, endTime);
+  }
 
-    public int getEndHour() {
-        return endHour;
-    }
+  public LocalTime getStartTime() {
+    return startTime;
+  }
 
-    public void setEndHour(int endHour) throws InvalidHourException {
-        if ( endHour >= 0 && endHour <= 23 ) {
-            this.endHour = endHour;
-        }
-        else throw new InvalidHourException("Invalid Hour Input");
-    }
+  public LocalTime getEndTime() {
+    return endTime;
+  }
 
-    public int getEndMinute() {
-        return endMinute;
-    }
+  public Order getOrder() {
+    return order;
+  }
 
-    public void setEndMinute(int endMinute) throws InvalidMinuteException {
-        if ( endMinute >= 0 && endMinute <= 59 ) {
-            this.endMinute = endMinute;
-        }
-        else throw new InvalidMinuteException("Invalid Minute Input");
-    }
+  public void setOrder(Order order) {
+    this.order = order;
+  }
 
+  public String toString() {
+    return "TimeSlot: " + startTime + " - " + endTime;
+  }
+
+  @Override
+  public boolean equals(Object obj) {
+    if (!(obj instanceof TimeSlot)) return false;
+    if ((TimeSlot) obj == this) return true;
+    if (this.getStartTime().toNanoOfDay() == ((TimeSlot) obj).getStartTime().toNanoOfDay()
+        && this.getEndTime().toNanoOfDay() == ((TimeSlot) obj).getEndTime().toNanoOfDay()) return true;
+    return false;
+  }
 }

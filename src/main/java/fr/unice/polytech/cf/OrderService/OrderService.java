@@ -37,16 +37,13 @@ public class OrderService {
 
     public Receipt makePayment(String cardNumber, Order order) {
         Receipt receipt = null;
-
         try {
             receipt = paymentService.makePayment(cardNumber, order);
             order.setStatus(EOrderStatus.PAYED);
             orderScheduler.selectTimeSlot(order);
-
         } catch (Exception e) {
 
         }
-
         return receipt;
     }
 

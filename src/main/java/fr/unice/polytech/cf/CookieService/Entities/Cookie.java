@@ -1,11 +1,13 @@
 package fr.unice.polytech.cf.CookieService.Entities;
 
+import java.time.Duration;
 import java.util.ArrayList;
 
 public class Cookie {
   private int id;
   private String name;
   private double price;
+  private Duration preparationDuration;
   private ArrayList<Ingredient> ingredients;
   private static int ID = 0;
 
@@ -40,6 +42,14 @@ public class Cookie {
 
   public double getPrice() {
     return price;
+  }
+
+  public void setPreparationDuration(Duration preparationDuration) {
+    this.preparationDuration = preparationDuration;
+  }
+
+  public Duration getPreparationDuration() {
+    return preparationDuration;
   }
 
   @Override

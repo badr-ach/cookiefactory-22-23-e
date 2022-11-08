@@ -45,7 +45,6 @@ public class OrderValidation {
     for (int i = 0; i < numberCookie; i++) {
       cookies.add(cookie);
     }
-    System.out.println("test");
     order = customerSystem.createOrder(contactCoordinates, cookies);
     ArrayList<Store> stores = customerSystem.getStores();
     Store store = stores.get(0);

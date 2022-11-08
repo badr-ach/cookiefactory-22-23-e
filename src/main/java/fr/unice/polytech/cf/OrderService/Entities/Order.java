@@ -4,6 +4,8 @@ import fr.unice.polytech.cf.AccountService.Entities.ContactCoordinates;
 import fr.unice.polytech.cf.CookieService.Entities.Cookie;
 import fr.unice.polytech.cf.OrderService.Enums.EOrderStatus;
 import fr.unice.polytech.cf.StoreService.Entities.Store;
+
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Objects;
 
@@ -107,6 +109,15 @@ public class Order {
   public double getPrice() {
     return orderItems.stream()
         .reduce(0.0, (subtotal, orderItem) -> subtotal + orderItem.getPrice(), Double::sum);
+  }
+
+  public Duration getPreparationDuration() {
+    Duration totalDuration = Duration.ZERO;
+    for (int i = 0; i < orderItems.size(); i++) {
+      Duration orderItemDuration = orderItems.get(i).getPreparationDuration();
+      totalDuration = totalDuration.plus(orderItemDuration);
+    }
+    return totalDuration;
   }
 
   public Store getStore() {
