@@ -2,6 +2,8 @@ package fr.unice.polytech.cf.OrderService;
 
 import fr.unice.polytech.cf.OrderService.Entities.Order;
 import fr.unice.polytech.cf.OrderService.Entities.Receipt;
+import fr.unice.polytech.cf.OrderService.Exceptions.TransactionFailureException;
+
 import java.util.ArrayList;
 
 public class PaymentService {
@@ -9,17 +11,11 @@ public class PaymentService {
 
   public PaymentService() {
     validCreditCards.add("123456789");
-    for (int i = 0; i < 10; i++) {
-      String cardNumber = String.valueOf(i).repeat(9);
-      validCreditCards.add(cardNumber);
-    }
   }
 
-  public Receipt makePayment(String cardNumber, Order order) throws RuntimeException {
-    boolean isCardValid =
-        validCreditCards.stream().anyMatch(validCard -> validCard.equals(cardNumber));
-    if(!isCardValid) throw new RuntimeException("Credit card not valid");
-
+  public Receipt makePayment(String cardNumber, Order order) throws TransactionFailureException {
+    boolean isCardValid = validCreditCards.stream().anyMatch(validCard -> validCard.equals(cardNumber));
+    if(!isCardValid) throw new TransactionFailureException("Credit card not valid");
     return new Receipt(order);
   }
 }

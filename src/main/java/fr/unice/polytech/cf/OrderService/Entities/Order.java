@@ -4,9 +4,13 @@ import fr.unice.polytech.cf.AccountService.Entities.ContactCoordinates;
 import fr.unice.polytech.cf.CookieService.Entities.Cookie;
 import fr.unice.polytech.cf.OrderService.Enums.EOrderStatus;
 import fr.unice.polytech.cf.StoreService.Entities.Store;
+import fr.unice.polytech.cf.StoreService.Entities.TimeSlot;
+
 
 import java.time.Duration;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 import java.util.Objects;
 
 public class Order {
@@ -15,6 +19,9 @@ public class Order {
   private ContactCoordinates contact;
   private ArrayList<OrderItem> orderItems = new ArrayList<OrderItem>();
   private Store store;
+  private Date retrievalDateTime;
+
+  private List<TimeSlot> assignedPreparationTimeSlots;
   private static int ID = 0;
 
   @Override
@@ -134,5 +141,13 @@ public class Order {
 
   public void setStore(Store store) {
     this.store = store;
+  }
+
+  public Date getRetrievalDateTime() {
+    return retrievalDateTime;
+  }
+
+  public void setRetrievalDateTime(Date retrievalDateTime) {
+    this.retrievalDateTime = retrievalDateTime;
   }
 }

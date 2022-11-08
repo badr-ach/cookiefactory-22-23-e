@@ -19,7 +19,7 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-public class BasicOrderRetrievaldefs {
+public class BasicOrderRetrieval {
 
     OrderService orderService;
     List<Order> preparedOrders = new ArrayList<>();

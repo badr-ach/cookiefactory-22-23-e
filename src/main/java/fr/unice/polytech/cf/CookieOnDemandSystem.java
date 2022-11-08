@@ -30,4 +30,6 @@ public abstract class CookieOnDemandSystem {
   public ArrayList<Store> getStores(){
     return storeService.getStores();
   }
+
+
 }

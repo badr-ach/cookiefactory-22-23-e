@@ -2,10 +2,12 @@ package fr.unice.polytech.cf.OrderService;
 
 import fr.unice.polytech.cf.AccountService.Entities.ContactCoordinates;
 import fr.unice.polytech.cf.CookieService.Entities.Cookie;
+import fr.unice.polytech.cf.FacadeExceptions.InvalidStoreException;
 import fr.unice.polytech.cf.OrderService.Entities.Order;
 import fr.unice.polytech.cf.OrderService.Entities.Receipt;
 import fr.unice.polytech.cf.OrderService.Enums.EOrderStatus;
 import fr.unice.polytech.cf.OrderService.Exceptions.InvalidOrderStatusUpdateException;
+import fr.unice.polytech.cf.OrderService.Exceptions.InvalidRetrievalDateException;
 import fr.unice.polytech.cf.OrderService.Exceptions.OrderNotFoundException;
 
 import java.util.ArrayList;
@@ -35,14 +37,21 @@ public class OrderService {
         return order;
     }
 
-    public Receipt makePayment(String cardNumber, Order order) {
+    public Receipt makePayment(ContactCoordinates contact, String cardNumber, Order order) {
         Receipt receipt = null;
+        order.setContact(contact);
         try {
-            receipt = paymentService.makePayment(cardNumber, order);
-            order.setStatus(EOrderStatus.PAYED);
-            orderScheduler.selectTimeSlot(order);
+            if(order.getStore() == null) throw new InvalidStoreException("Store not specified");
+            if(order.getRetrievalDateTime() == null) throw new InvalidRetrievalDateException("Retrieval time not specified");
+            if(orderScheduler.assignCook(order)) {
+                receipt = paymentService.makePayment(cardNumber, order);
+                order.setStatus(EOrderStatus.PAID);
+            }
         } catch (Exception e) {
-
+            // free stuff here
+            if(order.getStore() != null && order.getStore().getAssignedCook(order).isPresent())
+                orderScheduler.freeTimeSlots(order);
+            throw e;
         }
         return receipt;
     }
@@ -75,8 +84,8 @@ public class OrderService {
         Order orderToUpdate = maybeOrderToUpdate.get();
 
         if(
-          orderToUpdate.getStatus() == EOrderStatus.PENDING && status == EOrderStatus.PAYED
-          || orderToUpdate.getStatus() == EOrderStatus.PAYED && status == EOrderStatus.PREPARED
+          orderToUpdate.getStatus() == EOrderStatus.PENDING && status == EOrderStatus.PAID
+          || orderToUpdate.getStatus() == EOrderStatus.PAID && status == EOrderStatus.PREPARED
           || orderToUpdate.getStatus() == EOrderStatus.PREPARED && status == EOrderStatus.FULFILLED
         ){
             orderToUpdate.setStatus(status);

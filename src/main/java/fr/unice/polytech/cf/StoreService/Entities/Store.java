@@ -5,6 +5,8 @@ import fr.unice.polytech.cf.IngredientStockService.IngredientStockService;
 import fr.unice.polytech.cf.OrderService.Entities.Order;
 
 import java.util.ArrayList;
+import java.util.Objects;
+import java.util.Optional;
 
 public class Store {
   private IngredientStockService ingredientStock;
@@ -17,18 +19,29 @@ public class Store {
   private WeeklySchedule weeklySchedule;
 
   public Store() {
-    ingredientStock = new IngredientStockService();
+
     weeklySchedule = new WeeklySchedule();
-    for (int i = 0; i < 10; i++) {
-      Cook cook = new Cook(weeklySchedule);
-      cooks.add(cook);
-    }
+    Cook cook = new Cook(weeklySchedule);
+    cook.setId(getCooks().size()+1);
+    cooks.add(cook);
+    ingredientStock = new IngredientStockService();
+
     this.id = ID;
     ID++;
   }
 
+  public Store(String name) {
+    this();
+    this.name = name;
+  }
+
   public int getId() {
     return id;
+  }
+
+  // should probably be not allowed in production
+  public void setId(int id) {
+    this .id = id;
   }
 
   public ArrayList<Cook> getCooks() {
@@ -67,8 +80,20 @@ public class Store {
     this.taxes = taxes;
   }
 
-  public Cook getAssignedCook(Order order) {
-    return cooks.stream().filter(cook -> cook.hasOrder(order)).findFirst().orElse(null);
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (!(o instanceof Store store)) return false;
+    return id == store.id;
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(id);
+  }
+
+  public Optional<Cook> getAssignedCook(Order order) {
+    return cooks.stream().filter(cook -> cook.hasOrder(order)).findFirst();
   }
   public IngredientStockService getIngredientStock(){
     return ingredientStock;
