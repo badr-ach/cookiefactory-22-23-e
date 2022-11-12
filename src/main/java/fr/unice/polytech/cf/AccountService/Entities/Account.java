@@ -7,12 +7,21 @@ public class Account {
   protected String username;
   protected String password;
   protected EAccountType type;
+  protected ContactCoordinates contactCoordinates;
   private int ID = 0;
 
   public Account(String username, String password, EAccountType type){
     this.password = password;
     this.username = username;
     this.type = type;
+    this.id = ID;
+    ID++;
+  }
+
+  public Account(String username, String password, EAccountType type, ContactCoordinates contactCoordinates){
+    this.password = password;
+    this.username = username;
+    this.contactCoordinates = contactCoordinates;
     this.id = ID;
     ID++;
   }
@@ -31,5 +40,13 @@ public class Account {
 
   public EAccountType getType() {
     return type;
+  }
+
+  public void setContactCoordinates(ContactCoordinates contactCoordinates) {
+    this.contactCoordinates = contactCoordinates;
+  }
+
+  public ContactCoordinates getContactCoordinates() {
+    return contactCoordinates;
   }
 }

@@ -4,6 +4,8 @@ import java.util.ArrayList;
 
 import fr.unice.polytech.cf.CookieService.Entities.Cookie;
 import fr.unice.polytech.cf.AccountService.AccountService;
+import fr.unice.polytech.cf.AccountService.Entities.Account;
+import fr.unice.polytech.cf.AccountService.Exceptions.InvalidCredentialsException;
 import fr.unice.polytech.cf.OrderService.OrderService;
 import fr.unice.polytech.cf.StoreService.StoreService;
 import fr.unice.polytech.cf.StoreService.Entities.Store;
@@ -31,5 +33,7 @@ public abstract class CookieOnDemandSystem {
     return storeService.getStores();
   }
 
-
+  public Account login(String username, String password) {
+    return accountService.getAccount(username, password).orElseThrow(InvalidCredentialsException::new);
+  }
 }

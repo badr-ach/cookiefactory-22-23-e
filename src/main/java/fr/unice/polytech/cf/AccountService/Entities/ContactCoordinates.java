@@ -5,16 +5,16 @@ public class ContactCoordinates {
   private String name;
   private String email;
   private String phoneNumber;
-  private String adress;
+  private String address;
 
   public ContactCoordinates(String name){
     this.name = name;
   }
-  public ContactCoordinates(String name, String email, String phoneNumber, String adress) {
+  public ContactCoordinates(String name, String email, String phoneNumber, String address) {
     this.name = name;
     this.email = email;
     this.phoneNumber = phoneNumber;
-    this.adress = adress;
+    this.address = address;
   }
 
   public String getName() {
@@ -30,6 +30,6 @@ public class ContactCoordinates {
   }
 
   public String getAdress() {
-    return adress;
+    return address;
   }
 }

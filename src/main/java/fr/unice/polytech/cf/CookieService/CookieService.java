@@ -43,4 +43,5 @@ public class CookieService {
     if(!(account.getType().equals(EAccountType.COOK))) return; //TODO : throw exception
     cookie.setStatus(ECookieStatus.ACTIVE);
   }
+
 }

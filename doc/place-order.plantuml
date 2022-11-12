@@ -4,7 +4,7 @@ skinparam style strictuml
 actor Customer as customer order 0
 boundary CustomerSystem as customer_controller order 2
 participant AccountService as account_service order 2 
-participant CustomerAccount as customer_account order 2 
+participant CustomerAccount as customer_account order 2
 participant OrderService as order_service order 3 
 participant CookieService as cookie_service order 3 
 participant IngredientStockService as ingredientstock_service order 3 

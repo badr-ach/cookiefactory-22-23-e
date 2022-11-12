@@ -121,7 +121,7 @@ public class OrderValidation {
     @Then("correct receipt is generated")
     public void correctReceiptIsGenerated() {
         assertEquals(receipt.getCustomerName(), contactCoordinates.getName());
-        assertTrue(receipt.getPrice() == (order.getPrice()));
+        assertEquals(receipt.getPrice(), order.getPrice(), 0.001);
         assertEquals(receipt.getOrderId(), order.getId());
     }
 }

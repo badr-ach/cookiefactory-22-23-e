@@ -18,7 +18,7 @@ public class StoreService {
   public ArrayList<Store> getStores() {
     return stores;
   }
-  public Optional<Store> getStore(int id) { return stores.stream().filter(o -> o.getId() == id).findFirst();}
 
+  public Optional<Store> getStore(int id) { return stores.stream().filter(o -> o.getId() == id).findFirst();}
 
 }
