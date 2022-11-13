@@ -16,11 +16,12 @@ import java.util.Optional;
 public class OrderService {
     private PaymentService paymentService;
     private OrderScheduler orderScheduler;
-    private ArrayList<Order> orders = new ArrayList<Order>();
+    private ArrayList<Order> orders;
 
     public OrderService() {
         paymentService = new PaymentService();
         orderScheduler = new OrderScheduler();
+        orders = new ArrayList<Order>();
     }
 
     public Order startOrder() {
@@ -86,6 +87,7 @@ public class OrderService {
         if(
           orderToUpdate.getStatus() == EOrderStatus.PENDING && status == EOrderStatus.PAID
           || orderToUpdate.getStatus() == EOrderStatus.PAID && status == EOrderStatus.PREPARED
+          || orderToUpdate.getStatus() == EOrderStatus.PENDING && status == EOrderStatus.PREPARED
           || orderToUpdate.getStatus() == EOrderStatus.PREPARED && status == EOrderStatus.FULFILLED
         ){
             orderToUpdate.setStatus(status);

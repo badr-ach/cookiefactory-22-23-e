@@ -2,9 +2,9 @@ package fr.unice.polytech.cf.OrderService.Enums;
 
 public enum EOrderStatus {
   PENDING,
-    PAID,
+  PAID,
   PREPARED,
   FULFILLED,
   CANCELLED,
-  STALE,
+  OBSOLETE,
 }

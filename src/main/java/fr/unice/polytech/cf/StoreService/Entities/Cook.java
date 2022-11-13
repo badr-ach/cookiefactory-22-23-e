@@ -17,7 +17,6 @@ public class Cook {
   private WeeklySchedule schedule;
   private static int ID = 0;
   private ArrayList<Order> orders = new ArrayList<Order>();
-
   public Cook() {
     this.id = ID;
     ID++;
