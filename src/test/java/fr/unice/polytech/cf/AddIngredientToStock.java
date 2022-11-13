@@ -1,8 +1,8 @@
 package fr.unice.polytech.cf;
 
-import fr.unice.polytech.cf.CookieService.Entities.Ingredient;
-import fr.unice.polytech.cf.CookieService.Enums.EIngredientType;
-import fr.unice.polytech.cf.StoreService.Entities.Store;
+import fr.unice.polytech.cf.cookieservice.entities.Ingredient;
+import fr.unice.polytech.cf.cookieservice.enums.EIngredientType;
+import fr.unice.polytech.cf.storeservice.entities.Store;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
@@ -28,30 +28,30 @@ public class AddIngredientToStock {
 
     @Given("the Ingredient Stock does not contains the ingredient to be added")
     public void checkNotContains() {
-        assertFalse(store.getIngredientStock().is_in(ingredient));
+        assertFalse(store.getIngredientsStock().contains(ingredient));
     }
 
 
     @When("the ingredient is added to the stock")
         public void addIngredient(){
-            store.getIngredientStock().add(ingredient);
+            store.getIngredientsStock().add(ingredient);
         }
 
     @Then("a new ingredient is added to the stock")
     public void ingredientIsAdded() {
-        assertTrue(store.getIngredientStock().is_in(ingredient));
+        assertTrue(store.getIngredientsStock().contains(ingredient));
     }
     @Then("the stock ingredient quantity is 1")
     public void quantity() {
-        assertTrue(store.getIngredientStock().getValue(ingredient).equals(1));
+        assertTrue(store.getIngredientsStock().getValue(ingredient).equals(1));
     }
     @Given("the Ingredient Stock already contains the ingredient to be added")
     public void alreadyin(){
-    store.getIngredientStock().add(ingredient);
+    store.getIngredientsStock().add(ingredient);
     }
     @Then("the stock ingredient quantity is 2")
     public void newQuantity(){
-    assertTrue(store.getIngredientStock().getValue(ingredient).equals(2));
+    assertTrue(store.getIngredientsStock().getValue(ingredient).equals(2));
     }
 
 
@@ -63,14 +63,9 @@ public class AddIngredientToStock {
 
     @Then("the ingredient should not be in the stock of anotherStore")
     public void notAddedInAnotherStore(){
-    store.getIngredientStock().add(ingredient);
-    assertFalse(anotherStore.getIngredientStock().is_in(ingredient));
+    store.getIngredientsStock().add(ingredient);
+    assertFalse(anotherStore.getIngredientsStock().contains(ingredient));
     }
-
-
-
-
-
 
 }
 

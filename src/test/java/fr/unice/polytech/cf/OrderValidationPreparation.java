@@ -1,7 +1,7 @@
 package fr.unice.polytech.cf;
 
-import fr.unice.polytech.cf.OrderService.Entities.Order;
-import fr.unice.polytech.cf.OrderService.Enums.EOrderStatus;
+import fr.unice.polytech.cf.orderservice.entities.Order;
+import fr.unice.polytech.cf.orderservice.enums.EOrderStatus;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;

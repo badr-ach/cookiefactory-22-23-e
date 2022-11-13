@@ -1,16 +1,16 @@
 package fr.unice.polytech.cf;
 
-import fr.unice.polytech.cf.AccountService.Entities.Account;
-import fr.unice.polytech.cf.AccountService.Enums.EAccountType;
-import fr.unice.polytech.cf.CookieService.CookieService;
-import fr.unice.polytech.cf.CookieService.Entities.Cookie;
-import fr.unice.polytech.cf.CookieService.Enums.ECookieStatus;
+import fr.unice.polytech.cf.accountservice.entities.Account;
+import fr.unice.polytech.cf.accountservice.enums.EAccountType;
+import fr.unice.polytech.cf.cookieservice.CookieService;
+import fr.unice.polytech.cf.cookieservice.entities.Cookie;
+import fr.unice.polytech.cf.cookieservice.enums.ECookieStatus;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 
-import java.util.ArrayList;
+import java.util.HashMap;
 
 public class RecipeValidation {
   private CookieService cookieService = new CookieService();
@@ -21,7 +21,7 @@ public class RecipeValidation {
 
   @Given("a SUBMITTED Cookie")
   public void aSUBMITTEDCookie() {
-    cookieSubmitted = new Cookie("submittedCookie", 5, new ArrayList<>());
+    cookieSubmitted = new Cookie("submittedCookie", 5, new HashMap<>());
   }
 
   @And("an Account with the BrandManager role")
@@ -67,7 +67,7 @@ public class RecipeValidation {
 
   @Given("a VALIDATED cookie")
   public void aVALIDATEDCookie() {
-    cookieValidated = new Cookie("validatedCookie", 3, new ArrayList<>());
+    cookieValidated = new Cookie("validatedCookie", 3, new HashMap<>());
     cookieValidated.setStatus(ECookieStatus.VALIDATED);
   }
 

@@ -4,19 +4,18 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 
-import fr.unice.polytech.cf.AccountService.Entities.Account;
-import fr.unice.polytech.cf.AccountService.Entities.ContactCoordinates;
-import fr.unice.polytech.cf.OrderService.Entities.Order;
-import fr.unice.polytech.cf.OrderService.Enums.EOrderStatus;
-import fr.unice.polytech.cf.StoreService.Entities.Store;
+import fr.unice.polytech.cf.accountservice.entities.Account;
+import fr.unice.polytech.cf.accountservice.entities.ContactCoordinates;
+import fr.unice.polytech.cf.orderservice.entities.Order;
+import fr.unice.polytech.cf.orderservice.enums.EOrderStatus;
+import fr.unice.polytech.cf.storeservice.entities.Store;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 
+import java.time.LocalDateTime;
 import java.util.Calendar;
-import java.util.Date;
-import java.util.Optional;
 
 public class CustomerAccountTest {
 
@@ -42,7 +41,7 @@ public class CustomerAccountTest {
           + " {string}")
   public void aNewAccountIsCreatedWithUsernamePasswordAndCustomerName(
       String username, String password, String customerName) {
-    ContactCoordinates contactCoordinates = new ContactCoordinates(customerName);
+    ContactCoordinates contactCoordinates = new ContactCoordinates(customerName,customerName+"@gmail.com","0710234874","address");
     try {
       customerSystem.signup(username, password, contactCoordinates);
     } catch (Exception e) {
@@ -94,6 +93,7 @@ public class CustomerAccountTest {
       customerSystem.payOrder(loggedInAccount, creditCard);
     } catch (Exception e) {
       caughtException = e;
+      System.out.println(e.getMessage());
     }
   }
 
@@ -101,7 +101,7 @@ public class CustomerAccountTest {
   public void anOrderAwaitingPayment() {
     Store store = customerSystem.getStores().get(0);
     order = customerSystem.startOrder();
-    customerSystem.selectPickUpDate(new Date(2022, Calendar.DECEMBER, 6, 14, 15));
+    customerSystem.selectPickUpDate(LocalDateTime.of(2022, Calendar.DECEMBER, 6, 14, 15));
     customerSystem.selectStore(store);
   }
 
