@@ -116,6 +116,11 @@ public class Order {
                 .reduce(0.0, (subtotal, orderItem) -> subtotal + orderItem.getPrice(), Double::sum);
     }
 
+    public double getTTCPrice() {
+        double taxes = store.getTaxes();
+        return getPrice() * (100-taxes) / 100;
+    }
+
     public Duration getPreparationDuration() {
         Duration totalDuration = Duration.ZERO;
         for (int i = 0; i < orderItems.size(); i++) {

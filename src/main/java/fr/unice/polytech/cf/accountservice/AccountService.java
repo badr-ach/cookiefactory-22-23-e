@@ -2,7 +2,7 @@ package fr.unice.polytech.cf.accountservice;
 
 import fr.unice.polytech.cf.accountservice.entities.Account;
 import fr.unice.polytech.cf.accountservice.entities.ContactCoordinates;
-import fr.unice.polytech.cf.accountservice.entities.CutomerAccount;
+import fr.unice.polytech.cf.accountservice.entities.CustomerAccount;
 import fr.unice.polytech.cf.accountservice.enums.EAccountType;
 import fr.unice.polytech.cf.accountservice.exceptions.SignUpFailedException;
 import java.util.ArrayList;
@@ -32,7 +32,7 @@ public class AccountService {
   public Account createCustomerAccount(
       String username, String password, ContactCoordinates contactCoordinates) {
     if (exists(username)) throw new SignUpFailedException();
-    CutomerAccount cutomerAccount = new CutomerAccount(username, password, contactCoordinates);
+    CustomerAccount cutomerAccount = new CustomerAccount(username, password, contactCoordinates);
     accounts.add(cutomerAccount);
     return cutomerAccount;
   }

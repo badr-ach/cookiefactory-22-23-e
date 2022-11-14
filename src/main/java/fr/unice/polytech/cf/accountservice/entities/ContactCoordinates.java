@@ -10,6 +10,7 @@ public class ContactCoordinates {
   public ContactCoordinates(String name){
     this.name = name;
   }
+
   public ContactCoordinates(String name, String email, String phoneNumber, String address) {
     this.name = name;
     this.email = email;

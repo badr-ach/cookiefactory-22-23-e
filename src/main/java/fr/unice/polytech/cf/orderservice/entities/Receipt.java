@@ -13,17 +13,17 @@ public class Receipt {
     private double taxes;
     private static int ID = 0;
 
-    public Receipt(Order order, double total) {
+    public Receipt(Order order) {
         this.customerContacts = order.getContact();
         this.orderItems = order.getOrderItems();
-        this.total = total;
+        this.total = order.getTTCPrice();
         this.orderId = order.getId();
         this.id = ID;
         ID++;
     }
 
-    public Receipt(ContactCoordinates customerContacts, double total, Order order){
-        this(order,total);
+    public Receipt(ContactCoordinates customerContacts, Order order){
+        this(order);
         this.customerContacts = customerContacts;
     }
 

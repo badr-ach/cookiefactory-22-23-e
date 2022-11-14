@@ -35,20 +35,20 @@ public class CustomerSystem extends CookieOnDemandSystem {
         return orderService.addCookies(activeOrder, new HashMap<>(Collections.singletonMap(cookie,quantity)));
     }
 
+    public void paymentGuards(){
+          if (activeOrder.getStore() == null) throw new InvalidStoreException("Store not specified");
+          if (activeOrder.getRetrievalDateTime() == null)
+              throw new InvalidRetrievalDateException("Retrieval time not specified");
+    }
 
     public Receipt payOrder(ContactCoordinates coordinates, String cardNumber) {
-        if (loggedInAccount != null) coordinates = loggedInAccount.getContactCoordinates();
-        if (activeOrder.getStore() == null) throw new InvalidStoreException("Store not specified");
-        if (activeOrder.getRetrievalDateTime() == null)
-            throw new InvalidRetrievalDateException("Retrieval time not specified");
-        double price = activeOrder.getPrice() + activeStore.getTaxes() * activeOrder.getPrice();
-        return orderService.makePayment(coordinates, cardNumber, activeOrder, price);
+        paymentGuards();
+        return orderService.makePayment(coordinates, cardNumber, activeOrder);
     }
 
     public Receipt payOrder(Account account, String cardNumber) {
-        ContactCoordinates contactCoordinates = account.getContactCoordinates();
-        double price = activeOrder.getPrice() + activeStore.getTaxes() * activeOrder.getPrice();
-        return orderService.makePayment(contactCoordinates, cardNumber, activeOrder, price);
+        paymentGuards();
+        return orderService.makePayment(account, cardNumber, activeOrder);
     }
 
     public void selectPickUpDate(LocalDateTime date) {

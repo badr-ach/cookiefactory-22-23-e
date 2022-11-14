@@ -1,6 +1,9 @@
 package fr.unice.polytech.cf.accountservice.entities;
 
+import java.util.Stack;
+
 import fr.unice.polytech.cf.accountservice.enums.EAccountType;
+import fr.unice.polytech.cf.orderservice.entities.Order;
 
 public class Account {
   protected int id;
@@ -49,4 +52,10 @@ public class Account {
   public ContactCoordinates getContactCoordinates() {
     return contactCoordinates;
   }
+
+  public Stack<Order> getHistory(){
+    return new Stack<>();
+  }
+
+  public void addOrder(Order order) {}
 }

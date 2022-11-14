@@ -1,11 +1,14 @@
 package fr.unice.polytech.cf;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
 import fr.unice.polytech.cf.accountservice.entities.Account;
 import fr.unice.polytech.cf.accountservice.entities.ContactCoordinates;
+import fr.unice.polytech.cf.cookieservice.entities.Cookie;
 import fr.unice.polytech.cf.orderservice.entities.Order;
 import fr.unice.polytech.cf.orderservice.enums.EOrderStatus;
 import fr.unice.polytech.cf.storeservice.entities.Store;
@@ -13,9 +16,11 @@ import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
-
+import java.time.Duration;
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.Calendar;
+import java.util.HashMap;
 
 public class CustomerAccountTest {
 
@@ -41,7 +46,7 @@ public class CustomerAccountTest {
           + " {string}")
   public void aNewAccountIsCreatedWithUsernamePasswordAndCustomerName(
       String username, String password, String customerName) {
-    ContactCoordinates contactCoordinates = new ContactCoordinates(customerName,customerName+"@gmail.com","0710234874","address");
+    ContactCoordinates contactCoordinates = new ContactCoordinates(customerName, customerName, customerName, customerName);
     try {
       customerSystem.signup(username, password, contactCoordinates);
     } catch (Exception e) {
@@ -50,8 +55,13 @@ public class CustomerAccountTest {
   }
 
   @Then("the account with username: {string} is present {int} times")
-  public void theAccountWithUsernameIsPresentNumberOfExistingAccountsTimes(String username, int expectedNumberOfAccounts) {
-    int numberOfAccounts = (int) customerSystem.accountService.getAccounts().stream().filter(account -> account.getUsername().equals(username)).count();
+  public void theAccountWithUsernameIsPresentNumberOfExistingAccountsTimes(
+      String username, int expectedNumberOfAccounts) {
+    int numberOfAccounts =
+        (int)
+            customerSystem.accountService.getAccounts().stream()
+                .filter(account -> account.getUsername().equals(username))
+                .count();
     assertEquals(expectedNumberOfAccounts, numberOfAccounts);
   }
 
@@ -101,7 +111,12 @@ public class CustomerAccountTest {
   public void anOrderAwaitingPayment() {
     Store store = customerSystem.getStores().get(0);
     order = customerSystem.startOrder();
-    customerSystem.selectPickUpDate(LocalDateTime.of(2022, Calendar.DECEMBER, 6, 14, 15));
+
+    LocalDateTime pickupDate = LocalDateTime.of(2022, Calendar.DECEMBER, 6, 14, 15);
+
+    customerSystem.addCookie(
+        new Cookie("Chocolala", 10, new HashMap<>(), Duration.of(10, ChronoUnit.MINUTES)));
+    customerSystem.selectPickUpDate(pickupDate);
     customerSystem.selectStore(store);
   }
 
@@ -113,5 +128,15 @@ public class CustomerAccountTest {
   @And("no logged in account")
   public void noLoggedInAccount() {
     loggedInAccount = null;
+  }
+
+  @Then("the order is in the account order history")
+  public void theOrderIsInTheAccountOrderHistory() {
+    assertTrue(loggedInAccount.getHistory().contains(order));
+  }
+
+  @Then("the order is not in the account order history")
+  public void theOrderIsNotInTheAccountOrderHistory() {
+    assertFalse(loggedInAccount.getHistory().contains(order));
   }
 }

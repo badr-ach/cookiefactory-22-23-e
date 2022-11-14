@@ -1,5 +1,6 @@
 package fr.unice.polytech.cf.orderservice;
 
+import fr.unice.polytech.cf.accountservice.entities.Account;
 import fr.unice.polytech.cf.accountservice.entities.ContactCoordinates;
 import fr.unice.polytech.cf.cookieservice.entities.Cookie;
 import fr.unice.polytech.cf.orderservice.entities.Order;
@@ -49,13 +50,20 @@ public class OrderService {
         order.setContact(contact);
     }
 
-    public Receipt makePayment(ContactCoordinates contact, String cardNumber, Order order, double price) {
+    public Receipt makePayment(Account account, String cardNumber, Order order) {
+        ContactCoordinates contactCoordinates = account.getContactCoordinates();
+        Receipt receipt = makePayment(contactCoordinates, cardNumber, order);
+        account.addOrder(order);
+        return receipt;
+    }
+
+    public Receipt makePayment(ContactCoordinates contact, String cardNumber, Order order) {
         Receipt receipt = null;
         try {
             attachContactCoordinates(contact,order);
             scheduler.assignOrderToACook(order);
             storeService.reserveStock(order.getStore(),order.getNecessaryIngredients());
-            receipt = paymentService.makePayment(cardNumber,order, price);
+            receipt = paymentService.makePayment(cardNumber,order);
             markOrderAsPaid(order);
         } catch ( TransactionFailureException ex) {
             storeService.cancelReservation(order.getStore(),order.getNecessaryIngredients());

@@ -53,3 +53,27 @@ Feature: Customer Account
     Examples:
       | Username | CustomerName | Password    | CreditCardNumber |
       | JohnDoe  | John Doe     | securepass2 | 123456789        |
+
+
+  Scenario Outline: The orders made while logged in are in the accounts order history if the order is successful
+    Given an existing account with username: "<Username>", password: "<Password>" and customer name: "<CustomerName>"
+    And a logged in customer with username: "<Username>", password: "<Password>"
+    And an order awaiting payment
+    When a logged in customer pays his order with "<CreditCardNumber>"
+    Then the order is in the account order history
+
+    Examples:
+      | Username | CustomerName | Password    | CreditCardNumber |
+      | JohnDoe  | John Doe     | securepass2 | 123456789        |
+
+
+  Scenario Outline: The orders made while logged are not added in the order history if the order fails
+    Given an existing account with username: "<Username>", password: "<Password>" and customer name: "<CustomerName>"
+    And a logged in customer with username: "<Username>", password: "<Password>"
+    And an order awaiting payment
+    When a logged in customer pays his order with "<CreditCardNumber>"
+    Then the order is not in the account order history
+
+    Examples:
+      | Username | CustomerName | Password    | CreditCardNumber |
+      | JohnDoe  | John Doe     | securepass2 | INVALIDCARD      |

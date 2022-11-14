@@ -14,15 +14,15 @@ public class PaymentService {
         validCreditCards.add("123456789");
     }
 
-    public Receipt makePayment(String cardNumber, Order order, double price) throws TransactionFailureException {
+    public Receipt makePayment(String cardNumber, Order order) throws TransactionFailureException {
         boolean isCardValid = validCreditCards.stream().anyMatch(validCard -> validCard.equals(cardNumber));
         if (!isCardValid) throw new TransactionFailureException("Credit card not valid");
-        return new Receipt(order,price);
+        return new Receipt(order);
     }
 
     public Receipt makePayment(String cardNumber, ContactCoordinates customerContacts, Order order, double price) throws TransactionFailureException {
         boolean isCardValid = validCreditCards.stream().anyMatch(validCard -> validCard.equals(cardNumber));
         if (!isCardValid) throw new TransactionFailureException("Credit card not valid");
-        return new Receipt(customerContacts, price, order);
+        return new Receipt(customerContacts, order);
     }
 }
