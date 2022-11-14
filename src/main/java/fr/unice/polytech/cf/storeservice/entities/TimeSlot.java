@@ -31,7 +31,7 @@ public class TimeSlot implements Comparable<TimeSlot> {
     }
 
     public boolean isBetween(LocalTime timeToTest) {
-        return startTime.isAfter(timeToTest) && endTime.isBefore(timeToTest);
+        return startTime.isBefore(timeToTest) && endTime.isAfter(timeToTest);
     }
 
     public boolean contains(LocalTime startTime, LocalTime endTime){

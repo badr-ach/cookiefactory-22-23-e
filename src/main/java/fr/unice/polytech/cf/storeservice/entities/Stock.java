@@ -41,6 +41,23 @@ public class Stock {
         return res;
     }
 
+    public int removeFromReserve(Ingredient ingredient, int quantity) {
+        if (getAvailableReserveQuantity(ingredient) >= quantity) {
+            reservedIngredients.put(ingredient, getAvailableReserveQuantity(ingredient) - quantity);
+        } else {
+            throw new InvalidQuantityException("Attempting to remove more ingredients than what exists quantity");
+        }
+        return reservedIngredients.get(ingredient);
+    }
+
+    public Map<Ingredient, Integer> removeFromReserve(Map<Ingredient, Integer> supplies) {
+        Map<Ingredient, Integer> res = new HashMap<>();
+        for (Map.Entry<Ingredient, Integer> supply : supplies.entrySet()) {
+            res.put(supply.getKey(), removeFromReserve(supply.getKey(), supply.getValue()));
+        }
+        return res;
+    }
+
     public int add(Ingredient ingredient, int quantity) {
         if (quantity > 0) {
             availableIngredients.put(ingredient, getAvailableQuantity(ingredient) + quantity);

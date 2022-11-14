@@ -1,4 +1,4 @@
-Feature: Add a basic cookie to an order
+Feature: Add a cookie to an order
 
  Background:
   Given an empty order

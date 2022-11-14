@@ -4,6 +4,7 @@ import fr.unice.polytech.cf.orderservice.entities.Order;
 import fr.unice.polytech.cf.orderservice.exceptions.OrderNotFoundException;
 import fr.unice.polytech.cf.storeservice.exceptions.TimeslotUnavailableException;
 
+import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.*;
@@ -43,7 +44,8 @@ public class Cook {
         List<Order> orders = assignments.get(date);
         if(orders != null) {
             for (Order order : orders) {
-                LocalTime startTime = LocalTime.from(order.getRetrievalDateTime().minus(order.getPreparationDuration()));
+                LocalTime startTime = LocalTime.from(order.getRetrievalDateTime().
+                        minus(order.getPreparationDuration()));
                 LocalTime endTime = LocalTime.from(order.getRetrievalDateTime());
                 workOfTheDay.put(order, new TimeSlot(startTime, endTime));
             }
@@ -68,6 +70,16 @@ public class Cook {
         return schedule;
     }
 
+    public List<TimeSlot> setSchedule(List<TimeSlot> workinghours,DayOfWeek day){
+        return this.schedule.setHoursOfDay(workinghours,day);
+    }
+
+    public void setSchedule(Schedule schedule) {
+        for(Map.Entry<DayOfWeek,List<TimeSlot>> dailySchedule : schedule.getHours().entrySet()){
+            this.setSchedule(dailySchedule.getValue(),dailySchedule.getKey());
+        }
+    }
+
     public void assignOrder(Order order){
         LocalDate date = LocalDate.from(order.getRetrievalDateTime());
         List<Order> orders;
@@ -77,8 +89,10 @@ public class Cook {
             assignments.put(date,orders);
         }else{
             orders = getWorkLoadOfTheDay(date);
-            if(orders.stream().anyMatch(o -> o.getRetrievalDateTime().equals(order.getRetrievalDateTime())))
-                throw new TimeslotUnavailableException("An order is already assigned for at this hour");
+            if(orders.stream().anyMatch(o -> o.getRetrievalDateTime().
+                    equals(order.getRetrievalDateTime())))
+                throw new TimeslotUnavailableException("An order is already " +
+                        "assigned for at this hour");
             orders.add(order);
             assignments.put(date,orders);
         }
@@ -97,7 +111,7 @@ public class Cook {
 
     public boolean hasOrder(Order order){
         if(order != null) {
-            LocalDate date = order.getRetrievalDateTime().toLocalDate();
+            LocalDate date = LocalDate.from(order.getRetrievalDateTime());
             return getWorkLoadOfTheDay(date).contains(order);
         }
         return false;

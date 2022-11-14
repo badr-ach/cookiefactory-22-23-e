@@ -25,7 +25,6 @@ public class OrderService {
     private Scheduler scheduler;
     private PaymentService paymentService;
     private StoreService storeService;
-
     private ArrayList<Order> orders = new ArrayList<Order>();
 
     public OrderService(PaymentService paymentService, StoreService storeService) {
@@ -75,7 +74,6 @@ public StoreService getStoreService(){
             storeService.cancelReservation(order.getStore(),order.getNecessaryIngredients());
             storeService.remove(order,order.getStore());
             order.setCook(null);
-            System.out.println("msg"+ ex.getMessage());
             throw ex;
         }
         return receipt;
@@ -148,17 +146,18 @@ public StoreService getStoreService(){
     }
 
     public void markOrderAsPrepared(Order order){
-        if(order.getStatus().equals(EOrderStatus.IN_PREPARATION))
+        if(order.getStatus().equals(EOrderStatus.IN_PREPARATION)) {
+            storeService.remove(order,order.getStore());
             order.setStatus(EOrderStatus.PREPARED);
-        else
-            throw new InvalidOrderStatusUpdateException("Invalid Operation of Order Status Update");
+        }else throw new InvalidOrderStatusUpdateException("Invalid Operation of Order Status Update");
     }
 
     public void markOrderAsInPreparation(Order order){
-        if(order.getStatus().equals(EOrderStatus.PAID))
+        if(order.getStatus().equals(EOrderStatus.PAID)) {
+            storeService.consumeFromStock(order.getStore(),order.getNecessaryIngredients());
             order.setStatus(EOrderStatus.IN_PREPARATION);
-        else
-            throw new InvalidOrderStatusUpdateException("Invalid Operation of Order Status Update");
+        }
+        else throw new InvalidOrderStatusUpdateException("Invalid Operation of Order Status Update");
     }
 
     public void markOrderAsFulfilled(Order order){

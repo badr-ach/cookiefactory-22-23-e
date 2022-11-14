@@ -57,7 +57,7 @@ public class CancelAnOrder {
     public void theCustomerTriesToCancelTheChosenOrder() {
     }
 
-    @Then("an error is thrown with message {string}")
+    @Then("an error is then thrown with message {string}")
     public void anErrorIsThrownWithMessage(String arg0) {
         Exception exception = assertThrows(ImpossibleOrderCancelingException.class,()-> orderService.cancelAnOrder(orderInPrepa));
         assertEquals("Can't cancel order in preparation.",exception.getMessage());

@@ -1,7 +1,10 @@
 package fr.unice.polytech.cf.storeservice.entities;
 
+import java.sql.Time;
+import java.time.DayOfWeek;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 public class Store {
@@ -75,8 +78,18 @@ public class Store {
         return schedule;
     }
 
+    public List<TimeSlot> getSchedule(DayOfWeek day){
+        return this.schedule.getWorkingHours(day);
+    }
+
     public void setSchedule(Schedule schedule) {
-        this.schedule = schedule;
+        for(Map.Entry<DayOfWeek,List<TimeSlot>> dailySchedule : schedule.getHours().entrySet()){
+            this.setSchedule(dailySchedule.getValue(),dailySchedule.getKey());
+        }
+    }
+
+    public List<TimeSlot> setSchedule(List<TimeSlot> openinghours, DayOfWeek day){
+        return this.schedule.setHoursOfDay(openinghours,day);
     }
 
     @Override

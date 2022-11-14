@@ -100,7 +100,7 @@ public class OrderValidation {
     @Then("no cook is assigned to the order")
     public void noCookIsAssignedToTheOrder() {
         assertNull(order.getCook());
-        assertFalse(customerSystem.storeService.hasOrder(order, selectedStore));
+        assertNull(customerSystem.storeService.hasOrder(order, selectedStore));
     }
 
     @And("the order status is pending")
@@ -139,7 +139,7 @@ public class OrderValidation {
 
     public void theOrderHasACook() {
         assertNotNull(order.getCook());
-        assertTrue(customerSystem.storeService.hasOrder(order, selectedStore));
+        assertNotNull(customerSystem.storeService.hasOrder(order, selectedStore));
     }
 
     @Then("the order status is PAID")

@@ -5,7 +5,7 @@ Feature: Cancel an order
   Scenario: The customer tries to cancel a paid order yet its preparation is already in process
     Given the cook it was assigned to an order
     When the customer tries to cancel the chosen order
-    Then an error is thrown with message "Can't cancel order in preparation"
+    Then an error is then thrown with message "Can't cancel order in preparation"
     Then the cook is still preparing it
     Then the ingredients are still removed from the stock
 

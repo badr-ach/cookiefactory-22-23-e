@@ -11,7 +11,7 @@ import io.cucumber.java.en.When;
 
 import static org.junit.Assert.*;
 
-public class AddIngredientToStock {
+public class IngredientStock {
 
     Store store;
     Store anotherStore;
@@ -67,6 +67,21 @@ public class AddIngredientToStock {
     assertFalse(anotherStore.getIngredientsStock().contains(ingredient));
     }
 
+
+    @Given("the ingredient Stock already contains the ingredient to be removed with a quantity of {int}")
+    public void theIngredientStockAlreadyContainsTheIngredientToBeRemovedWithAQuantityOf(int quantity) {
+       store.getIngredientsStock().add(ingredient,quantity);
+    }
+
+    @When("{int} units of ingredient are removed from the stock")
+    public void unitsOfIngredientAreRemovedFromTheStock(int quantity) {
+       store.getIngredientsStock().remove(ingredient,quantity);
+    }
+
+    @Then("the quantity of the ingredient in stock is {int}")
+    public void theQuantityOfTheIngredientInStockIs(int quantity) {
+       assertEquals(store.getIngredientsStock().getAvailableQuantity(ingredient),quantity);
+    }
 }
 
 

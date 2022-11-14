@@ -2,11 +2,12 @@ package fr.unice.polytech.cf.storeservice;
 
 import fr.unice.polytech.cf.cookieservice.entities.Ingredient;
 import fr.unice.polytech.cf.orderservice.entities.Order;
+import fr.unice.polytech.cf.storeservice.entities.*;
+import fr.unice.polytech.cf.storeservice.exceptions.InvalidScheduleException;
 import fr.unice.polytech.cf.storeservice.exceptions.InvalidStoreException;
-import fr.unice.polytech.cf.storeservice.entities.Cook;
-import fr.unice.polytech.cf.storeservice.entities.Stock;
-import fr.unice.polytech.cf.storeservice.entities.Store;
 
+import java.sql.Time;
+import java.time.DayOfWeek;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -29,11 +30,11 @@ public class StoreService {
         return stores;
     }
 
-    public boolean hasOrder(Order order, Store store){
+    public Cook hasOrder(Order order, Store store){
         for(Cook cook : store.getCooks()){
-            if(cook.hasOrder(order)) return true;
+            if(cook.hasOrder(order)) return cook;
         }
-        return false;
+        return null;
     }
 
     public boolean remove(Order order, Store store){
@@ -52,6 +53,22 @@ public class StoreService {
         return store;
     }
 
+    public List<TimeSlot> updateStoreSchedule(Store store, List<TimeSlot> timeSlots, DayOfWeek day){
+        if (!stores.contains(store)) throw new InvalidStoreException("Store Specified does not exist");
+        return store.setSchedule(timeSlots,day);
+    }
+
+    public void updateStoreSchedule(Store store, Schedule schedule){
+        if (!stores.contains(store)) throw new InvalidStoreException("Store Specified does not exist");
+        store.setSchedule(schedule);
+    }
+
+    public void updateCookSchedule(Cook cook, Schedule schedule){
+        Store store = stores.stream().filter(o->o.getCooks().contains(cook)).findFirst().orElse(null);
+        if (store == null) throw new InvalidStoreException("Store Specified does not exist");
+        if (!store.getSchedule().hasWithinIt(schedule)) throw new InvalidScheduleException("Incompatible schedule");
+        cook.setSchedule(schedule);
+    }
 
     public Map<Ingredient, Integer> reserveStock(Store store, Map<Ingredient, Integer> ingredients) {
         if (!stores.contains(store)) throw new InvalidStoreException("Store Specified does not exist");
@@ -69,6 +86,12 @@ public class StoreService {
         if (!stores.contains(store)) throw new InvalidStoreException("Store Specified does not exist");
         Stock stock = store.getIngredientsStock();
         return stock.remove(ingredients);
+    }
+
+    public Map<Ingredient, Integer> consumeFromStock(Store store, Map<Ingredient, Integer> ingredients){
+        if (!stores.contains(store)) throw new InvalidStoreException("Store Specified does not exist");
+        Stock stock = store.getIngredientsStock();
+        return stock.removeFromReserve(ingredients);
     }
 
     public Map<Ingredient, Integer> addToStock(Store store, Map<Ingredient, Integer> ingredients){
