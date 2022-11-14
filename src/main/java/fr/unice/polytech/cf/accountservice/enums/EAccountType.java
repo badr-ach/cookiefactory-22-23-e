@@ -5,5 +5,6 @@ public enum EAccountType {
   CUSTOMER,
   STORE_EMPLOYEE,
   STORE_MANAGER,
-  BRAND_MANAGER
+  BRAND_MANAGER,
+  CHEF
 }

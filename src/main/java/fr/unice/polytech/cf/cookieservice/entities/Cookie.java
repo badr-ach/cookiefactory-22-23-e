@@ -20,7 +20,7 @@ public class Cookie {
         this.name = name;
         this.price = price;
         this.ingredients = ingredients;
-        this.status = ECookieStatus.SUBMITTED;
+        this.status = ECookieStatus.DEFAULT;
         this.id = ID;
         ID++;
     }
