@@ -3,18 +3,20 @@ package fr.unice.polytech.cf.orderservice;
 import fr.unice.polytech.cf.accountservice.entities.Account;
 import fr.unice.polytech.cf.accountservice.entities.ContactCoordinates;
 import fr.unice.polytech.cf.cookieservice.entities.Cookie;
+import fr.unice.polytech.cf.cookieservice.entities.Ingredient;
 import fr.unice.polytech.cf.orderservice.entities.Order;
+import fr.unice.polytech.cf.orderservice.entities.OrderItem;
 import fr.unice.polytech.cf.orderservice.entities.Receipt;
 import fr.unice.polytech.cf.orderservice.enums.EOrderStatus;
-import fr.unice.polytech.cf.orderservice.exceptions.InvalidContactCoordinatesException;
-import fr.unice.polytech.cf.orderservice.exceptions.InvalidOrderStatusUpdateException;
-import fr.unice.polytech.cf.orderservice.exceptions.TransactionFailureException;
+import fr.unice.polytech.cf.orderservice.exceptions.*;
 import fr.unice.polytech.cf.storeservice.entities.Scheduler;
 import fr.unice.polytech.cf.storeservice.StoreService;
+import fr.unice.polytech.cf.storeservice.entities.Store;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.Map;
 import java.util.Optional;
 
@@ -36,7 +38,9 @@ public class OrderService {
         orders.add(order);
         return order;
     }
-
+public StoreService getStoreService(){
+        return storeService;
+}
     public Order addCookies(Order order, Map<Cookie,Integer> cookies) {
         for(Map.Entry<Cookie,Integer> cookie : cookies.entrySet()){
             order.addItemWithQuantity(cookie.getKey(),cookie.getValue());
@@ -106,7 +110,33 @@ public class OrderService {
             if(duration.compareTo(limit) > 0){
                 markOrderAsObsolete(order);
             }
+        }
+    }
 
+    public void setScheduler(Scheduler scheduler) {
+        this.scheduler = scheduler;
+    }
+
+    public void cancelAnOrder(Order order) {
+        if( order.getStatus().equals(EOrderStatus.IN_PREPARATION)) {
+            throw new ImpossibleOrderCancelingException("Can't cancel order in preparation.");
+        }
+        else {
+            try {
+                orders.remove(order);
+                for (OrderItem orderItem : order.getOrderItems()) {
+                    for ( Map.Entry<Ingredient, Integer> cookie : orderItem.getIngredients().entrySet() ) {
+                        order.getStore().getIngredientsStock().liberate(cookie.getKey(), cookie.getValue());
+                    }
+                }
+                // Garder la trace du cuisinier ou non ?
+                order.setCook(null);
+                order.setStatus(EOrderStatus.CANCELLED);
+                System.out.println("Your order have been cancelled");
+            }
+            catch ( OrderNotFoundException e ) {
+                e.getMessage();
+            }
         }
     }
 
@@ -143,6 +173,9 @@ public class OrderService {
             order.setStatus(EOrderStatus.OBSOLETE);
         else
             throw new InvalidOrderStatusUpdateException("Invalid Operation of Order Status Update");
+    }
+    public Scheduler getScheduler(){
+        return scheduler;
     }
 
 }

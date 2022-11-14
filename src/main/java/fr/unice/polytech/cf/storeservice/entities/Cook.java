@@ -28,9 +28,11 @@ public class Cook {
         this.assignments = assignments;
     }
 
+
     public void setId(int id) {
         this.id = id;
     }
+    public void setName(String name){this.name = name;}
 
     public List<Order> getWorkLoadOfTheDay(LocalDate date){
         return assignments.get(date);

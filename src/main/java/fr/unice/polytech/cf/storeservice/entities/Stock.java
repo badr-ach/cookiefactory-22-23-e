@@ -72,6 +72,21 @@ public class Stock {
         }
     }
 
+    public int liberate(Ingredient ingredient, int quantity) {
+        if (quantity > 0) {
+            if (getAvailableReserveQuantity(ingredient) >= quantity) {
+                availableIngredients.put(ingredient, getAvailableQuantity(ingredient) + quantity);
+                reservedIngredients.put(ingredient, getAvailableReserveQuantity(ingredient) - quantity);
+                return availableIngredients.get(ingredient);
+            } else {
+                throw new InsufficientStockException("Ingredient is not available in the reserved stock stock");
+            }
+        } else {
+            throw new InvalidQuantityException("Invalid ingredient liberation quantity");
+        }
+    }
+
+
 
     public boolean available(Map<Ingredient, Integer> supplies){
         for (Map.Entry<Ingredient, Integer> supply : supplies.entrySet()) {
@@ -123,7 +138,7 @@ public class Stock {
 
     public int getAvailableReserveQuantity(Ingredient ingredient) {
         if (reservedIngredients.containsKey(ingredient)) {
-            return availableIngredients.get(ingredient);
+            return reservedIngredients.get(ingredient);
         }
         return 0;
     }

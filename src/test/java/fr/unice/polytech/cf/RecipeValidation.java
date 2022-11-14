@@ -1,5 +1,5 @@
 package fr.unice.polytech.cf;
-
+import static org.junit.Assert.*;
 import fr.unice.polytech.cf.accountservice.entities.Account;
 import fr.unice.polytech.cf.accountservice.enums.EAccountType;
 import fr.unice.polytech.cf.cookieservice.CookieService;
@@ -78,6 +78,6 @@ public class RecipeValidation {
 
   @Then("the recipe status becomes AVAILABLE")
   public void theRecipeStatusBecomesAVAILABLE() {
-    assert cookieValidated.getStatus() == ECookieStatus.ACTIVE;
+    assertEquals(cookieValidated.getStatus(),ECookieStatus.ACTIVE);
   }
 }

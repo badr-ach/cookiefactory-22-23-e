@@ -15,6 +15,10 @@ public class OrderItem {
         this.quantity = 1;
     }
 
+    public void setCookie(Cookie cookie) {
+        this.cookie = cookie;
+    }
+
     public void increase() {
         quantity++;
     }
