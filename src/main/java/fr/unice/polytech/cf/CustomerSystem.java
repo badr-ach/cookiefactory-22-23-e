@@ -12,7 +12,6 @@ import fr.unice.polytech.cf.cookieservice.entities.Cookie;
 import fr.unice.polytech.cf.orderservice.exceptions.InvalidRetrievalDateException;
 import fr.unice.polytech.cf.storeservice.exceptions.InvalidStoreException;
 import fr.unice.polytech.cf.storeservice.entities.Store;
-import fr.unice.polytech.cf.accountservice.entities.Account;
 import fr.unice.polytech.cf.orderservice.entities.Order;
 import fr.unice.polytech.cf.orderservice.entities.Receipt;
 

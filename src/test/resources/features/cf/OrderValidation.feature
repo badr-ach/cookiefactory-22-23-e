@@ -47,8 +47,8 @@ Feature: Validate the order
     Then the final state of the stock of the store is "<initial_state>" for "<ingredients>"
 
     Examples:
-    |ingredients|initial_state|recipe|ingredients_quantity|amount|
-    |RegularDough,ChocolateFlavor|10,2|Chocolala  |5,2    |2     |
+    | ingredients                  | initial_state | recipe     | ingredients_quantity | amount |
+    | RegularDough,ChocolateFlavor | 10,2          | Chocolala  | 5,2                  | 2      |
 
   Scenario Outline: Checkout passes with sufficient stock
     Given The "<ingredients>" and their "<initial_state>" in the stock of the store
@@ -58,7 +58,7 @@ Feature: Validate the order
     Then the final state of the stock of the store is "<final_state>" for "<ingredients>"
 
     Examples:
-      |ingredients|initial_state|recipe|ingredients_quantity|amount|final_state|
-      |RegularDough,ChocolateFlavor|11,5|Chocolala  |5,2    |2     |1,1        |
+      | ingredients                  | initial_state | recipe     | ingredients_quantity | amount | final_state |
+      | RegularDough,ChocolateFlavor | 11,5          | Chocolala  | 5,2                  | 2      | 1,1         |
 
 

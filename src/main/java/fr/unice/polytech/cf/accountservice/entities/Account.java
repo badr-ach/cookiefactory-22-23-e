@@ -1,9 +1,6 @@
 package fr.unice.polytech.cf.accountservice.entities;
 
-import java.util.Stack;
-
 import fr.unice.polytech.cf.accountservice.enums.EAccountType;
-import fr.unice.polytech.cf.orderservice.entities.Order;
 
 public class Account {
   protected int id;
