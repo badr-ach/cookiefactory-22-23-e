@@ -11,11 +11,20 @@ import java.util.Optional;
 public class AccountService {
 
   private ArrayList<Account> accounts = new ArrayList<Account>();
+  private ArrayList<CustomerAccount> customerAccounts = new ArrayList<CustomerAccount>();
 
   public AccountService() {}
 
   public Optional<Account> getAccount(String username, String password) {
     return accounts.stream()
+        .filter(
+            account ->
+                account.getUsername().equals(username) && account.getPassword().equals(password))
+        .findFirst();
+  }
+
+  public Optional<CustomerAccount> getCustomerAccount(String username, String password) {
+    return customerAccounts.stream()
         .filter(
             account ->
                 account.getUsername().equals(username) && account.getPassword().equals(password))
@@ -29,11 +38,12 @@ public class AccountService {
     return account;
   }
 
-  public Account createCustomerAccount(
+  public CustomerAccount createCustomerAccount(
       String username, String password, ContactCoordinates contactCoordinates) {
     if (exists(username)) throw new SignUpFailedException();
     CustomerAccount cutomerAccount = new CustomerAccount(username, password, contactCoordinates);
     accounts.add(cutomerAccount);
+    customerAccounts.add(cutomerAccount);
     return cutomerAccount;
   }
 

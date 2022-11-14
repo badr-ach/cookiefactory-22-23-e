@@ -8,8 +8,10 @@ import static org.junit.Assert.assertTrue;
 
 import fr.unice.polytech.cf.accountservice.entities.Account;
 import fr.unice.polytech.cf.accountservice.entities.ContactCoordinates;
+import fr.unice.polytech.cf.accountservice.entities.CustomerAccount;
 import fr.unice.polytech.cf.cookieservice.entities.Cookie;
 import fr.unice.polytech.cf.orderservice.entities.Order;
+import fr.unice.polytech.cf.orderservice.entities.Receipt;
 import fr.unice.polytech.cf.orderservice.enums.EOrderStatus;
 import fr.unice.polytech.cf.storeservice.entities.Store;
 import io.cucumber.java.en.And;
@@ -18,6 +20,7 @@ import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import java.time.Duration;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.Calendar;
 import java.util.HashMap;
@@ -25,9 +28,12 @@ import java.util.HashMap;
 public class CustomerAccountTest {
 
   Exception caughtException;
-  private Account loggedInAccount;
+  private CustomerAccount loggedInAccount;
   private CustomerSystem customerSystem;
   private Order order;
+  private Receipt receipt;
+
+  DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
 
   @Given("a customer system")
   public void aCustomerSystem() {
@@ -100,7 +106,8 @@ public class CustomerAccountTest {
   @When("a logged in customer pays his order with {string}")
   public void aLoggedInCustomerPaysHisOrderWith(String creditCard) {
     try {
-      customerSystem.payOrder(loggedInAccount, creditCard);
+      receipt = customerSystem.payOrder(loggedInAccount, creditCard);
+
     } catch (Exception e) {
       caughtException = e;
       System.out.println(e.getMessage());
@@ -138,5 +145,45 @@ public class CustomerAccountTest {
   @Then("the order is not in the account order history")
   public void theOrderIsNotInTheAccountOrderHistory() {
     assertFalse(loggedInAccount.getHistory().contains(order));
+  }
+
+  @And("an order of {int} cookies priced {double}")
+  public void anOrderOfCookieNumberCookiesPricedPrice(int cookieNumber, double price) {
+    Store store = customerSystem.getStores().get(0);
+    order = customerSystem.startOrder();
+    LocalDateTime pickupDate = LocalDateTime.of(2022, Calendar.DECEMBER, 6, 14, 15);
+    Cookie chocolalala = new Cookie("Chocolala", price, new HashMap<>(), Duration.of(10, ChronoUnit.MINUTES));
+    for (int i = 0; i <cookieNumber ; i++) {
+      customerSystem.addCookie(chocolalala);
+    }
+    customerSystem.selectPickUpDate(pickupDate);
+    customerSystem.selectStore(store);
+  }
+
+  @Then("The order price is {double}")
+  public void theOrderPriceIsDiscountedPrice(double discountedPrice) {
+    double paidAmount = receipt.getTotal();
+    assertEquals(discountedPrice, paidAmount, 0.0);
+  }
+
+  @And("the customer made a previous order of {int} cookies for the {string}")
+  public void theCustomerMadeAPreviousOrderOfCookies(int numberCookies, String currentDateText) {
+    Store store = customerSystem.getStores().get(0);
+    order = customerSystem.startOrder();
+
+    LocalDateTime pickupDate = LocalDateTime.parse(currentDateText, formatter);
+    Cookie chocolalala = new Cookie("Chocolala", 10, new HashMap<>(), Duration.of(10, ChronoUnit.MINUTES));
+    for (int i = 0; i <numberCookies ; i++) {
+      customerSystem.addCookie(chocolalala);
+    }
+    customerSystem.selectPickUpDate(pickupDate);
+    customerSystem.selectStore(store);
+    aLoggedInCustomerPaysHisOrderWith("123456789");
+  }
+
+  @Given("an existing account with username: {string}, password: {string} and customer name: {string} subscribed to the loyalty program")
+  public void anExistingAccountWithUsernamePasswordAndCustomerNameAndLoyaltyProgram(String username, String password, String name) {
+    anExistingAccountWithUsernamePasswordAndCustomerName(username, password, name);
+    customerSystem.login(username, password).setHasLoyaltyProgram(true);
   }
 }

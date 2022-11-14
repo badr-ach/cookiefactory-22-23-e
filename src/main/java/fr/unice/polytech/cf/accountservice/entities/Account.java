@@ -52,10 +52,4 @@ public class Account {
   public ContactCoordinates getContactCoordinates() {
     return contactCoordinates;
   }
-
-  public Stack<Order> getHistory(){
-    return new Stack<>();
-  }
-
-  public void addOrder(Order order) {}
 }

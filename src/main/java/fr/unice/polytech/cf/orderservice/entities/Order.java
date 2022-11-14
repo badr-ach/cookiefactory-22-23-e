@@ -22,6 +22,7 @@ public class Order {
     private ContactCoordinates contact;
     private ArrayList<OrderItem> orderItems = new ArrayList<OrderItem>();
     private LocalDateTime retrievalDateTime;
+    private double discountedPrice; 
     private static int ID = 0;
 
     @Override
@@ -112,8 +113,14 @@ public class Order {
     }
 
     public double getPrice() {
+        if(discountedPrice != 0) return discountedPrice;
         return orderItems.stream()
                 .reduce(0.0, (subtotal, orderItem) -> subtotal + orderItem.getPrice(), Double::sum);
+    }
+
+    public int getTotalItems() {
+        return orderItems.stream()
+                .reduce(0, (subtotal, orderItem) -> subtotal + orderItem.getQuantity(), Integer::sum);
     }
 
     public double getTTCPrice() {
@@ -184,4 +191,7 @@ public class Order {
         this.cook = cook;
     }
 
+    public void setDiscountedPrice(double price){
+      this.discountedPrice = price;
+    }
 }

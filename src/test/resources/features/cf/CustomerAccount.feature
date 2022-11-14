@@ -77,3 +77,20 @@ Feature: Customer Account
     Examples:
       | Username | CustomerName | Password    | CreditCardNumber |
       | JohnDoe  | John Doe     | securepass2 | INVALIDCARD      |
+
+
+  Scenario Outline: Customer subscribed to loyalty program discount makes a purchase
+    Given an existing account with username: "<Username>", password: "<Password>" and customer name: "<CustomerName>" subscribed to the loyalty program
+    And a logged in customer with username: "<Username>", password: "<Password>"
+    And the customer made a previous order of <PreviousOrderCookieAmount1> cookies for the "<RetrievalDate1>"
+    And the customer made a previous order of <PreviousOrderCookieAmount2> cookies for the "<RetrievalDate2>"
+    And an order of <CookieNumber> cookies priced <Price>
+    When a logged in customer pays his order with "<CreditCardNumber>"
+    Then The order price is <TotalPrice>
+
+    Examples:
+      | Username | CustomerName | Password    | CreditCardNumber | PreviousOrderCookieAmount1 | PreviousOrderCookieAmount2 | RetrievalDate1   | RetrievalDate2   | CookieNumber | Price | TotalPrice |
+      | JohnDoe  | John Doe     | securepass2 | 123456789        | 29                         | 1                          | 2022-11-12 20:48 | 2022-11-13 20:48 | 3            | 10.0  | 27.0       |
+      | JohnDoe  | John Doe     | securepass2 | 123456789        | 28                         | 1                          | 2022-11-12 20:48 | 2022-11-13 20:48 | 3            | 10.0  | 30.0       |
+      | JohnDoe  | John Doe     | securepass2 | 123456789        | 32                         | 3                          | 2022-11-12 20:48 | 2022-11-13 20:48 | 3            | 10.0  | 30.0       |
+

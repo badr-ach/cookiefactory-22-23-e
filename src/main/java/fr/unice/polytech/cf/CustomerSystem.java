@@ -6,6 +6,7 @@ import java.util.Collections;
 import java.util.HashMap;
 
 import fr.unice.polytech.cf.accountservice.entities.ContactCoordinates;
+import fr.unice.polytech.cf.accountservice.entities.CustomerAccount;
 import fr.unice.polytech.cf.accountservice.exceptions.InvalidCredentialsException;
 import fr.unice.polytech.cf.cookieservice.entities.Cookie;
 import fr.unice.polytech.cf.orderservice.exceptions.InvalidRetrievalDateException;
@@ -20,7 +21,7 @@ public class CustomerSystem extends CookieOnDemandSystem {
 
     private Order activeOrder;
     private Store activeStore;
-    private Account loggedInAccount;
+    private CustomerAccount loggedInAccount;
     private String coupon;
 
     public Order startOrder() {
@@ -46,9 +47,9 @@ public class CustomerSystem extends CookieOnDemandSystem {
         return orderService.makePayment(coordinates, cardNumber, activeOrder);
     }
 
-    public Receipt payOrder(Account account, String cardNumber) {
+    public Receipt payOrder(CustomerAccount customerAccount, String cardNumber) {
         paymentGuards();
-        return orderService.makePayment(account, cardNumber, activeOrder);
+        return orderService.makePayment(customerAccount, cardNumber, activeOrder);
     }
 
     public void selectPickUpDate(LocalDateTime date) {
@@ -64,12 +65,12 @@ public class CustomerSystem extends CookieOnDemandSystem {
         }
     }
 
-    public Account signup(String username, String password, ContactCoordinates contactCoordinates) {
+    public CustomerAccount signup(String username, String password, ContactCoordinates contactCoordinates) {
         return accountService.createCustomerAccount(username, password, contactCoordinates);
     }
 
-    public Account login(String username, String password) {
-        loggedInAccount = accountService.getAccount(username, password).orElseThrow(InvalidCredentialsException::new);
+    public CustomerAccount login(String username, String password) {
+        loggedInAccount = accountService.getCustomerAccount(username, password).orElseThrow(InvalidCredentialsException::new);
         return loggedInAccount;
     }
 }

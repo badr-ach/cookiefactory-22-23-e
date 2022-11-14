@@ -2,6 +2,7 @@ package fr.unice.polytech.cf.orderservice;
 
 import fr.unice.polytech.cf.accountservice.entities.Account;
 import fr.unice.polytech.cf.accountservice.entities.ContactCoordinates;
+import fr.unice.polytech.cf.accountservice.entities.CustomerAccount;
 import fr.unice.polytech.cf.cookieservice.entities.Cookie;
 import fr.unice.polytech.cf.cookieservice.entities.Ingredient;
 import fr.unice.polytech.cf.orderservice.entities.Order;
@@ -54,10 +55,11 @@ public StoreService getStoreService(){
         order.setContact(contact);
     }
 
-    public Receipt makePayment(Account account, String cardNumber, Order order) {
-        ContactCoordinates contactCoordinates = account.getContactCoordinates();
+    public Receipt makePayment(CustomerAccount customerAccount, String cardNumber, Order order) {
+        customerAccount.applyDiscount(order);
+        ContactCoordinates contactCoordinates = customerAccount.getContactCoordinates();
         Receipt receipt = makePayment(contactCoordinates, cardNumber, order);
-        account.addOrder(order);
+        customerAccount.addOrder(order);
         return receipt;
     }
 

@@ -34,5 +34,4 @@ public abstract class CookieOnDemandSystem {
   public List<Store> getStores(){
     return storeService.getStores();
   }
-
 }
