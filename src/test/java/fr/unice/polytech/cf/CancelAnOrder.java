@@ -111,10 +111,6 @@ public class CancelAnOrder {
         orderService.cancelAnOrder(anotherOrder);
         assertTrue(anotherOrder.getStatus().equals(EOrderStatus.CANCELLED));
         assertTrue(anotherOrder.getCook()==null);
-        System.out.println(store.getIngredientsStock().getAvailableIngredients().get(ingredient1));
-        System.out.println(store.getIngredientsStock().getAvailableIngredients().get(ingredient2));
-        System.out.println(store.getIngredientsStock().getReservedIngredients().get(ingredient1));
-        System.out.println(store.getIngredientsStock().getReservedIngredients().get(ingredient2));
     }
 
     @Then("the ingredients are back to the stock")

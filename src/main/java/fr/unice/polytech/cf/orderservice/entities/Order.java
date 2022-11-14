@@ -125,7 +125,7 @@ public class Order {
 
     public double getTTCPrice() {
         double taxes = store.getTaxes();
-        return getPrice() * (100-taxes) / 100;
+        return getPrice() * (100+taxes) / 100;
     }
 
     public Duration getPreparationDuration() {

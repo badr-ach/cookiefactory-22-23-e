@@ -131,10 +131,8 @@ public StoreService getStoreService(){
                         order.getStore().getIngredientsStock().liberate(cookie.getKey(), cookie.getValue());
                     }
                 }
-                // Garder la trace du cuisinier ou non ?
                 order.setCook(null);
                 order.setStatus(EOrderStatus.CANCELLED);
-                System.out.println("Your order have been cancelled");
             }
             catch ( OrderNotFoundException e ) {
                 e.getMessage();

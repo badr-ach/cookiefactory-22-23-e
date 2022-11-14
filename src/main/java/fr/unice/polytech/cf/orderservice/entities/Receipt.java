@@ -18,6 +18,7 @@ public class Receipt {
         this.orderItems = order.getOrderItems();
         this.total = order.getTTCPrice();
         this.orderId = order.getId();
+        this.taxes = order.getStore().getTaxes();
         this.id = ID;
         ID++;
     }
