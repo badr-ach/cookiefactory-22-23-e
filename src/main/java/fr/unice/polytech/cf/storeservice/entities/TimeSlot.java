@@ -43,6 +43,10 @@ public class TimeSlot implements Comparable<TimeSlot> {
         return contains(timeSlot.startTime,timeSlot.endTime);
     }
 
+    public boolean contains(LocalTime time){
+      return contains(time, time);
+    }
+
     public List<TimeSlot> extract(TimeSlot timeSlot){
         if(timeSlot.equals(this)) return new ArrayList<>();
         if(timeSlot.contains(timeSlot)){

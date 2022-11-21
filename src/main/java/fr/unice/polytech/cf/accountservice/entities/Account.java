@@ -2,6 +2,8 @@ package fr.unice.polytech.cf.accountservice.entities;
 
 import fr.unice.polytech.cf.accountservice.enums.EAccountType;
 
+import java.util.List;
+
 public class Account {
   protected int id;
   protected String username;

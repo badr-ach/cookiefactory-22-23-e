@@ -63,7 +63,7 @@ public class Cook {
     }
 
     public List<TimeSlot> getWorkingHoursOfTheDay(LocalDate date){
-        return schedule.getWorkingHours(date.getDayOfWeek());
+        return schedule.getScheduledHours(date.getDayOfWeek());
     }
 
     public Schedule getSchedule() {

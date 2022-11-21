@@ -38,7 +38,7 @@ public class StoreSchedule {
 
     @Then("the store opening hours are {string} on day {string}")
     public void theStoreOpeningHoursAreOnDay(String openinghours, String day) {
-        assertEquals(store.getSchedule(DayOfWeek.valueOf(day)), convertStringsToSchedule(openinghours,day).getWorkingHours(DayOfWeek.valueOf(day)));
+        assertEquals(store.getSchedule(DayOfWeek.valueOf(day)), convertStringsToSchedule(openinghours,day).getScheduledHours(DayOfWeek.valueOf(day)));
     }
 
     @Then("an error message is then thrown with message {string}")
@@ -60,7 +60,7 @@ public class StoreSchedule {
         Schedule expected = convertStringsToSchedule(openinghours,day);
         Schedule current = store.getSchedule();
         for(Map.Entry<DayOfWeek,List<TimeSlot>> hours : expected.getHours().entrySet()){
-            assertEquals(hours.getValue(),current.getWorkingHours(hours.getKey()));
+            assertEquals(hours.getValue(),current.getScheduledHours(hours.getKey()));
         }
     }
 

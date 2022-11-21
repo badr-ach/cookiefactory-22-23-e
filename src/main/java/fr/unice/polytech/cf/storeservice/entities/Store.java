@@ -79,7 +79,7 @@ public class Store {
     }
 
     public List<TimeSlot> getSchedule(DayOfWeek day){
-        return this.schedule.getWorkingHours(day);
+        return this.schedule.getScheduledHours(day);
     }
 
     public void setSchedule(Schedule schedule) {

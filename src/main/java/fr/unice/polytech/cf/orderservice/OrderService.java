@@ -1,6 +1,5 @@
 package fr.unice.polytech.cf.orderservice;
 
-import fr.unice.polytech.cf.accountservice.entities.Account;
 import fr.unice.polytech.cf.accountservice.entities.ContactCoordinates;
 import fr.unice.polytech.cf.accountservice.entities.CustomerAccount;
 import fr.unice.polytech.cf.cookieservice.entities.Cookie;
@@ -12,12 +11,12 @@ import fr.unice.polytech.cf.orderservice.enums.EOrderStatus;
 import fr.unice.polytech.cf.orderservice.exceptions.*;
 import fr.unice.polytech.cf.storeservice.entities.Scheduler;
 import fr.unice.polytech.cf.storeservice.StoreService;
-import fr.unice.polytech.cf.storeservice.entities.Store;
+import fr.unice.polytech.cf.toogoodtogo.TooGoodToGo;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -25,7 +24,7 @@ public class OrderService {
     private Scheduler scheduler;
     private PaymentService paymentService;
     private StoreService storeService;
-    private ArrayList<Order> orders = new ArrayList<Order>();
+    private List<Order> orders = new ArrayList<Order>();
 
     public OrderService(PaymentService paymentService, StoreService storeService) {
         this.scheduler = new Scheduler();
@@ -38,9 +37,9 @@ public class OrderService {
         orders.add(order);
         return order;
     }
-public StoreService getStoreService(){
-        return storeService;
-}
+    public StoreService getStoreService(){
+            return storeService;
+    }
     public Order addCookies(Order order, Map<Cookie,Integer> cookies) {
         for(Map.Entry<Cookie,Integer> cookie : cookies.entrySet()){
             order.addItemWithQuantity(cookie.getKey(),cookie.getValue());
@@ -107,10 +106,37 @@ public StoreService getStoreService(){
             LocalDateTime orderDate = order.getRetrievalDateTime();
             Duration duration = Duration.between(orderDate, currentDate);
             Duration limit = Duration.ofHours(2);
+            notifyCustomer(duration, order);
             if(duration.compareTo(limit) > 0){
                 markOrderAsObsolete(order);
             }
         }
+    }
+
+    public void notifyCustomer(Duration duration, Order order){
+      Duration firstNotification = Duration.ofMinutes(5);
+      Duration firstNotificationLimit = Duration.ofMinutes(7);
+      Duration secondNotification = Duration.ofHours(1);
+      Duration secondNotificationLimit = Duration.ofMinutes(65);
+      if (duration.compareTo(firstNotification) > 0 && duration.compareTo(firstNotificationLimit) < 0){
+          notifyCustomer(order);        
+      }
+      if(duration.compareTo(secondNotification) > 0 && duration.compareTo(secondNotificationLimit) < 0){
+          notifyCustomer(order);        
+      }
+    }
+
+    public void notifyCustomer(Order order){
+      ContactCoordinates contact = order.getContact();
+      contact.addNotifications("Your order is ready");
+      contact.notifyCustomer();
+    }
+
+    public void updateSurpriseBaskets(LocalDateTime currentDate, TooGoodToGo toGoodToGo){
+      updateOrdersStatus(currentDate);
+      List<Order> obsoleteOrders = orders.stream().filter(order -> order.getStatus() == EOrderStatus.OBSOLETE).toList();    
+      orders = orders.stream().filter(order -> order.getStatus() != EOrderStatus.OBSOLETE).toList();
+      toGoodToGo.makeSurpriseBasket(obsoleteOrders, currentDate);
     }
 
     public void setScheduler(Scheduler scheduler) {

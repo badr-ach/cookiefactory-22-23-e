@@ -18,7 +18,7 @@ public class Schedule {
         this.hours = workingHours;
     }
 
-    public List<TimeSlot> getWorkingHours(DayOfWeek day){
+    public List<TimeSlot> getScheduledHours(DayOfWeek day){
         return hours.get(day);
     }
 
@@ -35,7 +35,7 @@ public class Schedule {
 
 
     public boolean hasWithinIt(DayOfWeek day, List<TimeSlot> slots){
-        List<TimeSlot> worktimesOfDay = getWorkingHours(day);
+        List<TimeSlot> worktimesOfDay = getScheduledHours(day);
         int i =0,j=0;
         while (j < slots.size() && i < worktimesOfDay.size()) {
             if(worktimesOfDay.get(i).contains(slots.get(j))){

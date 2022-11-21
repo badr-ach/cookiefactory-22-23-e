@@ -89,7 +89,7 @@ Feature: Customer Account
     Then The order price is <TotalPrice>
 
     Examples:
-      | Username | CustomerName | Password    | CreditCardNumber | PreviousOrderCookieAmount1 | PreviousOrderCookieAmount2 | RetrievalDate1   | RetrievalDate2   | CookieNumber | Price | TotalPrice |
+      | Username | CustomerName | Password    | CreditCardNumber | PreviousOrderCookieAmount1 | PreviousOrderCookieAmount2 | RetrievalDate1   | RetrievalDate2   | CookieNumber | Price | TotalPrice |
       | JohnDoe  | John Doe     | securepass2 | 123456789        | 29                         | 1                          | 2022-11-12 20:48 | 2022-11-13 20:48 | 3            | 10.0  | 27.0       |
       | JohnDoe  | John Doe     | securepass2 | 123456789        | 28                         | 1                          | 2022-11-12 20:48 | 2022-11-13 20:48 | 3            | 10.0  | 30.0       |
       | JohnDoe  | John Doe     | securepass2 | 123456789        | 32                         | 3                          | 2022-11-12 20:48 | 2022-11-13 20:48 | 3            | 10.0  | 30.0       |

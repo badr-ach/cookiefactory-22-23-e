@@ -24,7 +24,6 @@ public class CookSchedule {
     Cook cook;
     Store store;
 
-
     @Given("a cook with {string} on {string}")
     public void aCookWithOn(String workinghours, String days) {
         cook = storeService.getStores().get(0).getCooks().get(0);
@@ -45,7 +44,7 @@ public class CookSchedule {
         Schedule expected = convertStringsToSchedule(workinghours,days);
         Schedule current = cook.getSchedule();
         for(Map.Entry<DayOfWeek,List<TimeSlot>> hours : expected.getHours().entrySet()){
-            assertEquals(hours.getValue(),current.getWorkingHours(hours.getKey()));
+            assertEquals(hours.getValue(),current.getScheduledHours(hours.getKey()));
         }
     }
 
