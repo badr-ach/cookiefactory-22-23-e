@@ -44,3 +44,19 @@ Feature: Retrieve a prepared order
           | 1       | PREPARED    | FULFILLED              |
 
 
+   Scenario Outline: Customers receive a notification 5 minutes and 2 hours after the retrieval time if they did not pick up their order
+     Given contact coordinates name "John Doe" and email "john.doe@gmail.com"
+     And An order scheduled for pick up at "<PickupTime>" with status "<OrderStatus>"
+     When the order status is updated on the "<CurrentTime>"
+     Then the customer received <NumberOfNotifications> notifications
+
+     Examples:
+       | OrderStatus | PickupTime       | CurrentTime      | NumberOfNotifications |
+       | PREPARED    | 2022-11-13 14:55 | 2022-11-13 15:01 | 1                     |
+       | PREPARED    | 2022-11-13 14:55 | 2022-11-13 15:20 | 0                     |
+       | PREPARED    | 2022-11-13 14:55 | 2022-11-13 15:56 | 1                     |
+       | FULFILLED   | 2022-11-13 14:55 | 2022-11-13 15:01 | 0                     |
+       | PREPARED    | 2022-11-13 14:55 | 2022-11-13 14:54 | 0                     |
+       | PREPARED    | 2022-11-13 14:55 | 2022-11-13 14:59 | 0                     |
+       | PREPARED    | 2022-11-13 14:48 | 2022-11-13 22:49 | 0                     |
+

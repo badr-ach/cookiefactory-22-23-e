@@ -1,30 +1,38 @@
 package fr.unice.polytech.cf;
 
+import fr.unice.polytech.cf.accountservice.entities.ContactCoordinates;
 import fr.unice.polytech.cf.orderservice.entities.Order;
 import fr.unice.polytech.cf.orderservice.enums.EOrderStatus;
 import fr.unice.polytech.cf.orderservice.OrderService;
 import fr.unice.polytech.cf.orderservice.PaymentService;
 import fr.unice.polytech.cf.storeservice.StoreService;
+import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Stream;
 
 import static org.junit.Assert.*;
-import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class OrderRetrieval {
 
     OrderService orderService;
     List<Order> filteredOrders = new ArrayList<>();
     Optional<Order> maybeOrder;
+    ContactCoordinates contactCoordinates;
 
     Exception caughtException;
+
+    private Order order;
+
+    private CustomerSystem customerSystem;
+    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
 
     @Given("an order service")
     public void anOrderService() {
@@ -84,5 +92,34 @@ public class OrderRetrieval {
     @Then("an error message is thrown with message {string}")
     public void anErrorMessageIsThrownWithMessage(String errMsg) {
         assertEquals(errMsg, caughtException.getMessage());
+    }
+
+    @And("An order scheduled for pick up at {string} with status {string}")
+    public void anOrderScheduledForPickUpAtWithStatus(String retrievalDateText, String currentOrderStatus) {
+        customerSystem = new CustomerSystem();
+        LocalDateTime retrievalDate = LocalDateTime.parse(retrievalDateText, formatter);
+        order = customerSystem.startOrder();
+        if(contactCoordinates != null) order.setContact(contactCoordinates);
+        customerSystem.selectStore(customerSystem.storeService.getStores().get(0));
+        EOrderStatus orderStatus = EOrderStatus.valueOf(currentOrderStatus);
+        order.setStatus(orderStatus);
+        order.setRetrievalDateTime(retrievalDate);
+    }
+
+    @Then("the customer received {int} notifications")
+    public void theCustomerReceivedNumberOfNotificationsNotifications(int numberNotifications) {
+        List<String> sentNotifications = order.getContact().getSentNotifications();
+        assertEquals(numberNotifications, sentNotifications.size());
+    }
+
+    @When("the order status is updated on the {string}")
+    public void theOrderStatusIsUpdatedOnThe(String currentDateText) {
+        LocalDateTime currentDate = LocalDateTime.parse(currentDateText, formatter);
+        customerSystem.orderService.updateOrdersStatus(currentDate);
+    }
+
+    @Given("contact coordinates name {string} and email {string}")
+    public void contactCoordinatesNameAndEmail(String name, String email) {
+        contactCoordinates = new ContactCoordinates(name, email);
     }
 }
