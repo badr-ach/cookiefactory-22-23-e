@@ -4,5 +4,4 @@ public enum EIngredientType {
   DOUGH,
   FLAVOR,
   TOPPING,
-  MIX,
 }

@@ -5,5 +5,5 @@ public enum ECookieStatus {
     SUBMITTED,
     VALIDATED,
     ACTIVE,
-
+    CUSTOM,
 }

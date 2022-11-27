@@ -1,8 +1,8 @@
-package fr.unice.polytech.cf.cookieservice.entities;
+package fr.unice.polytech.cf.cookieservice.entities.ingredients;
 
 import fr.unice.polytech.cf.cookieservice.enums.EIngredientType;
 
-public class Ingredient {
+public class Ingredient implements Cloneable {
 
     private static int ID = 0;
     private int id;
@@ -66,5 +66,16 @@ public class Ingredient {
 
     public void setType(EIngredientType type) {
         this.type = type;
+    }
+
+    @Override
+    public Ingredient clone() {
+        try {
+            Ingredient clone = (Ingredient) super.clone();
+            clone.setType(type);
+            return clone;
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError();
+        }
     }
 }

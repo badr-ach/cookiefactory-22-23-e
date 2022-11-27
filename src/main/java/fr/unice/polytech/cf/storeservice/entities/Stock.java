@@ -1,6 +1,6 @@
 package fr.unice.polytech.cf.storeservice.entities;
 
-import fr.unice.polytech.cf.cookieservice.entities.*;
+import fr.unice.polytech.cf.cookieservice.entities.ingredients.Ingredient;
 import fr.unice.polytech.cf.storeservice.exceptions.InsufficientStockException;
 import fr.unice.polytech.cf.storeservice.exceptions.InvalidQuantityException;
 

@@ -2,7 +2,7 @@ package fr.unice.polytech.cf;
 import static org.junit.Assert.*;
 
 import fr.unice.polytech.cf.cookieservice.entities.Cookie;
-import fr.unice.polytech.cf.cookieservice.entities.Ingredient;
+import fr.unice.polytech.cf.cookieservice.entities.ingredients.Ingredient;
 import fr.unice.polytech.cf.cookieservice.enums.EIngredientType;
 import fr.unice.polytech.cf.orderservice.OrderService;
 import fr.unice.polytech.cf.orderservice.PaymentService;
@@ -11,14 +11,10 @@ import fr.unice.polytech.cf.orderservice.entities.OrderItem;
 import fr.unice.polytech.cf.orderservice.enums.EOrderStatus;
 import fr.unice.polytech.cf.orderservice.exceptions.ImpossibleOrderCancelingException;
 import fr.unice.polytech.cf.storeservice.StoreService;
-import fr.unice.polytech.cf.storeservice.entities.Cook;
-import fr.unice.polytech.cf.storeservice.entities.Schedule;
 import fr.unice.polytech.cf.storeservice.entities.Store;
-import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
-import io.cucumber.java.sl.In;
 
 import java.time.Duration;
 import java.time.LocalDateTime;

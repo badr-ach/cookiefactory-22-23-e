@@ -6,7 +6,6 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
-import fr.unice.polytech.cf.accountservice.entities.Account;
 import fr.unice.polytech.cf.accountservice.entities.ContactCoordinates;
 import fr.unice.polytech.cf.accountservice.entities.CustomerAccount;
 import fr.unice.polytech.cf.cookieservice.entities.Cookie;

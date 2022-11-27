@@ -2,8 +2,8 @@ package fr.unice.polytech.cf.orderservice;
 
 import fr.unice.polytech.cf.accountservice.entities.ContactCoordinates;
 import fr.unice.polytech.cf.accountservice.entities.CustomerAccount;
-import fr.unice.polytech.cf.cookieservice.entities.Cookie;
-import fr.unice.polytech.cf.cookieservice.entities.Ingredient;
+import fr.unice.polytech.cf.cookieservice.entities.ingredients.Ingredient;
+import fr.unice.polytech.cf.cookieservice.interfaces.IPastry;
 import fr.unice.polytech.cf.orderservice.entities.Order;
 import fr.unice.polytech.cf.orderservice.entities.OrderItem;
 import fr.unice.polytech.cf.orderservice.entities.Receipt;
@@ -40,8 +40,8 @@ public class OrderService {
     public StoreService getStoreService(){
             return storeService;
     }
-    public Order addCookies(Order order, Map<Cookie,Integer> cookies) {
-        for(Map.Entry<Cookie,Integer> cookie : cookies.entrySet()){
+    public Order addCookies(Order order, Map<IPastry, Integer> cookies) {
+        for(Map.Entry<IPastry, Integer> cookie : cookies.entrySet()){
             order.addItemWithQuantity(cookie.getKey(),cookie.getValue());
         }
         return order;
@@ -134,7 +134,7 @@ public class OrderService {
 
     public void updateSurpriseBaskets(LocalDateTime currentDate, TooGoodToGo toGoodToGo){
       updateOrdersStatus(currentDate);
-      List<Order> obsoleteOrders = orders.stream().filter(order -> order.getStatus() == EOrderStatus.OBSOLETE).toList();    
+      List<Order> obsoleteOrders = orders.stream().filter(order -> order.getStatus() == EOrderStatus.OBSOLETE).toList();
       orders = orders.stream().filter(order -> order.getStatus() != EOrderStatus.OBSOLETE).toList();
       toGoodToGo.makeSurpriseBasket(obsoleteOrders, currentDate);
     }

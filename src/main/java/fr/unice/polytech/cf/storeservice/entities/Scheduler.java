@@ -23,10 +23,14 @@ public class Scheduler {
         LocalDateTime retrievalDateTime = order.getRetrievalDateTime();
         List<Cook> availableCooks = getAvailableCooksForRetrievalTime(retrievalDateTime, preparationTimeSlot, storeCooks);
         if (availableCooks.size() != 0) {
-            Cook firstCook = availableCooks.get(0);
-            firstCook.assignOrder(order);
-            order.setCook(firstCook);
-            return firstCook;
+            for(Cook ableCook : availableCooks){
+                if(ableCook.canPrepare(order)){
+                    ableCook.assignOrder(order);
+                    order.setCook(ableCook);
+                    return ableCook;
+                }
+            }
+            throw new TimeslotUnavailableException("No able cook available for this order");
         } else {
             throw new TimeslotUnavailableException("The assigned retrieval time is not available");
         }

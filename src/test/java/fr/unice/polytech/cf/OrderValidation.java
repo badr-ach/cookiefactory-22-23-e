@@ -4,7 +4,7 @@ import static org.junit.Assert.*;
 
 import fr.unice.polytech.cf.accountservice.entities.ContactCoordinates;
 import fr.unice.polytech.cf.cookieservice.entities.Cookie;
-import fr.unice.polytech.cf.cookieservice.entities.Ingredient;
+import fr.unice.polytech.cf.cookieservice.entities.ingredients.Ingredient;
 import fr.unice.polytech.cf.cookieservice.enums.EIngredientType;
 import fr.unice.polytech.cf.orderservice.entities.Order;
 import fr.unice.polytech.cf.orderservice.entities.Receipt;

@@ -6,7 +6,6 @@ import fr.unice.polytech.cf.cookieservice.entities.Cookie;
 import fr.unice.polytech.cf.orderservice.entities.Order;
 import fr.unice.polytech.cf.orderservice.enums.EOrderStatus;
 import fr.unice.polytech.cf.storeservice.entities.Schedule;
-import fr.unice.polytech.cf.storeservice.entities.Store;
 import fr.unice.polytech.cf.storeservice.entities.TimeSlot;
 import fr.unice.polytech.cf.toogoodtogo.TooGoodToGo;
 import fr.unice.polytech.cf.toogoodtogo.entities.SurpriseBasket;
@@ -17,7 +16,6 @@ import io.cucumber.java.en.When;
 
 import java.time.DayOfWeek;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;

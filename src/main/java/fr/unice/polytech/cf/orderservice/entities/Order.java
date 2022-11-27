@@ -2,7 +2,8 @@ package fr.unice.polytech.cf.orderservice.entities;
 
 import fr.unice.polytech.cf.accountservice.entities.ContactCoordinates;
 import fr.unice.polytech.cf.cookieservice.entities.Cookie;
-import fr.unice.polytech.cf.cookieservice.entities.Ingredient;
+import fr.unice.polytech.cf.cookieservice.entities.ingredients.Ingredient;
+import fr.unice.polytech.cf.cookieservice.interfaces.IPastry;
 import fr.unice.polytech.cf.storeservice.exceptions.InvalidQuantityException;
 import fr.unice.polytech.cf.orderservice.enums.EOrderStatus;
 import fr.unice.polytech.cf.storeservice.entities.Cook;
@@ -67,7 +68,7 @@ public class Order {
         this.id = id;
     }
 
-    public OrderItem addItem(Cookie cookie) {
+    public OrderItem addItem(IPastry cookie) {
         OrderItem foundItem = contains(cookie);
         if (foundItem != null) {
             foundItem.increase();
@@ -94,7 +95,7 @@ public class Order {
         foundItem.setQuantity(quantity);
     }
 
-    public void addItemWithQuantity(Cookie cookie, int quantity) {
+    public void addItemWithQuantity(IPastry cookie, int quantity) {
         if (quantity <= 0) throw new InvalidQuantityException("Quantity can't be set to a negative value.");
         OrderItem foundItem = contains(cookie);
         if (foundItem == null) {
@@ -105,7 +106,7 @@ public class Order {
         }
     }
 
-    public OrderItem contains(Cookie cookie){
+    public OrderItem contains(IPastry cookie){
         return orderItems.stream()
                 .filter(orderItem -> orderItem.getCookie() == cookie)
                 .findFirst()
@@ -194,4 +195,5 @@ public class Order {
     public void setDiscountedPrice(double price){
       this.discountedPrice = price;
     }
+
 }

@@ -6,7 +6,7 @@ import fr.unice.polytech.cf.accountservice.entities.Account;
 import fr.unice.polytech.cf.accountservice.entities.ContactCoordinates;
 import fr.unice.polytech.cf.accountservice.enums.EAccountType;
 import fr.unice.polytech.cf.cookieservice.entities.Cookie;
-import fr.unice.polytech.cf.cookieservice.entities.Ingredient;
+import fr.unice.polytech.cf.cookieservice.entities.ingredients.Ingredient;
 import fr.unice.polytech.cf.orderservice.entities.Order;
 import fr.unice.polytech.cf.orderservice.entities.Receipt;
 import fr.unice.polytech.cf.storeservice.entities.*;

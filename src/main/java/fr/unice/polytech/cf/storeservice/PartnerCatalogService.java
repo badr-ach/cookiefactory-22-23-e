@@ -1,6 +1,6 @@
 package fr.unice.polytech.cf.storeservice;
 
-import fr.unice.polytech.cf.cookieservice.entities.Ingredient;
+import fr.unice.polytech.cf.cookieservice.entities.ingredients.Ingredient;
 import fr.unice.polytech.cf.cookieservice.enums.EIngredientType;
 
 import java.util.*;

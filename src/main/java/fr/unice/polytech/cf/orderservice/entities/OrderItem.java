@@ -4,13 +4,14 @@ import java.time.Duration;
 import java.util.Map;
 
 import fr.unice.polytech.cf.cookieservice.entities.Cookie;
-import fr.unice.polytech.cf.cookieservice.entities.Ingredient;
+import fr.unice.polytech.cf.cookieservice.entities.ingredients.Ingredient;
+import fr.unice.polytech.cf.cookieservice.interfaces.IPastry;
 
 public class OrderItem {
     private int quantity;
-    private Cookie cookie;
+    private IPastry cookie;
 
-    public OrderItem(Cookie cookie) {
+    public OrderItem(IPastry cookie) {
         this.cookie = cookie;
         this.quantity = 1;
     }
@@ -51,7 +52,7 @@ public class OrderItem {
         this.quantity = quantity;
     }
 
-    public Cookie getCookie() {
+    public IPastry getCookie() {
         return cookie;
     }
 

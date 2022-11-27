@@ -1,12 +1,11 @@
 package fr.unice.polytech.cf.storeservice;
 
-import fr.unice.polytech.cf.cookieservice.entities.Ingredient;
+import fr.unice.polytech.cf.cookieservice.entities.ingredients.Ingredient;
 import fr.unice.polytech.cf.orderservice.entities.Order;
 import fr.unice.polytech.cf.storeservice.entities.*;
 import fr.unice.polytech.cf.storeservice.exceptions.InvalidScheduleException;
 import fr.unice.polytech.cf.storeservice.exceptions.InvalidStoreException;
 
-import java.sql.Time;
 import java.time.DayOfWeek;
 import java.util.ArrayList;
 import java.util.List;

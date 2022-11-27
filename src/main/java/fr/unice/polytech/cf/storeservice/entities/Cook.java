@@ -1,7 +1,11 @@
 package fr.unice.polytech.cf.storeservice.entities;
 
 import fr.unice.polytech.cf.orderservice.entities.Order;
+import fr.unice.polytech.cf.orderservice.entities.OrderItem;
 import fr.unice.polytech.cf.orderservice.exceptions.OrderNotFoundException;
+import fr.unice.polytech.cf.partycookieservice.Requirement;
+import fr.unice.polytech.cf.partycookieservice.enums.Occasion;
+import fr.unice.polytech.cf.partycookieservice.enums.Theme;
 import fr.unice.polytech.cf.storeservice.exceptions.TimeslotUnavailableException;
 
 import java.time.DayOfWeek;
@@ -17,9 +21,14 @@ public class Cook {
     private Schedule schedule;
     private SortedMap<LocalDate, List<Order>> assignments;
 
+    private List<Occasion> occasions;
+    private List<Theme> themes;
+
     public Cook(){
         schedule = new Schedule();
         assignments = new TreeMap<>();
+        occasions = new ArrayList<>();
+        themes = new ArrayList<>();
     }
 
     public Cook(int id, String name, Schedule schedule, SortedMap<LocalDate, List<Order>> assignments) {
@@ -27,6 +36,13 @@ public class Cook {
         this.name = name;
         this.schedule = schedule;
         this.assignments = assignments;
+    }
+
+    public Cook(int id, String name, Schedule schedule,
+                SortedMap<LocalDate, List<Order>> assignments, List<Occasion> occasions, List<Theme> themes) {
+        this(id, name, schedule, assignments);
+        this.occasions = occasions;
+        this.themes = themes;
     }
 
 
@@ -115,5 +131,45 @@ public class Cook {
             return getWorkLoadOfTheDay(date).contains(order);
         }
         return false;
+    }
+
+    public boolean canPrepare(Order order){
+
+        for(OrderItem oi : order.getOrderItems()){
+            for(Requirement req : oi.getCookie().getRequirements()){
+                if(!occasions.contains(req) && !themes.contains(req)) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public SortedMap<LocalDate, List<Order>> getAssignments() {
+        return assignments;
+    }
+
+    public void setAssignments(SortedMap<LocalDate, List<Order>> assignments) {
+        this.assignments = assignments;
+    }
+
+    public List<Occasion> getOccasions() {
+        return occasions;
+    }
+
+    public void setOccasions(List<Occasion> occasions) {
+        this.occasions = occasions;
+    }
+
+    public List<Theme> getThemes() {
+        return themes;
+    }
+
+    public void setThemes(List<Theme> themes) {
+        this.themes = themes;
     }
 }

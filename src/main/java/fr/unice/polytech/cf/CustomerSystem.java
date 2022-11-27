@@ -8,7 +8,7 @@ import java.util.HashMap;
 import fr.unice.polytech.cf.accountservice.entities.ContactCoordinates;
 import fr.unice.polytech.cf.accountservice.entities.CustomerAccount;
 import fr.unice.polytech.cf.accountservice.exceptions.InvalidCredentialsException;
-import fr.unice.polytech.cf.cookieservice.entities.Cookie;
+import fr.unice.polytech.cf.cookieservice.interfaces.IPastry;
 import fr.unice.polytech.cf.orderservice.exceptions.InvalidRetrievalDateException;
 import fr.unice.polytech.cf.storeservice.exceptions.InvalidStoreException;
 import fr.unice.polytech.cf.storeservice.entities.Store;
@@ -28,10 +28,10 @@ public class CustomerSystem extends CookieOnDemandSystem {
         return activeOrder;
     }
 
-    public Order addCookie(Cookie cookie){
+    public Order addCookie(IPastry cookie){
         return this.addCookie(cookie,1);
     }
-    public Order addCookie(Cookie cookie, int quantity){
+    public Order addCookie(IPastry cookie, int quantity){
         return orderService.addCookies(activeOrder, new HashMap<>(Collections.singletonMap(cookie,quantity)));
     }
 
