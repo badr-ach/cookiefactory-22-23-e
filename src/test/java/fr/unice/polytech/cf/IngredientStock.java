@@ -1,8 +1,8 @@
 package fr.unice.polytech.cf;
 
-import fr.unice.polytech.cf.cookieservice.entities.ingredients.Ingredient;
-import fr.unice.polytech.cf.cookieservice.enums.EIngredientType;
-import fr.unice.polytech.cf.storeservice.entities.Store;
+import fr.unice.polytech.cf.entities.Ingredient;
+import fr.unice.polytech.cf.entities.enums.EIngredientType;
+import fr.unice.polytech.cf.entities.Store;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;

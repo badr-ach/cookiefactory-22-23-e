@@ -2,14 +2,15 @@ package fr.unice.polytech.cf;
 
 import static org.junit.Assert.*;
 
-import fr.unice.polytech.cf.accountservice.entities.ContactCoordinates;
-import fr.unice.polytech.cf.cookieservice.entities.Cookie;
-import fr.unice.polytech.cf.cookieservice.entities.ingredients.Ingredient;
-import fr.unice.polytech.cf.cookieservice.enums.EIngredientType;
-import fr.unice.polytech.cf.orderservice.entities.Order;
-import fr.unice.polytech.cf.orderservice.entities.Receipt;
-import fr.unice.polytech.cf.orderservice.enums.EOrderStatus;
-import fr.unice.polytech.cf.storeservice.entities.*;
+import fr.unice.polytech.cf.components.CustomerSystem;
+import fr.unice.polytech.cf.entities.ContactCoordinates;
+import fr.unice.polytech.cf.entities.Cookie;
+import fr.unice.polytech.cf.entities.Ingredient;
+import fr.unice.polytech.cf.entities.enums.EIngredientType;
+import fr.unice.polytech.cf.entities.*;
+import fr.unice.polytech.cf.entities.Order;
+import fr.unice.polytech.cf.entities.Receipt;
+import fr.unice.polytech.cf.entities.enums.EOrderStatus;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;

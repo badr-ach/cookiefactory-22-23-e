@@ -1,8 +1,8 @@
 package fr.unice.polytech.cf;
 
-import fr.unice.polytech.cf.cookieservice.entities.Cookie;
-import fr.unice.polytech.cf.orderservice.entities.Order;
-import fr.unice.polytech.cf.orderservice.entities.OrderItem;
+import fr.unice.polytech.cf.entities.Cookie;
+import fr.unice.polytech.cf.entities.Order;
+import fr.unice.polytech.cf.entities.OrderItem;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;

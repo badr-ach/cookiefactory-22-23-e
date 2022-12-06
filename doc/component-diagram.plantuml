@@ -1,0 +1,89 @@
+@startuml
+
+[CustomerService] as customerService
+[ChefService] as chefService
+[BrandManagerService] as brandManagerService
+[StoreEmployeeService] as storeEmployeeService
+[StoreManagerService] as storeManagerService
+
+[IngredientStockComponent] as stockComponent
+[StoreComponent] as storeComponent
+[OrderComponent] as orderComponent
+[OrderScheduler] as orderScheduler
+[AccountRegistry] as accountRegistry
+[CustomerRepository] as customerRepository
+[StoreRepository] as storeRepository
+[OrderRepository] as orderRepository
+[CookieRepository] as cookieRepository
+[CookieComponent] as cookieComponent
+
+[PartnerCatalogProxy] as partnerCatalogProxy
+[PaymentProxy] as paymentProxy
+
+
+orderFinder -- orderComponent
+orderCreator -- orderComponent
+orderModifier -- orderComponent
+
+payment -- paymentProxy
+
+customerFinder -- accountRegistry
+
+CR -- customerRepository
+accountRegistry --( CR
+
+
+SR -- storeRepository
+storeComponent --( SR
+
+cookieRecipeCreator -- cookieComponent
+cookieRecipeModifier -- cookieComponent
+cookieRecipeFinder -- cookieComponent
+cookieRecipeValidator -- cookieComponent
+
+orderComponent --( payment
+orderComponent --( ingredientReserver
+
+customerService --( customerFinder
+customerService --( orderCreator
+customerService --( orderModifier
+customerService --( cookieRecipeFinder
+customerService --( storeFinder
+
+
+storeEmployeeService --( orderFinder
+storeEmployeeService --( orderModifier
+
+storeFinder -- storeComponent
+storeScheduleModifier -- storeComponent
+storeCookModifier -- storeComponent
+cookFinder - storeComponent
+storeScheduleFinder -up- storeComponent
+
+storeManagerService --( storeScheduleModifier
+storeManagerService --( storeCookModifier
+
+brandManagerService --( cookieRecipeValidator
+chefService --( cookieRecipeCreator
+chefService --( cookieRecipeModifier
+
+
+orderScheduler --( cookAssigner
+cookAssigner )-- orderComponent
+
+cookFinder )-- orderScheduler
+storeScheduleFinder )- orderScheduler
+
+
+ingredientFinder -- partnerCatalogProxy
+cookieComponent --( ingredientFinder
+
+ingredientReserver -- stockComponent
+
+@enduml
+
+@startuml
+interface paymentValidator{
+  test()
+}
+@enduml

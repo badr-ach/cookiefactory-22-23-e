@@ -1,17 +1,17 @@
 package fr.unice.polytech.cf;
 import static org.junit.Assert.*;
 
-import fr.unice.polytech.cf.cookieservice.entities.Cookie;
-import fr.unice.polytech.cf.cookieservice.entities.ingredients.Ingredient;
-import fr.unice.polytech.cf.cookieservice.enums.EIngredientType;
-import fr.unice.polytech.cf.orderservice.OrderService;
-import fr.unice.polytech.cf.orderservice.PaymentService;
-import fr.unice.polytech.cf.orderservice.entities.Order;
-import fr.unice.polytech.cf.orderservice.entities.OrderItem;
-import fr.unice.polytech.cf.orderservice.enums.EOrderStatus;
-import fr.unice.polytech.cf.orderservice.exceptions.ImpossibleOrderCancelingException;
-import fr.unice.polytech.cf.storeservice.StoreService;
-import fr.unice.polytech.cf.storeservice.entities.Store;
+import fr.unice.polytech.cf.entities.Cookie;
+import fr.unice.polytech.cf.entities.Ingredient;
+import fr.unice.polytech.cf.entities.enums.EIngredientType;
+import fr.unice.polytech.cf.components.OrderService;
+import fr.unice.polytech.cf.connectors.PaymentService;
+import fr.unice.polytech.cf.entities.Order;
+import fr.unice.polytech.cf.entities.OrderItem;
+import fr.unice.polytech.cf.entities.enums.EOrderStatus;
+import fr.unice.polytech.cf.exceptions.ImpossibleOrderCancelingException;
+import fr.unice.polytech.cf.components.StoreService;
+import fr.unice.polytech.cf.entities.Store;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;

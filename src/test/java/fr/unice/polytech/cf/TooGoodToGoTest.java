@@ -1,14 +1,15 @@
 package fr.unice.polytech.cf;
 
-import fr.unice.polytech.cf.accountservice.entities.ContactCoordinates;
-import fr.unice.polytech.cf.accountservice.entities.CustomerAccount;
-import fr.unice.polytech.cf.cookieservice.entities.Cookie;
-import fr.unice.polytech.cf.orderservice.entities.Order;
-import fr.unice.polytech.cf.orderservice.enums.EOrderStatus;
-import fr.unice.polytech.cf.storeservice.entities.Schedule;
-import fr.unice.polytech.cf.storeservice.entities.TimeSlot;
-import fr.unice.polytech.cf.toogoodtogo.TooGoodToGo;
-import fr.unice.polytech.cf.toogoodtogo.entities.SurpriseBasket;
+import fr.unice.polytech.cf.components.CustomerSystem;
+import fr.unice.polytech.cf.entities.ContactCoordinates;
+import fr.unice.polytech.cf.entities.CustomerAccount;
+import fr.unice.polytech.cf.entities.Cookie;
+import fr.unice.polytech.cf.entities.Order;
+import fr.unice.polytech.cf.entities.enums.EOrderStatus;
+import fr.unice.polytech.cf.entities.Schedule;
+import fr.unice.polytech.cf.entities.TimeSlot;
+import fr.unice.polytech.cf.connectors.TooGoodToGo;
+import fr.unice.polytech.cf.entities.SurpriseBasket;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;

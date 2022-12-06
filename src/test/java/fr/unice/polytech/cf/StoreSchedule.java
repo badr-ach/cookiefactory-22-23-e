@@ -1,9 +1,9 @@
 package fr.unice.polytech.cf;
 
-import fr.unice.polytech.cf.storeservice.StoreService;
-import fr.unice.polytech.cf.storeservice.entities.Schedule;
-import fr.unice.polytech.cf.storeservice.entities.Store;
-import fr.unice.polytech.cf.storeservice.entities.TimeSlot;
+import fr.unice.polytech.cf.components.StoreService;
+import fr.unice.polytech.cf.entities.Schedule;
+import fr.unice.polytech.cf.entities.Store;
+import fr.unice.polytech.cf.entities.TimeSlot;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;

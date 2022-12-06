@@ -7,6 +7,7 @@ Feature: Customizable Party Cookies
     And one Topping "Chocolate raisins" 100 g that costs 1 euros per unit 100 g
     And a margin of 0
 
+
   Scenario Outline: Refusing to make a party cookie that no able chef can make
     Given an order of a party cookie of "<size>" based on Chocolala recipe for "<occasion>" with "<theme>"
     And "<ingredients_added>" added
