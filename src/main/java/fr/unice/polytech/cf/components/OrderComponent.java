@@ -133,11 +133,7 @@ public class OrderComponent implements OrderCreator, OrderModifier, OrderFinder,
             order.setCook(null);
             throw ex;
         }
-        if(receipt!=null) {
-            return receipt;
-        }else{
-            return new Receipt();
-        }
+        return receipt;
     }
 
     /**

@@ -81,7 +81,7 @@ public class StoreTaxes {
     @When("the order is paid")
     public void theOrderIsPaid() {
         try {
-            receipt = customerSystem.payOrder(contactCoordinates, "123456789");
+            receipt = customerSystem.payOrder(contactCoordinates, "123456789",order);
         } catch (Exception e) {
             caughtException = e;
             System.out.println(e.getMessage());
@@ -101,10 +101,10 @@ public class StoreTaxes {
         LocalDateTime pickupDate = LocalDateTime.of(2022, Calendar.DECEMBER, 6, 14, 15);
         Cookie chocolalala = new Cookie(cookieName, cookiePrice, new HashMap<>(), Duration.of(10, ChronoUnit.MINUTES));
         for (int i = 0; i <cookieQuantity ; i++) {
-            customerSystem.addCookie(chocolalala);
+            customerSystem.addCookie(chocolalala,order);
         }
-        customerSystem.selectPickUpDate(pickupDate);
-        customerSystem.selectStore(currentStore);
+        customerSystem.selectPickUpDate(pickupDate,order);
+        customerSystem.selectStore(currentStore,order);
     }
 
     @Given("an account with the {string} role")

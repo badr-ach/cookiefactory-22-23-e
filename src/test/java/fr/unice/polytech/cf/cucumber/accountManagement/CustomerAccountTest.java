@@ -57,7 +57,9 @@ public class CustomerAccountTest {
         }
         orderRepository.deleteAll();
         accountRepository.deleteAll();
-        receipt = new Receipt();
+        storeRepository.deleteAll();
+        Store store = new Store();
+        storeRepository.save(store,store.getId());
     }
 
     @Given(
@@ -132,7 +134,7 @@ public class CustomerAccountTest {
     @When("a logged in customer pays his order with {string}")
     public void aLoggedInCustomerPaysHisOrderWith(String creditCard) {
         try {
-            receipt = customerSystem.payOrder(loggedInAccount, creditCard);
+            receipt = customerSystem.payOrder(loggedInAccount, creditCard,order);
 
         } catch (Exception e) {
             caughtException = e;
@@ -147,9 +149,9 @@ public class CustomerAccountTest {
 
         LocalDateTime pickupDate = LocalDateTime.of(2022, Calendar.DECEMBER, 6, 14, 15);
 
-        customerSystem.addCookie(new Cookie("Chocolala", 10, new HashMap<>(), Duration.of(10, ChronoUnit.MINUTES)));
-        customerSystem.selectPickUpDate(pickupDate);
-        customerSystem.selectStore(store);
+        customerSystem.addCookie(new Cookie("Chocolala", 10, new HashMap<>(), Duration.of(10, ChronoUnit.MINUTES)),order);
+        customerSystem.selectPickUpDate(pickupDate,order);
+        customerSystem.selectStore(store,order);
     }
 
     @And("a logged in customer with username: {string}, password: {string}")
@@ -180,10 +182,10 @@ public class CustomerAccountTest {
         LocalDateTime pickupDate = LocalDateTime.of(2022, Calendar.DECEMBER, 6, 14, 15);
         Cookie chocolalala = new Cookie("Chocolala", price, new HashMap<>(), Duration.of(10, ChronoUnit.MINUTES));
         for (int i = 0; i < cookieNumber; i++) {
-            customerSystem.addCookie(chocolalala);
+            customerSystem.addCookie(chocolalala,order);
         }
-        customerSystem.selectPickUpDate(pickupDate);
-        customerSystem.selectStore(store);
+        customerSystem.selectPickUpDate(pickupDate,order);
+        customerSystem.selectStore(store,order);
     }
 
     @Then("The order price is {double}")
@@ -200,10 +202,10 @@ public class CustomerAccountTest {
         LocalDateTime pickupDate = LocalDateTime.parse(currentDateText, formatter);
         Cookie chocolalala = new Cookie("Chocolala", 10, new HashMap<>(), Duration.of(10, ChronoUnit.MINUTES));
         for (int i = 0; i < numberCookies; i++) {
-            customerSystem.addCookie(chocolalala);
+            customerSystem.addCookie(chocolalala,order);
         }
-        customerSystem.selectPickUpDate(pickupDate);
-        customerSystem.selectStore(store);
+        customerSystem.selectPickUpDate(pickupDate,order);
+        customerSystem.selectStore(store,order);
         aLoggedInCustomerPaysHisOrderWith("123456789");
     }
 

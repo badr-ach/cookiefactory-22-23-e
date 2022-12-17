@@ -97,18 +97,18 @@ public class CustomizedPartyCookie {
         customizedPartyCookie.setOccasion(Occasion.valueOf(arg0));
         customizedPartyCookie.setTheme(Theme.valueOf(arg1));
         order = customerSystem.startOrder();
-        customerSystem.selectStore(store);
-        customerSystem.addCookie(customizedPartyCookie);
-        customerSystem.selectPickUpDate(LocalDateTime.of(2022, Calendar.DECEMBER, 12, 14, 15));
+        customerSystem.selectStore(store,order);
+        customerSystem.addCookie(customizedPartyCookie,order);
+        customerSystem.selectPickUpDate(LocalDateTime.of(2022, Calendar.DECEMBER, 12, 14, 15),order);
     }
 
     @Given("an order of a party cookie of {string} based on Chocolala recipe for {string} with {string}")
     public void anOrderOfAPartyCookieOfBasedOnChocolalaRecipeForWith(String arg0, String arg1, String arg2) {
         customizedPartyCookie = new BasePartyCookie(cookie, Size.valueOf(arg0),Theme.valueOf(arg2),Occasion.valueOf(arg1));
         order = customerSystem.startOrder();
-        customerSystem.selectStore(store);
-        customerSystem.addCookie(customizedPartyCookie);
-        customerSystem.selectPickUpDate(LocalDateTime.of(2022, Calendar.DECEMBER, 10, 14, 15));
+        customerSystem.selectStore(store,order);
+        customerSystem.addCookie(customizedPartyCookie,order);
+        customerSystem.selectPickUpDate(LocalDateTime.of(2022, Calendar.DECEMBER, 10, 14, 15),order);
     }
 
     @And("{string} added")
@@ -154,7 +154,7 @@ public class CustomizedPartyCookie {
     public void theCustomerProceedsToPayHisPartyCookieOrderOrderWith(String arg0) {
         try{
             ContactCoordinates contactCoordinates = new ContactCoordinates("test", "test", "test", "test");
-            customerSystem.payOrder(contactCoordinates, arg0);
+            customerSystem.payOrder(contactCoordinates, arg0,order);
         }catch(Exception ex){
             caughException = ex;
         }

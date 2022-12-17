@@ -71,10 +71,10 @@ public class KitchenWorkflow {
         selectedStore = customerSystem.getStores().get(0);
         ingredientStockComponent.addToStock(selectedStore,new HashMap<>(Collections.singletonMap(ingredient,4)));
         customerSystem.addCookie(new Cookie("Chocolala", 10, new HashMap<>(Collections.singletonMap(ingredient,2)),
-                Duration.of(10, ChronoUnit.MINUTES)));
-        customerSystem.selectStore(selectedStore);
-        customerSystem.selectPickUpDate(retrievalDate);
-        customerSystem.payOrder(contactCoordinates, creditCard);
+                Duration.of(10, ChronoUnit.MINUTES)),order);
+        customerSystem.selectStore(selectedStore,order);
+        customerSystem.selectPickUpDate(retrievalDate,order);
+        customerSystem.payOrder(contactCoordinates, creditCard,order);
     }
 
     @Given("the assigned cook to the order")

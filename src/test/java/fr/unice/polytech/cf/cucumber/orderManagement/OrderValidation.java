@@ -55,20 +55,22 @@ public class OrderValidation {
 
     @Before
     public void setContext() {
-        Iterable<Store> stores = storeRepository.findAll();
-        for (Store store : stores) {
-            // freeing cooks
-            List<Cook> cookList = store.getCooks();
-            for (Cook cook : cookList) {
-                cook.setAssignments(new TreeMap<>());
-            }
-
-            // freeing ingredients
-            Stock stock = store.getIngredientsStock();
-            Map<Ingredient, Integer> ingredients =  stock.getAvailableIngredients();
-            ingredientStockComponent.removeFromStock(store, ingredients);
-        }
-        receipt = new Receipt();
+//        Iterable<Store> stores = storeRepository.findAll();
+//        for (Store store : stores) {
+//            // freeing cooks
+//            List<Cook> cookList = store.getCooks();
+//            for (Cook cook : cookList) {
+//                cook.setAssignments(new TreeMap<>());
+//            }
+//
+//            // freeing ingredients
+//            Stock stock = store.getIngredientsStock();
+//            Map<Ingredient, Integer> ingredients =  stock.getAvailableIngredients();
+//            ingredientStockComponent.removeFromStock(store, ingredients);
+//        }
+        storeRepository.deleteAll();
+        Store store = new Store();
+        storeRepository.save(store,store.getId());
     }
 
     @Given("a customer {string} with email {string} and phone number {string} and address {string}")
@@ -89,7 +91,7 @@ public class OrderValidation {
     public void anOrderWithMissingStoreInformation() {
         order = customerSystem.startOrder();
         customerSystem.addCookie(
-                new Cookie("Chocolala", 10, new HashMap<>(), Duration.of(10, ChronoUnit.MINUTES)));
+                new Cookie("Chocolala", 10, new HashMap<>(), Duration.of(10, ChronoUnit.MINUTES)),order);
 
     }
 
@@ -97,7 +99,7 @@ public class OrderValidation {
     @When("the customer proceeds to pay his order with {string}")
     public void theCustomerProceedsToPayHisOrderWith(String creditCard) {
         try {
-            receipt = customerSystem.payOrder(contactCoordinates, creditCard);
+            receipt = customerSystem.payOrder(contactCoordinates, creditCard,order);
         } catch (Exception ex) {
             exception = ex;
         }
@@ -113,8 +115,8 @@ public class OrderValidation {
         order = customerSystem.startOrder();
         selectedStore = customerSystem.getStores().get(0);
         customerSystem.addCookie(
-                new Cookie("Chocolala", 10, new HashMap<>(), Duration.of(10, ChronoUnit.MINUTES)));
-        customerSystem.selectStore(selectedStore);
+                new Cookie("Chocolala", 10, new HashMap<>(), Duration.of(10, ChronoUnit.MINUTES)),order);
+        customerSystem.selectStore(selectedStore,order);
 
     }
 
@@ -124,9 +126,9 @@ public class OrderValidation {
         order = customerSystem.startOrder();
         selectedStore = customerSystem.getStores().get(0);
         customerSystem.addCookie(
-                new Cookie("Chocolala", 10, new HashMap<>(), Duration.of(10, ChronoUnit.MINUTES)));
-        customerSystem.selectStore(selectedStore);
-        customerSystem.selectPickUpDate(retrievalDate);
+                new Cookie("Chocolala", 10, new HashMap<>(), Duration.of(10, ChronoUnit.MINUTES)),order);
+        customerSystem.selectStore(selectedStore,order);
+        customerSystem.selectPickUpDate(retrievalDate,order);
 
     }
 
@@ -230,9 +232,9 @@ public class OrderValidation {
     @And("an order to that same store with {string} cookies of that recipe")
     public void anOrderWithCookiesOf(String amount) {
         retrievalDate = LocalDateTime.of(2022, Calendar.DECEMBER, 6, 14, 15);
-        customerSystem.addCookie(cookie, Integer.parseInt(amount));
-        customerSystem.selectStore(selectedStore);
-        customerSystem.selectPickUpDate(retrievalDate);
+        customerSystem.addCookie(cookie, Integer.parseInt(amount),order);
+        customerSystem.selectStore(selectedStore,order);
+        customerSystem.selectPickUpDate(retrievalDate,order);
     }
 
     @Then("the final state of the stock of the store is {string} for {string}")

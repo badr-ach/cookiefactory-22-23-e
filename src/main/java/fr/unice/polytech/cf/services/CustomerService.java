@@ -21,15 +21,11 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class CustomerService extends CookieOnDemandService {
-
-    private String coupon;
-    private Order activeOrder;
-    private Store activeStore;
-    private CustomerAccount loggedInAccount;
     private CustomerFinder customerFinder;
     private OrderCreator orderCreator;
     private OrderModifier orderModifier;
     private OrderFinalizer orderFinalizer;
+
     private CookieRecipeFinder cookieRecipeFinder;
     private StoreCookModifier storeCookModifier;
 
@@ -44,50 +40,43 @@ public class CustomerService extends CookieOnDemandService {
         this.orderFinalizer = orderFinalizer;
         this.orderCreator = orderCreator;
         this.storeCookModifier = storeCookModifier;
-
-
-
-
-
     }
 
     public Order startOrder() {
-        this.activeOrder = orderCreator.startOrder();
-        return activeOrder;
+        return orderCreator.startOrder();
     }
 
-    public Order addCookie(IPastry cookie) {
-        return this.addCookie(cookie, 1);
+    public Order addCookie(IPastry cookie,Order activeOrder) {
+        return this.addCookie(cookie, 1,activeOrder);
     }
 
-    public Order addCookie(IPastry cookie, int quantity) {
+    public Order addCookie(IPastry cookie, int quantity, Order activeOrder) {
         return orderModifier.addCookies(activeOrder, new HashMap<>(Collections.singletonMap(cookie, quantity)));
     }
 
-    public void paymentGuards() {
+    public void paymentGuards(Order activeOrder) {
         if (activeOrder.getStore() == null) throw new InvalidStoreException("Store not specified");
         if (activeOrder.getRetrievalDateTime() == null)
             throw new InvalidRetrievalDateException("Retrieval time not specified");
     }
 
-    public Receipt payOrder(ContactCoordinates coordinates, String cardNumber) {
-        paymentGuards();
+    public synchronized Receipt payOrder(ContactCoordinates coordinates, String cardNumber,Order activeOrder) {
+        paymentGuards(activeOrder);
         return orderFinalizer.makePayment(coordinates, cardNumber, activeOrder);
     }
 
-    public Receipt payOrder(CustomerAccount customerAccount, String cardNumber) {
-        paymentGuards();
+    public synchronized Receipt payOrder(CustomerAccount customerAccount, String cardNumber,Order activeOrder) {
+        paymentGuards(activeOrder);
         return orderFinalizer.makePayment(customerAccount, cardNumber, activeOrder);
     }
 
-    public void selectPickUpDate(LocalDateTime date) {
+    public void selectPickUpDate(LocalDateTime date,Order activeOrder) {
         activeOrder.setRetrievalDateTime(date);
     }
 
-    public void selectStore(Store store) {
+    public void selectStore(Store store,Order activeOrder) {
         if (getStores().contains(store)) {
-            this.activeStore = store;
-            activeOrder.setStore(activeStore);
+            activeOrder.setStore(store);
         } else {
             throw new InvalidStoreException("Invalid Store Selected : inexistent");
         }
@@ -98,7 +87,6 @@ public class CustomerService extends CookieOnDemandService {
     }
 
     public CustomerAccount login(String username, String password) {
-        loggedInAccount = customerFinder.getCustomerAccount(username, password).orElseThrow(InvalidCredentialsException::new);
-        return loggedInAccount;
+        return customerFinder.getCustomerAccount(username, password).orElseThrow(InvalidCredentialsException::new);
     }
 }

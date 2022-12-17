@@ -120,7 +120,7 @@ public class OrderRetrieval {
         LocalDateTime retrievalDate = LocalDateTime.parse(retrievalDateText, formatter);
         order = customerSystem.startOrder();
         if(contactCoordinates != null) order.setContact(contactCoordinates);
-        customerSystem.selectStore(customerSystem.getStores().get(0));
+        customerSystem.selectStore(customerSystem.getStores().get(0),order);
         EOrderStatus orderStatus = EOrderStatus.valueOf(currentOrderStatus);
         order.setStatus(orderStatus);
         order.setRetrievalDateTime(retrievalDate);

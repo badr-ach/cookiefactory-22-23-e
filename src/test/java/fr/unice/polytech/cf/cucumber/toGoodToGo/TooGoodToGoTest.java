@@ -73,9 +73,9 @@ public class TooGoodToGoTest {
     private void newOrder(int cookieQuantity, String cookieName, double cookiePrice, String retrievalDateText){
         LocalDateTime retrievalDate = LocalDateTime.parse(retrievalDateText, formatter);
         order = customerSystem.startOrder();
-        customerSystem.selectStore(customerSystem.getStores().get(0));
+        customerSystem.selectStore(customerSystem.getStores().get(0),order);
         cookie = new Cookie(cookieName, cookiePrice, new HashMap<>());
-        customerSystem.addCookie(cookie, cookieQuantity);
+        customerSystem.addCookie(cookie, cookieQuantity,order);
         order.setStatus(EOrderStatus.PREPARED);
         order.setRetrievalDateTime(retrievalDate);
     }
