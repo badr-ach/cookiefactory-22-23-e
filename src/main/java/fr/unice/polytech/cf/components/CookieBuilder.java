@@ -1,9 +1,11 @@
 package fr.unice.polytech.cf.components;
 
-import fr.unice.polytech.cf.components.APastryBuilder;
+import fr.unice.polytech.cf.entities.APastryBuilder;
 import fr.unice.polytech.cf.entities.Cookie;
 import fr.unice.polytech.cf.interfaces.IPastry;
+import org.springframework.stereotype.Component;
 
+@Component
 public class CookieBuilder extends APastryBuilder {
     protected Double margin;
 

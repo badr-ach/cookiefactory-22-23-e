@@ -14,7 +14,7 @@ import java.util.*;
 
 public class Cook {
 
-    private int id;
+    private UUID id;
     private String name;
     private Schedule schedule;
     private SortedMap<LocalDate, List<Order>> assignments;
@@ -29,14 +29,14 @@ public class Cook {
         themes = new ArrayList<>();
     }
 
-    public Cook(int id, String name, Schedule schedule, SortedMap<LocalDate, List<Order>> assignments) {
+    public Cook(UUID id, String name, Schedule schedule, SortedMap<LocalDate, List<Order>> assignments) {
         this.id = id;
         this.name = name;
         this.schedule = schedule;
         this.assignments = assignments;
     }
 
-    public Cook(int id, String name, Schedule schedule,
+    public Cook(UUID id, String name, Schedule schedule,
                 SortedMap<LocalDate, List<Order>> assignments, List<Occasion> occasions, List<Theme> themes) {
         this(id, name, schedule, assignments);
         this.occasions = occasions;
@@ -44,7 +44,7 @@ public class Cook {
     }
 
 
-    public void setId(int id) {
+    public void setId(UUID id) {
         this.id = id;
     }
     public void setName(String name){this.name = name;}

@@ -20,6 +20,9 @@ public class PersonalizedPartyCookie implements IPastry {
         this.theme = theme;
         this.occasion = occasion;
     }
+    public void setName(String name) {
+        this.cookie.setName(name);
+    }
 
     public Cookie getCookie() {
         return cookie;

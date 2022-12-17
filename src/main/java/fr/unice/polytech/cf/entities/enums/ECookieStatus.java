@@ -1,9 +1,10 @@
 package fr.unice.polytech.cf.entities.enums;
 
 public enum ECookieStatus {
-    DEFAULT,
+    DRAFT,
     SUBMITTED,
     VALIDATED,
     ACTIVE,
     CUSTOM,
+    DELETED,
 }

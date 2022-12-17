@@ -2,31 +2,34 @@ package fr.unice.polytech.cf.entities;
 
 import fr.unice.polytech.cf.entities.enums.EAccountType;
 
+import java.util.UUID;
+
 public class Account {
-  protected int id;
+  protected UUID id;
   protected String username;
   protected String password;
   protected EAccountType type;
   protected ContactCoordinates contactCoordinates;
-  private int ID = 0;
+
 
   public Account(String username, String password, EAccountType type){
     this.password = password;
     this.username = username;
     this.type = type;
-    this.id = ID;
-    ID++;
+    this.id = UUID.randomUUID();
+
   }
 
   public Account(String username, String password, EAccountType type, ContactCoordinates contactCoordinates){
     this.password = password;
     this.username = username;
     this.contactCoordinates = contactCoordinates;
-    this.id = ID;
-    ID++;
+    this.type = type;
+    this.id = UUID.randomUUID();
+
   }
 
-  public int getId() {
+  public UUID getId() {
     return id;
   }
 

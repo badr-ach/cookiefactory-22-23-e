@@ -5,6 +5,7 @@ import fr.unice.polytech.cf.exceptions.InvalidQuantityException;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 public class Stock {
     Map<Ingredient, Integer> availableIngredients;

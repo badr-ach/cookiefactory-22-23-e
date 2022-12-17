@@ -1,11 +1,11 @@
 package fr.unice.polytech.cf.components;
 
-import fr.unice.polytech.cf.components.APastryBuilder;
+import fr.unice.polytech.cf.entities.APastryBuilder;
 import fr.unice.polytech.cf.entities.Cookie;
-import fr.unice.polytech.cf.entities.Dough;
-import fr.unice.polytech.cf.entities.Flavor;
+import fr.unice.polytech.cf.entities.ingredients.Dough;
+import fr.unice.polytech.cf.entities.ingredients.Flavor;
 import fr.unice.polytech.cf.entities.Ingredient;
-import fr.unice.polytech.cf.entities.Topping;
+import fr.unice.polytech.cf.entities.ingredients.Topping;
 import fr.unice.polytech.cf.entities.enums.EIngredientType;
 import fr.unice.polytech.cf.exceptions.IllegalBuildStepException;
 import fr.unice.polytech.cf.interfaces.IPastry;
@@ -14,12 +14,14 @@ import fr.unice.polytech.cf.entities.PersonalizedPartyCookie;
 import fr.unice.polytech.cf.entities.enums.Occasion;
 import fr.unice.polytech.cf.entities.enums.Size;
 import fr.unice.polytech.cf.entities.enums.Theme;
+import org.springframework.stereotype.Component;
 
 import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+@Component
 public class PartyPastryBuilder extends APastryBuilder {
     private Cookie cookie;
     private Size size;

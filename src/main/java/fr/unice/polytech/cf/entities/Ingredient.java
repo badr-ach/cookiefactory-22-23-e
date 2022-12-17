@@ -2,10 +2,12 @@ package fr.unice.polytech.cf.entities;
 
 import fr.unice.polytech.cf.entities.enums.EIngredientType;
 
+import java.util.UUID;
+
 public class Ingredient implements Cloneable {
 
-    private static int ID = 0;
-    private int id;
+
+    private UUID id;
     private String name;
     private double price;
     private EIngredientType type;
@@ -15,8 +17,8 @@ public class Ingredient implements Cloneable {
         this.name = name;
         this.price = price;
         this.type = type;
-        this.id = ID;
-        ID++;
+        this.id = UUID.randomUUID();
+
     }
 
     @Override
@@ -36,11 +38,11 @@ public class Ingredient implements Cloneable {
         return "name: " + name + " price: " + price;
     }
 
-    public int getId() {
+    public UUID getId() {
           return id;
       }
 
-    public void setId(int id) {
+    public void setId(UUID id) {
         this.id = id;
     }
 

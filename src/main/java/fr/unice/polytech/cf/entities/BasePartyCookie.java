@@ -37,6 +37,11 @@ public class BasePartyCookie implements IPastry {
         return size;
     }
 
+    @Override
+    public void setName(String name) {
+        this.cookie.setName(name);
+    }
+
     public void setSize(Size size) {
         this.size = size;
     }

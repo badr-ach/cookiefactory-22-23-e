@@ -13,4 +13,6 @@ public interface IPastry {
     List<Requirement> getRequirements();
 
     String getName();
+
+    void setName(String name);
 }

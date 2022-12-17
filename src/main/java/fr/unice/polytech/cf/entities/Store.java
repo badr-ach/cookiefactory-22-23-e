@@ -1,32 +1,26 @@
 package fr.unice.polytech.cf.entities;
 
 import java.time.DayOfWeek;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 
 public class Store {
+
+    private UUID id;
     private Stock ingredientsStock;
     private List<Cook> cooks = new ArrayList<>();
     private String name;
     private String address;
     private double taxes;
-    private int id;
-    private static int ID = 0;
     private Schedule schedule;
 
     public Store() {
 
         schedule = new Schedule();
         Cook cook = new Cook();
-        cook.setId(getCooks().size() + 1);
         cook.getSchedule().seedSchedule();
         cooks.add(cook);
         ingredientsStock = new Stock();
-
-        this.id = ID;
-        ID++;
+        this.id = UUID.randomUUID();
     }
 
     public Store(String name) {
@@ -34,10 +28,11 @@ public class Store {
         this.name = name;
     }
 
-    public int getId() {
+    public UUID getId() {
         return id;
     }
-    public void setId(int id) {
+
+    public void setId(UUID id) {
         this.id = id;
     }
 

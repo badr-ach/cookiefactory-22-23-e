@@ -11,7 +11,7 @@ import java.time.temporal.ChronoUnit;
 import java.util.*;
 
 public class Order {
-    private int id;
+    private UUID id;
     private Cook cook;
     private Store store;
     private EOrderStatus status;
@@ -19,13 +19,13 @@ public class Order {
     private ArrayList<OrderItem> orderItems = new ArrayList<OrderItem>();
     private LocalDateTime retrievalDateTime;
     private double discountedPrice; 
-    private static int ID = 0;
+
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof Order order)) return false;
-        return id == order.id;
+        return id.equals(order.id);
     }
 
     @Override
@@ -35,8 +35,8 @@ public class Order {
 
     public Order() {
         status = EOrderStatus.PENDING;
-        this.id = ID;
-        ID++;
+        this.id = UUID.randomUUID();
+
     }
 
     public Order(ArrayList<OrderItem> orderItems, EOrderStatus status) {
@@ -55,11 +55,11 @@ public class Order {
         return ingredients;
     }
 
-    public int getId() {
+    public UUID getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(UUID id) {
         this.id = id;
     }
 
@@ -103,7 +103,7 @@ public class Order {
 
     public OrderItem contains(IPastry cookie){
         return orderItems.stream()
-                .filter(orderItem -> orderItem.getCookie() == cookie)
+                .filter(orderItem -> orderItem.getCookie().getName().equals(cookie.getName()))
                 .findFirst()
                 .orElse(null);
     }

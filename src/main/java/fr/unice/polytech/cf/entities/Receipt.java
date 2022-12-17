@@ -1,11 +1,12 @@
 package fr.unice.polytech.cf.entities;
 
 import java.util.ArrayList;
+import java.util.UUID;
 
 public class Receipt {
-    private int id;
+    private UUID id;
     private double total;
-    private int orderId;
+    private UUID orderId;
     private ArrayList<OrderItem> orderItems;
     private ContactCoordinates customerContacts;
     private double taxes;
@@ -17,8 +18,12 @@ public class Receipt {
         this.total = order.getTTCPrice();
         this.orderId = order.getId();
         this.taxes = order.getStore().getTaxes();
-        this.id = ID;
-        ID++;
+        this.id = UUID.randomUUID();
+
+    }
+    public Receipt() {
+        this.id = UUID.randomUUID();
+
     }
 
     public Receipt(ContactCoordinates customerContacts, Order order){
@@ -28,11 +33,11 @@ public class Receipt {
 
 
 
-    public int getId() {
+    public UUID getId() {
         return id;
     }
 
-    public int getOrderId() {
+    public UUID getOrderId() {
         return orderId;
     }
 
@@ -40,7 +45,7 @@ public class Receipt {
         return orderItems;
     }
 
-    public void setId(int id) {
+    public void setId(UUID id) {
         this.id = id;
     }
 

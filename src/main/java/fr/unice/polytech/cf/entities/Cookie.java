@@ -2,18 +2,16 @@ package fr.unice.polytech.cf.entities;
 
 
 import fr.unice.polytech.cf.entities.enums.ECookieStatus;
+import fr.unice.polytech.cf.entities.ingredients.Mix;
 import fr.unice.polytech.cf.interfaces.IPastry;
 import fr.unice.polytech.cf.interfaces.Requirement;
 
 import java.time.Duration;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class Cookie implements IPastry, Cloneable {
-    private int id;
+    private UUID id;
     private String name;
     private Double price;
     private Duration preparationDuration;
@@ -25,7 +23,7 @@ public class Cookie implements IPastry, Cloneable {
     private Cooking cooking;
 
     public Cookie() {
-
+        this.margin = 0.0;
         this.status = ECookieStatus.SUBMITTED;
         this.ingredients = new HashMap<>();
     }
@@ -51,9 +49,9 @@ public class Cookie implements IPastry, Cloneable {
         this.name = name;
         this.price = price;
         this.ingredients = ingredients;
-        this.status = ECookieStatus.DEFAULT;
-        this.id = ID;
-        ID++;
+        this.status = ECookieStatus.DRAFT;
+        this.id = UUID.randomUUID();
+
     }
 
     public Cookie(String name, double price, Map<Ingredient, Integer> ingredients, Duration preparationDuration) {
@@ -70,11 +68,11 @@ public class Cookie implements IPastry, Cloneable {
         this.ingredients = ingredients;
     }
 
-    public int getId() {
+    public UUID getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(UUID id) {
         this.id = id;
     }
 
@@ -169,7 +167,7 @@ public class Cookie implements IPastry, Cloneable {
             clone.setMargin(this.margin);
             clone.setPrice(this.price);
             clone.setPrice(this.price);
-            clone.setId(Cookie.ID++);
+            clone.setId(UUID.randomUUID());
             return clone;
         } catch (CloneNotSupportedException e) {
             throw new AssertionError();
