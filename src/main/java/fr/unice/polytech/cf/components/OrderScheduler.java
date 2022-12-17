@@ -12,6 +12,11 @@ import java.time.*;
 import java.util.*;
 import java.util.stream.Collectors;
 
+/**
+ * Class OrderScheduler
+ * It manages all what concern the distribution line of orders on the cooks, retrieving available
+ * timeslots of available cooks and other computations to optimize the precess of orders preparation
+ */
 public class OrderScheduler implements CookAssigner {
 
     public Cook assignOrderToACook(Order order) {
@@ -39,6 +44,13 @@ public class OrderScheduler implements CookAssigner {
         }
     }
 
+    /**
+     * Allows getting the available cooks for a given date in a given timeslot
+     * @param date matches with the order retrieval date
+     * @param timeSlot which the date is included in
+     * @param cooks the list of all cooks
+     * @return the available cooks
+     */
     public List<Cook> getAvailableCooksForRetrievalTime(LocalDateTime date, TimeSlot timeSlot, List<Cook> cooks) {
         List<Cook> availableCooks = new ArrayList<>();
         for (Cook cook : cooks) {
@@ -67,7 +79,13 @@ public class OrderScheduler implements CookAssigner {
         return availablePickUpTimes;
     }
 
-
+    /**
+     * Allows getting the available cooks for a given date with a given duration
+     * @param date matches with the order retrieval date
+     * @param duration the order preparation duration
+     * @param cooks the list of all cooks
+     * @return the available cooks
+     */
     public Set<TimeSlot> getAvailableTimeSlots(LocalDate date, Duration duration, List<Cook> cooks) {
         Set<TimeSlot> availableTimeSlots = new HashSet<>();
         for (Cook cook : cooks) {
@@ -76,6 +94,13 @@ public class OrderScheduler implements CookAssigner {
         return availableTimeSlots;
     }
 
+    /**
+     * Allow getting the available slots of cooks
+     * @param date the specific date
+     * @param duration for how long they are available
+     * @param cook
+     * @return
+     */
     public List<TimeSlot> getAvailableTimeSlotsOfEmployee(LocalDate date, Duration duration, Cook cook) {
         List<TimeSlot> occupiedTime = cook.getOccupiedTimeSlotsOfTheDay(date);
         List<TimeSlot> workingHours = cook.getWorkingHoursOfTheDay(date);
@@ -83,6 +108,12 @@ public class OrderScheduler implements CookAssigner {
         return computePossibleTimeSlotsAssignments(duration, fuseTimeSlots(timeSlotsLeft));
     }
 
+    /**
+     * Compute all the possible assignments to allow choosing the optimal one in the end
+     * @param duration
+     * @param availableTimeSlots
+     * @return
+     */
     public List<TimeSlot> computePossibleTimeSlotsAssignments(Duration duration, List<TimeSlot> availableTimeSlots) {
         List<TimeSlot> possibleTimeSlotAssignments = new ArrayList<>();
         for (TimeSlot timeSlot : availableTimeSlots) {
@@ -92,6 +123,12 @@ public class OrderScheduler implements CookAssigner {
         return possibleTimeSlotAssignments;
     }
 
+    /**
+     * Retrieve all the remaining empty timeslots after assigning an order to a cook
+     * @param workingHours all the working hours of the store
+     * @param occupiedTime the non available timeslots (taken by other cooks)
+     * @return a list of the available timeslots left
+     */
     public List<TimeSlot> computeTimeSlotsLeft(List<TimeSlot> workingHours, List<TimeSlot> occupiedTime) {
         List<TimeSlot> timeSlotsLeft = new ArrayList<>(workingHours);
         for (TimeSlot busySlot : occupiedTime) {
@@ -107,6 +144,12 @@ public class OrderScheduler implements CookAssigner {
         return timeSlotsLeft;
     }
 
+    /**
+     * This methods take separate timeslots and does all the possible connections to make
+     * others timeslots with bigger lengths and intervals
+     * @param timeSlots
+     * @return
+     */
     private List<TimeSlot> fuseTimeSlots(List<TimeSlot> timeSlots) {
         List<TimeSlot> fusedTimeSlots = new ArrayList<>();
         for (TimeSlot timeSlot : timeSlots) {
@@ -126,6 +169,12 @@ public class OrderScheduler implements CookAssigner {
         return fusedTimeSlots;
     }
 
+    /**
+     * Retrieve the working days included in a given interval time
+     * @param startingDate the start of the interval
+     * @param endingDate the end of the interval
+     * @return
+     */
     private List<LocalDate> getDaysBetween(LocalDateTime startingDate, LocalDateTime endingDate) {
         LocalDate start = startingDate.toLocalDate();
         LocalDate end = endingDate.toLocalDate();

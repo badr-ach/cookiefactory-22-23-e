@@ -78,7 +78,6 @@ public class CustomerAccountTest {
             customerSystem.signup(username, password, contactCoordinates);
         } catch (Exception e) {
             caughtException = e;
-            System.out.println("Exception caught: heeere " + e.getMessage());
         }
     }
 
@@ -109,7 +108,6 @@ public class CustomerAccountTest {
             loggedInAccount = customerSystem.login(username, password);
         } catch (Exception e) {
             caughtException = e;
-            System.out.println("Exception caught: " + e.getMessage());
         }
     }
 
@@ -138,7 +136,6 @@ public class CustomerAccountTest {
 
         } catch (Exception e) {
             caughtException = e;
-            System.out.println(e.getMessage());
         }
     }
 

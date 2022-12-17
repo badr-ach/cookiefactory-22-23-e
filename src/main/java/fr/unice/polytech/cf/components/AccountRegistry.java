@@ -23,6 +23,12 @@ public class AccountRegistry implements CustomerFinder, AccountCreator {
         this.accountRepository = accountRepository;
     }
 
+    /**
+     * Get an account by username and password
+     * @param username
+     * @param password
+     * @return the account if it exists, an empty optional otherwise
+     */
     @Override
     public Optional<Account> getAccount(String username, String password) {
         Iterable<Account> accounts = accountRepository.findAll();
@@ -34,6 +40,11 @@ public class AccountRegistry implements CustomerFinder, AccountCreator {
         return Optional.empty();
     }
 
+    /**
+     * Checks if the username is already taken
+     * @param username
+     * @return a boolean that indicates if the username is already taken
+     */
     @Override
     public boolean exists(String username) {
         Iterable<Account> allAccounts = accountRepository.findAll();
@@ -46,6 +57,12 @@ public class AccountRegistry implements CustomerFinder, AccountCreator {
     }
 
 
+    /**
+     *  Retrieves the account of the customer with the given username and password
+      * @param username
+     * @param password
+     * @return the account of the customer if it exists, an empty optional otherwise
+     */
     @Override
     public Optional<CustomerAccount> getCustomerAccount(String username, String password) {
         Iterable<Account> accounts = accountRepository.findAll();
@@ -60,6 +77,13 @@ public class AccountRegistry implements CustomerFinder, AccountCreator {
         return Optional.empty();
     }
 
+    /**
+     * Create a new account with the given username, password and accountType
+     * @param username
+     * @param password
+     * @param accountType
+     * @return the created account
+     */
     @Override
     public Account createAccount(String username, String password, EAccountType accountType) {
         if (exists(username)) throw new SignUpFailedException();
@@ -68,12 +92,18 @@ public class AccountRegistry implements CustomerFinder, AccountCreator {
         return account;
     }
 
+    /**
+     * Creates a customer account with the given username, password and contact coordinates
+     * @param username
+     * @param password
+     * @param contactCoordinates
+     * @return the created account
+     */
     @Override
     public CustomerAccount createCustomerAccount(
             String username, String password, ContactCoordinates contactCoordinates) {
         if (exists(username)) throw new SignUpFailedException();
         CustomerAccount cutomerAccount = new CustomerAccount(username, password, contactCoordinates);
-        System.out.println("Creating customer account" + cutomerAccount.getType());
         accountRepository.save(cutomerAccount,cutomerAccount.getId());
         return cutomerAccount;
     }
