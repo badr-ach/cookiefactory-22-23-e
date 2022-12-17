@@ -1,0 +1,30 @@
+
+@startuml
+skinparam linetype polyline
+skinparam classAttributeIconSize 0
+skinparam style strictuml
+
+class Order {
+    + cancel()
+    + pay()
+    + prepare()
+    + fulfill()
+    + obsolete()
+}
+
+abstract class OrderState {
+    + {abstract} cancel()
+    + {abstract} pay()
+    + {abstract} prepare()
+    + {abstract} fulfill()
+    + {abstract} obsolete()
+}
+class PayedState extends OrderState {}
+class CancelledState extends OrderState {}
+class PreparedState extends OrderState {}
+class ObsoleteState extends OrderState {}
+class FulfilledState extends OrderState {}
+
+Order o--right-> OrderState: state
+
+@enduml

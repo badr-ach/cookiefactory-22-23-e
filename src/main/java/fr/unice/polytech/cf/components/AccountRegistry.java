@@ -53,7 +53,6 @@ public class AccountRegistry implements CustomerFinder, AccountCreator {
             System.out.println("Account : " + account.getUsername() + " " + account.getPassword() +" " + account.getType() +", vs " + username+ ", " + password);
             if (account.getUsername().equals(username) && account.getPassword().equals(password)) {
                 if (account.getType() == EAccountType.CUSTOMER) {
-                    System.out.println("Im here");
                     return Optional.of((CustomerAccount) account);
                 }
             }

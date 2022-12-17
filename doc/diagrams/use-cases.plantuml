@@ -1,0 +1,96 @@
+@startuml
+skinparam linetype polyline
+
+skinparam style strictuml
+left to right direction
+
+'Actors 
+actor :Time API: as time_api
+actor :Store Employee: as store_employee
+actor :Store Manager: as store_manager
+store_employee <|- store_manager
+actor :Message API: as message_api
+actor :Brand Manager: as director
+
+actor :Cook: as cook
+actor :Payment API: as payment_processor
+actor :Customer: as customer
+actor :TooGoodToGo API: as toogoodtogo_api
+
+actor :Ingredients API: as ingredients_api
+actor :Kitchen Chef: as chef
+
+'System 
+rectangle CookieOnDemand{
+  (manage assigned orders) as manage_assigned_orders
+  (place order) as place_order
+
+  (get ingredients) as get_ingredients
+  (notify) as notify
+  (get time) as get_time
+
+  (pay for an order) as pay_order
+  (personalize cookies) as personalize_cookies
+  place_order .> personalize_cookies : extends
+  place_order ..> pay_order : include
+
+  (view order history) as view_history
+  (cancel order) as cancel_order
+  (manage store taxes) as manage_taxes
+  (manage store schedule) as manage_schedule
+  (manage cookie prices) as manage_prices
+  (log in) as login
+
+  (manage orders) as manage_orders
+  (manage cookie recipes) as manage_recipes
+
+  (submit recipe) as submit_recipe
+  (validate recipe) as validate_recipe
+
+  (create an account) as create_account
+  (subscribe to loyalty program) as subscribe_loyalty
+  create_account <.. subscribe_loyalty : extends
+
+  (receive notification sms) as get_notified
+  (subscribe to TooGoodToGo) as 2good2go
+  submit_recipe ..> get_ingredients : include
+  ' place_order .> create_account : extends
+  place_order ..> get_time: include
+  view_history <.. cancel_order : extends
+  login <. view_history : include
+
+  manage_assigned_orders ..> get_time: include
+}
+
+' Connections
+
+customer -- place_order
+customer -- create_account
+customer -- view_history
+customer -- login
+customer -- get_notified
+get_notified ..> notify: include
+customer -- 2good2go
+2good2go --- toogoodtogo_api
+
+notify -- message_api
+
+cook -- manage_assigned_orders
+store_employee -- manage_orders
+
+store_manager -- manage_taxes
+store_manager -- manage_schedule
+
+get_time -- time_api
+
+director -- manage_prices
+director -- validate_recipe
+
+pay_order -- payment_processor
+
+chef -- submit_recipe
+chef -- manage_recipes
+
+get_ingredients -- ingredients_api
+
+@enduml

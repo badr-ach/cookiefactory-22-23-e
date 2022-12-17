@@ -1,0 +1,20 @@
+
+@startuml
+skinparam linetype polyline
+skinparam classAttributeIconSize 0
+skinparam style strictuml
+
+class PartnerCatalogProxy {
+    + fetchAvailableIngredients()
+    + getAvailableIngredients()
+    + getAvailableIngredients(String partner)
+}
+
+class PaymentProxy {
+    + makePayment()
+}
+
+class TooGoodToGoProxy {
+    + update()
+}
+@enduml

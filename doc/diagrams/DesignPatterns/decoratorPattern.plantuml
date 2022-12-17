@@ -1,0 +1,8 @@
+@startuml
+skinparam linetype polyline
+skinparam classAttributeIconSize 0
+skinparam style strictuml
+
+
+
+@enduml

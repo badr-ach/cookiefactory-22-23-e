@@ -1,0 +1,131 @@
+@startuml
+skinparam style strictuml
+
+actor Customer as customer order 0
+boundary CustomerService as customer_service order 2
+participant AccountRegistry as account_registry order 2 
+participant CustomerAccount as customer_account order 2
+participant OrderComponent as order_component order 3 
+participant CookieComponent as cookie_component order 3 
+participant IngredientStockComponent as ingredientstock_component order 3 
+participant StoreComponent as store_component order 3
+participant Order as order order 4 
+participant OrderItem as order_item order 4 
+participant OrderScheduler as order_scheduler order 5
+participant Cook as cook order 6
+participant PaymentProxy as payment_service order 7
+participant Receipt as receipt order 8
+
+actor "Time Api" as time_api order 10
+actor "Payment API" as payment_api order 20
+
+activate customer
+
+
+
+opt login
+  customer -> customer_service++: login()
+
+  customer_service -> account_registry++: getAccount()
+  account_registry --> customer_service--: customerAccount 
+
+end
+
+customer -> customer_service: startOrder()
+
+customer_service -> order_component++: startOrder()
+
+order_component --> order**: new()
+order_component --> customer_service--: order
+customer_service --> cookie_component++: getCookies()
+cookie_component --> customer_service--: cookies
+
+
+customer -> customer_service: addCookies()
+customer_service -> order_component++: addCookies()
+
+loop for cookie in cookies
+  order_component -> order++: addItem()
+  order --> order_item**: new()
+end
+deactivate order
+order_component --> customer_service--: order
+customer_service -> ingredientstock_component: removeFromStock(order)
+
+customer_service -> store_component++: getStores()
+store_component --> customer_service--: stores
+
+
+customer -> customer_service: selectStore(store)
+
+customer_service -> order_component++: getAvailablePickupDates(store)
+
+
+
+order_component -> order ++: setStore()
+order_component -> order: getPreparationTime()
+deactivate order
+order_component -> order_scheduler++: getAvailableTimeSlots(preparationTime, store)
+order_scheduler -> time_api++: getCurrentTime()
+time_api --> order_scheduler--: currentTime
+order_scheduler -> order_scheduler: filterCooksByStore(store)
+
+loop for Cooks in filteredCooks
+  order_scheduler -> cook: getAvailableTimeSlots()
+end
+
+order_scheduler --> order_component--: availableTimeSlots
+
+
+order_component --> customer_service--: availableTimeSlots
+
+customer -> customer_service : selectPickupDate()
+customer_service -> order_component ++: selectTimeSlot()
+order_component -> order_scheduler++: assignCook()
+order_scheduler -> cook : assignOrder()
+deactivate order_scheduler
+
+order_component -> order ++: setPickupDate()
+customer_service -> order_component: getPrice()
+deactivate order
+order_component -> order: getPrice()
+order_component --> customer_service--: price
+
+opt not logged in
+  opt login
+    ref over customer, customer_service: login
+  end
+  opt create account
+    customer -> customer_service: signup()
+
+    customer_service -> account_registry++: createAccount()
+    account_registry --> customer_service--: customerAccount 
+  end
+end
+
+opt logged in
+  customer_service -> customer_account ++: hasDiscount()
+  customer_account -> customer_service: discount
+  opt discount 
+    customer_service -> customer_account: applyDiscount(order)
+    customer_account -> order: setDiscountedPrice(price)
+  end
+  deactivate customer_account
+end
+deactivate customer_service
+
+
+customer -> customer_service++: payOrder()
+customer_service -> payment_service++: makePayment()
+payment_service -> payment_api++: makePayment()
+payment_api --> payment_service--: paymentData
+payment_service --> receipt**: new()
+payment_service --> customer_service --: receipt
+
+opt logged in
+  customer_service -> account_registry: updateAccount()
+  account_registry -> customer_account : updateLoyaltyPoints()
+end
+
+
+@enduml

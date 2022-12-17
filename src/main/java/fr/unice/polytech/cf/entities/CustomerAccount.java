@@ -41,7 +41,6 @@ public class CustomerAccount extends Account implements ISurpriseBasketObserver 
 
     public void addOrder(Order order) {
         orderHistory.add(order);
-      System.out.println("Here adding");
         if (!hasLoyaltyProgram) return;
         if (cookiesOrderedNumberSinceDiscount > 30) cookiesOrderedNumberSinceDiscount = 0;
         cookiesOrderedNumberSinceDiscount += order.getTotalItems();

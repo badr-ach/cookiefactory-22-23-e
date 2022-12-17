@@ -1,0 +1,38 @@
+\documentclass[a4paper]{report}
+
+\usepackage[french]{babel}
+\usepackage{geometry}
+\usepackage{minted}
+\usepackage{graphicx}
+\usepackage[T1]{fontenc}
+\usepackage{titlesec, blindtext, color}
+\usepackage{subfiles}
+
+\definecolor{gray75}{gray}{0.75}
+\newcommand{\hsp}{\hspace{10pt}}
+\graphicspath{ {images/} }
+
+ \geometry{
+ a4paper,
+ total={150mm,207mm},
+ left=30mm,
+ top=35mm,
+ }
+
+\title{
+  The Cookie Factory - Team E\\
+  \large Rendu 2
+}
+\titleformat{\chapter}[hang]{\huge\bfseries}{\thechapter\hsp\textcolor{gray75}{|}\hsp}{0pt}{\huge\bfseries}
+\date{\today }
+\author{AL ACHKAR Badr, BEN AISSA Weel, CALAS Louis, \\EL KATEB Sami, HAITAM Ali}
+\begin{document}
+\maketitle
+\tableofcontents
+
+\subfile{chapitres/UML/index.tex}
+\subfile{chapitres/PatronsConceptions/index.tex}
+\subfile{chapitres/Retrospective/index.tex}
+\subfile{chapitres/AutoEvaluation.tex}
+
+\end{document}

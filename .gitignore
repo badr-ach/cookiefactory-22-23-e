@@ -1,4 +1,5 @@
 # Compiled class file
+**/.DS_Store
 *.class
 
 # Log file
@@ -49,3 +50,15 @@ pom.xml.versionsBackup
 pom.xml.next
 release.properties
 dependency-reduced-pom.xml
+
+
+# For Latex
+**/*.log
+**/*.blg
+**/*.aux
+**/*.bbl
+**/*.bcf
+**/*.synctex
+**/*.toc
+_minted-rendu
+**/*.pyg

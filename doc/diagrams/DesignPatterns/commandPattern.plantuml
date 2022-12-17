@@ -1,0 +1,51 @@
+
+@startuml
+skinparam linetype polyline
+skinparam classAttributeIconSize 0
+skinparam style strictuml
+
+
+interface ReserveCommand <<Interface>>{
+  + execute(IReserver reserver, IReservable reservable)
+  + undo(IReserver reserver, IReservable reservable)
+}
+
+class ReserveStock implements   ReserveCommand{
+  + execute(IReserver reserver, IReservable reservable)
+  + undo(IReserver reserver, IReservable reservable)
+}
+class ReserveCook implements ReserveCommand {
+  + execute(IReserver reserver, IReservable reservable)
+  + undo(IReserver reserver, IReservable reservable)
+}
+
+interface  IReservable <<Interface>>{
+  + amount():int
+}
+
+class Cook implements IReservable {
+  + amount():int
+}
+class Stock implements IReservable {
+  + amount():int
+}
+
+interface IReserver <<Interface>> {
+  + reserve(IReservable reservable)
+  + forfeit(IReservable reservable)
+}
+
+class CookScheduler implements IReserver {
+  + reserve(IReservable reservable)
+  + forfeit(IReservable reservable)
+}
+
+class IngredientStockComponent implements IReserver {
+  + reserve(IReservable reservable)
+  + forfeit(IReservable reservable)
+}
+
+ReserveCook  -[hidden]d->  IReservable
+ReserveStock  -[hidden]d->  IReserver
+
+@enduml

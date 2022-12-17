@@ -1,0 +1,30 @@
+@startuml
+skinparam linetype polyline
+skinparam classAttributeIconSize 0
+skinparam style strictuml
+
+class TooGoodToGo {
+  - surpriseBaskets:List<SurpriseBasket> 
+
+  + addObserver(ISurpriseBasketObserver obs)
+  + removeObserver(ISurpriseBasketObserver obs)
+  + notifyObservers(List<SurpriseBasket> surpriseBaskets, LocalDateTime dateTime)
+
+}
+
+
+interface ISurpriseBasketObserver <<Interface>>{
+  update(List<SurpriseBasket> surpriseBaskets, LocalDateTime dateTime)
+}
+
+
+class CustomerAccount implements ISurpriseBasketObserver {
+  - notifyHours:Schedule 
+
+  + startTooGoodToGoNotifications(TooGoodToGo tooGoodToGo, Schedule schedule)
+  + stopTooGoodToGoNotifications(TooGoodToGo tooGoodToGo)
+  + update(List<SurpriseBasket> surpriseBaskets, LocalDateTime dateTime)
+}
+TooGoodToGo --right-o ISurpriseBasketObserver:observers
+
+@enduml

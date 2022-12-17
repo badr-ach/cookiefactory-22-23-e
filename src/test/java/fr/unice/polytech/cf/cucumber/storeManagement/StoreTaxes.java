@@ -84,7 +84,6 @@ public class StoreTaxes {
             receipt = customerSystem.payOrder(contactCoordinates, "123456789",order);
         } catch (Exception e) {
             caughtException = e;
-            System.out.println(e.getMessage());
         }
     }
 

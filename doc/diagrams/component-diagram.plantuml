@@ -1,0 +1,117 @@
+@startuml
+
+[CustomerService] as customerService
+[ChefService] as chefService
+[BrandManagerService] as brandManagerService
+[StoreEmployeeService] as storeEmployeeService
+[StoreManagerService] as storeManagerService
+
+[IngredientStockComponent] as stockComponent
+[StoreComponent] as storeComponent
+[OrderComponent] as orderComponent
+[OrderScheduler] as orderScheduler
+[AccountRegistry] as accountRegistry
+[CustomerRepository] as customerRepository
+[StoreRepository] as storeRepository
+[OrderRepository] as orderRepository
+[CookieRepository] as cookieRepository
+[CookieComponent] as cookieComponent
+
+[PartnerCatalogProxy] as partnerCatalogProxy
+[PaymentProxy] as paymentProxy
+
+
+orderFinder -- orderComponent
+orderFinalizer -- orderComponent
+orderCreator -- orderComponent
+orderModifier -- orderComponent
+
+payment -- paymentProxy
+
+customerFinder -- accountRegistry
+accountCreator - accountRegistry
+
+CuR -- customerRepository
+accountRegistry --( CuR
+
+
+SR -- storeRepository
+storeComponent --( SR
+
+OR -- orderRepository
+orderComponent -left-( OR
+
+CoR - cookieRepository
+cookieComponent -( CoR
+
+
+cookieRecipeCreator -- cookieComponent
+cookieRecipeModifier -- cookieComponent
+cookieRecipeFinder -- cookieComponent
+cookieRecipeValidator -- cookieComponent
+
+orderComponent --( payment
+orderComponent --( ingredientReserver
+customerService --( orderFinalizer
+
+customerService --( customerFinder
+customerService --( accountCreator
+customerService --( orderCreator
+customerService --( orderModifier
+customerService --( cookieRecipeFinder
+customerService --( storeFinder
+
+
+storeEmployeeService --( orderFinder
+storeEmployeeService --( orderModifier
+
+storeFinder -- storeComponent
+storeScheduleModifier -- storeComponent
+storeCookModifier -- storeComponent
+cookFinder - storeComponent
+storeScheduleFinder -up- storeComponent
+
+storeManagerService --( storeScheduleModifier
+storeManagerService --( storeCookModifier
+
+brandManagerService --( cookieRecipeValidator
+chefService --( cookieRecipeCreator
+chefService --( cookieRecipeModifier
+
+
+orderScheduler -- cookAssigner
+cookAssigner )-- orderComponent
+
+cookFinder )-- orderScheduler
+storeScheduleFinder )-- orderScheduler
+
+
+ingredientFinder -- partnerCatalogProxy
+cookieComponent --( ingredientFinder
+
+ingredientReserver -- stockComponent
+ingredientModifier -- stockComponent
+stockComponent --( SR
+
+toGoodToGoSubscriber -- customerService
+notificationReceiver -- customerService
+orderHistoryViewer -- customerService
+authenticator -- customerService
+orderPlacer -- customerService
+cookiePersonalizer -- customerService
+
+
+cookieRecipeManager -- chefService
+recipeSubmitter -- chefService
+
+
+cookiePriceManager -- brandManagerService
+recipeValidator -- brandManagerService
+
+taxesModifier -- storeManagerService
+scheduleModifier -- storeManagerService
+
+orderManager - storeEmployeeService
+
+@enduml
+

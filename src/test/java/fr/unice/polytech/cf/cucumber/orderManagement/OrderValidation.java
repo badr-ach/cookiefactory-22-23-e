@@ -55,19 +55,6 @@ public class OrderValidation {
 
     @Before
     public void setContext() {
-//        Iterable<Store> stores = storeRepository.findAll();
-//        for (Store store : stores) {
-//            // freeing cooks
-//            List<Cook> cookList = store.getCooks();
-//            for (Cook cook : cookList) {
-//                cook.setAssignments(new TreeMap<>());
-//            }
-//
-//            // freeing ingredients
-//            Stock stock = store.getIngredientsStock();
-//            Map<Ingredient, Integer> ingredients =  stock.getAvailableIngredients();
-//            ingredientStockComponent.removeFromStock(store, ingredients);
-//        }
         storeRepository.deleteAll();
         Store store = new Store();
         storeRepository.save(store,store.getId());
@@ -172,7 +159,6 @@ public class OrderValidation {
     @Then("the assigned retrieval time is not available")
     public void theAssignedRetrievalTimeIsNotAvailable() {
         List<Cook> availableCooks = getAvailableCooks();
-        System.out.println(availableCooks.size());
         assertEquals(availableCooks.size(), 0);
     }
 

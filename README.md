@@ -1,158 +1,112 @@
-# Cookiefactory-22-23-Team-#template
-_Template for classroom SI4-COO_
+# Cookiefactory-22-23-Team-E
 
 ## doc
-Contient le rapport final
-
-## .github
-   1. Contient sous workflows/maven.yml, une version d'un fichier d'actions qui est déclenché dès que vous poussez du code. 
-Sur cette version initiale seule un test Junit5 est déclenché pour vérifier que tout fonctionne.
-       - Github Actions (See in .github/workflows) to simply make a maven+test compilation
-  2. Contient sous ISSUE_TEMPLATE, les modèles pour les issues user_story et bug. Vous pouvez le compléter à votre guise.
-
-## src
- - pom.xml : 
-       - Cucumber 7 et JUnit 5
-       - Maven compatible
-       - JDK 17
-
+🔗 **[TeamE-rendu2.pdf](https://github.com/PNS-Conception/cookiefactory-22-23-e/blob/rendu_final/doc/TeamE-rendu2.pdf)**
 
 ## User stories 
-La liste des fonctionnalités livrées par user story.<br>
-
-### US: Place an Order WITHOUT store choice WITHOUT time choice
-**As a** Customer **I want to** order 1 basic recipe **in order** to buy cookies<br>
-:star2: **Priorité/Priority :** Must have
-:star2: **Estimation/Estimate :** M
-**Acceptance criterias:**<br>
-
-_** Background: **_
-```
-  Given a newly created order
-  And a customer named "Bob"
-  And a cookie named "Chocolalala" priced 10.0
-```
-
-_**Scénario: A new cookie is added to the order**_<br>
-```
-    When the customer adds the cookie
-    Then a new order item is added to the order
-    Then the order item quantity is 1
-```
-_**Scénario: An existing cookie is added to the order**_<br>
-```
-    Given the order already contains the cookie to be added
-    When the customer adds the same cookie
-    Then a new order item is not added to the order
-    Then the order item quantity is 2
-```
-_**Scénario: The customer verifies his cart**_<br>
-```
-    Given the order contains two cookies
-    When the customer verifies his cart
-    Then the calculated price is equal to 20.00
-```
-
-### US: Order validation WITHOUT scheduling WITHOUT store choice
-**As a** Customer **I want to** order 1 basic recipe **in order** to buy cookies<br>
-:star2: **Priorité/Priority :** Must have
-:star2: **Estimation/Estimate :** S
-
-**Acceptance criterias:**<br>
-```
-- The total is correct (without taxes)
-- If the payment was successful the order is payed if not the order stays pending (transaction simulation)
-- The receipt is returned
-```
-
-_**Background:**_<br>
-```
-GIVEN a Cookie named Chocololala price 5.0 $
-AND a Customer named Bob
-AND a Cook name Joe
-AND a payment service
-AND an order
-```
-
-_**Scénario:**_<br>
-```
-WHEN the customer adds 2 “Chocolalala” cookies priced 5.0 $ to his order	
-THEN the cart total is 10.0 $
-```
-
-_**Scénario:**_<br>
-```
-WHEN the customer proceeds to pay the order with a correct credit card number "123456789"
-THEN the customer receives the receipt
-THEN the order status is PAYED
-THEN the order is assigned to a Cook
-```
-
-_**Scénario:**_<br>
-```
-WHEN the customer pays the order with a wrong credit card number "0000000000"
-THEN the customer receives an error
-THEN the order status is PENDING
-```
-
-### US: 
-**As a** placeholder **I want to** placeholder **in order** placeholder<br>
-:star2: **Priorité/Priority :** 
-:star2: **Estimation/Estimate :** 
-
-**Acceptance criterias:**<br>
-```
-- 
-- 
-- 
-```
-
-_**Background:**_<br>
-```
-GIVEN 
-AND 
-AND 
-```
-
-_**Scénario:**_<br>
-```
-WHEN 
-THEN 
-```
 
 
-### US: 
-**As a** placeholder **I want to** placeholder **in order** placeholder<br>
-:star2: **Priorité/Priority :** 
-:star2: **Estimation/Estimate :** 
+### US: Retrieve an order WITH Order status modification WITH Search by order id WITH Search by order status ([#3][i3])
+**As a** Store Employee, **I want to** confirm the retrieval of an order **so that** it’s removed from the prepared orders
 
-**Acceptance criterias:**<br>
-```
-- 
-- 
-- 
-```
+### US: Order validation WITHOUT a Selected Store WITHOUT Scheduling ([#4][i4])
+**As a** Customer **I want** to confirm my order **So I** can buy my cookies
 
-_**Background:**_<br>
-```
-GIVEN 
-AND 
-AND 
-```
+### US: Make a basic order WITH a single recipe WITH price computation ([#5][i5])
+**As a** Customer **I want to** order 1 basic recipe **in order** to buy cookies
 
-_**Scénario:**_<br>
-```
-WHEN 
-THEN 
-```
+### US: An order is prepared by a cook ([#8][i8])
+**As a** Cook, **I want** to mark an order as prepared **so that** it can be added to prepared orders
 
 
-### Milestone X
+### US: Validate a cookie (recipe) WITH role authorizations ([#9][i9])
+**As a** Brand Manager, **I want** to validate submitted cookies **so that** I can choose only the cookies that will increase profit  
 
-Chaque user story doit être décrite par 
-   - son identifiant en tant que issue github (#), 
-   - sa forme classique (As a… I want to… In order to…) (pour faciliter la lecture)
-   - Le nom du fichier feature Cucumber et le nom des scénarios qui servent de tests d’acceptation pour la story.
-   Les contenus détaillés sont dans l'issue elle-même.
-   
-   
+
+### US: Add Ingredients to Store Ingredient Stock ([#13][i13])
+**As a** Store manager, **I want** to add ingredients to the store stock **so that** Customers can order cookies
+
+
+### US: Order validation WITH a Selected Store WITH Scheduler ([#14][i14])
+**As a** Customer **I want to** confirm my order **So I** can buy my cookies
+
+### US: Submit cookie recipe ([#15][i15])
+**As a** Chef **I want** to submit a new recipes suggestion to the store catalog **so that** it can be processed by the brand manager as an expantion point of tastes offered.
+
+### US: Select Order Retrieval Date and Time ([#16][i16])
+**As a** Customer, **I want** to select the time and date of order retrieval **so that** I can pick it up.
+
+
+### US: Order validation WITH a Selected Store WITH Scheduler WITH Stock Reservation ([#21][i21])
+**As a** Customer **I want** to confirm my order **So I** can buy my cookies
+
+### US: Make an order WITH a multiple recipes WITH price computation ([#25][i25])
+**As a** Customer, **I want** to add different types of cookies to my order **so that** I can have more choice
+
+### US: Manage Store Schedule ([#27][i27])
+**As a** Store manager, **I want** to update my store schedule **so that** I can have the time of the order and its retrieval be in compliance with my new  store policy.
+
+### US: Notify Customer ([#31][i31])
+**As a** Customer, **I want** to be notified that I need to pick up my order **so that** I don't forget it.
+
+### US: Cancel Order ([#32][i32])
+**As a** customer **I want** to cancel an order  **so that** i can make a new order.
+
+### US: Obsolete orders ([#33][i33])
+**As a** Store manager, **I want** to have the orders that weren't picked up two hours laters after their retrieval date marked 'obsolete' **so that** they can be reused for our Too Good To Go strategy instead of thrown out.
+
+### US: Make an Order WITH price computation WITH taxes ([#34][i34])
+**As a** Customer, **I want** make an order of cookies **so that** I can buy them
+
+### US: Customer Account with Loyalty Program ([#35][i35])
+**As a** Customer, **I want** to subscribe to a loyalty program **so that** I can receive discounts
+
+### US: Create Customer Account ([#36][i36])
+**As a** Customer, **I want** create an account **so that** I don't have to enter my contact coordinates each time a make a new order 
+
+### US: Order History in Customer Account ([#38][i38])
+**As a** Customer, **I want** to be able to access my past orders **so that** I can remember the orders I made 
+
+### US: Too Good To Go ([#50][i50])
+**As a** Customer, **I want** to be notified when surprise baskets are available  **so that** I can prevent wasting food
+
+### US: Customized Party Cookie ([#53][i53])
+**As a** Customer, **I want** to personalise the cookies I buy **so that** I can have more choice
+
+
+## Milestones 
+
+## Sprint 1:
+https://github.com/PNS-Conception/cookiefactory-22-23-e/milestone/1
+
+## Sprint 2:
+https://github.com/PNS-Conception/cookiefactory-22-23-e/milestone/2
+
+## Sprint 3:
+https://github.com/PNS-Conception/cookiefactory-22-23-e/milestone/3
+
+## Sprint 4:
+https://github.com/PNS-Conception/cookiefactory-22-23-e/milestone/4
+
+[i3]: https://github.com/PNS-Conception/cookiefactory-22-23-e/issues/3
+[i4]: https://github.com/PNS-Conception/cookiefactory-22-23-e/issues/4
+[i5]: https://github.com/PNS-Conception/cookiefactory-22-23-e/issues/5
+[i8]: https://github.com/PNS-Conception/cookiefactory-22-23-e/issues/8
+[i9]: https://github.com/PNS-Conception/cookiefactory-22-23-e/issues/9
+[i13]: https://github.com/PNS-Conception/cookiefactory-22-23-e/issues/13
+[i14]: https://github.com/PNS-Conception/cookiefactory-22-23-e/issues/14
+[i15]: https://github.com/PNS-Conception/cookiefactory-22-23-e/issues/15
+[i16]: https://github.com/PNS-Conception/cookiefactory-22-23-e/issues/16
+[i21]: https://github.com/PNS-Conception/cookiefactory-22-23-e/issues/21
+[i25]: https://github.com/PNS-Conception/cookiefactory-22-23-e/issues/25
+[i27]: https://github.com/PNS-Conception/cookiefactory-22-23-e/issues/27
+[i31]: https://github.com/PNS-Conception/cookiefactory-22-23-e/issues/31
+[i32]: https://github.com/PNS-Conception/cookiefactory-22-23-e/issues/32
+[i33]: https://github.com/PNS-Conception/cookiefactory-22-23-e/issues/33
+[i34]: https://github.com/PNS-Conception/cookiefactory-22-23-e/issues/34
+[i35]: https://github.com/PNS-Conception/cookiefactory-22-23-e/issues/35
+[i36]: https://github.com/PNS-Conception/cookiefactory-22-23-e/issues/36
+[i38]: https://github.com/PNS-Conception/cookiefactory-22-23-e/issues/38
+[i50]: https://github.com/PNS-Conception/cookiefactory-22-23-e/issues/50
+[i53]: https://github.com/PNS-Conception/cookiefactory-22-23-e/issues/53
+

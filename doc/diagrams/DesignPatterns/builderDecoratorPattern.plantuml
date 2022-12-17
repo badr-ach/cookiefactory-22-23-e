@@ -1,0 +1,114 @@
+@startuml
+skinparam linetype polyline
+skinparam classAttributeIconSize 0
+skinparam style strictuml
+
+abstract class APastryBuilder {
+    dough:Dough 
+    flavor:Flavor 
+    toppings:Topping 
+    mix:Mix 
+    cooking:Cooking 
+    name:String 
+    preparationDuration:Duration 
+    ingredients:List<Ingredient>
+
+    + withName(String name)
+    + withPreparationDuration(Duration preparationDuration)
+    + withDough(Dough dough, Integer quantity) 
+    + withFlavor(Flavor flavor, Integer quantity)
+    + withTopping(Topping topping, Integer quantity)
+    + withMix(Mix mix)
+    + withCooking(Cooking cooking)
+    + {abstract} reset()
+    + {abstract} getResult():IPastry 
+    - bundleCookie()
+}
+
+class Cookie implements IPastry {
+    name:String 
+    price:Double 
+    preparationDuration:Duration 
+    ingredients:Map<Ingredient, Integer>
+    status:ECookieStatus 
+    margin:Double 
+    mix:Mix 
+    cooking:Cooking 
+
+    + getPrice():Double
+    + getIngredients():Map<Ingredient, Integer>
+    + getPreparationDuration():Duration
+    + getRequirements():List<Requirement>
+    + getName():String
+}
+
+class CookieBuilder extends APastryBuilder {
+    margin:Double 
+
+    + withMargin(double margin)
+    + reset()
+    + getResult():IPastry
+}
+
+class PartyPastryBuilder extends APastryBuilder {
+    size:Size 
+    theme:Theme 
+    occasion:Occasion 
+
+    + withBaseCookie(Cookie cookie)
+    + withoutTopping(Topping topping)
+    + withSize(Size size)
+    + withDough(Dough dough, Integer quantity) 
+    + withFlavor(Flavor flavor, Integer quantity) 
+    + withOccasion(Occasion occasion)
+    + withTheme(Theme theme)
+    + withTopping(Topping topping, Integer quantity) 
+    + reset() 
+    + getResult():IPastry
+}
+
+interface  IPastry <<Interface>>{
+    + getPrice():Double 
+    + getIngredients():Map<Ingredient, Integer>
+    + getPreparationDuration():Duration 
+    + getRequirements():List<Requirement>
+    + getName():String 
+}
+
+class PersonalizedPartyCookie implements IPastry {
+    theme:Theme
+    occasion:Occasion
+
+    + getPrice():Double
+    + getIngredients():Map<Ingredient, Integer>
+    + getPreparationDuration():Duration
+    + getRequirements():List<Requirement>
+    + getName():String
+
+    + getCookie():Cookie
+    + getTheme():Theme
+    + getOccasion():Occasion
+}
+
+class BasePartyCookie implements IPastry {
+    theme:Theme
+    occasion:Occasion
+    size:Size
+
+    + getPrice():Double
+    + getIngredients():Map<Ingredient, Integer>
+    + getPreparationDuration():Duration
+    + getRequirements():List<Requirement>
+    + getName():String
+
+    + getCookie():Cookie
+    + getTheme():Theme
+    + getOccasion():Occasion
+    + getSize():Size 
+}
+
+
+PartyPastryBuilder --> Cookie:cookie
+PersonalizedPartyCookie --> Cookie:cookie
+BasePartyCookie --> Cookie:cookie
+@enduml

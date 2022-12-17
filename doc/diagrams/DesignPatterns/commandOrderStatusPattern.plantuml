@@ -1,0 +1,37 @@
+@startuml
+skinparam linetype polyline
+skinparam classAttributeIconSize 0
+skinparam style strictuml
+
+class OrderInvoker {
+    + invoke(Order order) 
+    + setCommand(OrderCommand command) 
+}
+
+interface OrderCommand <<Interface>> {
+    execute(Order order)
+}
+
+class MarkOrderAsPrepared implements OrderCommand {
+  execute(Order order)
+}
+
+class MarkOrderAsFulFilled implements OrderCommand {
+  execute(Order order)
+}
+
+class MarkOrderAsInPreparation implements OrderCommand {
+  execute(Order order)
+}
+
+class MarkOrderAsPaid implements OrderCommand {
+  execute(Order order)
+}
+
+class MarkOrderAsObsolete implements OrderCommand {
+  execute(Order order)
+}
+
+OrderInvoker -right-> OrderCommand
+
+@enduml

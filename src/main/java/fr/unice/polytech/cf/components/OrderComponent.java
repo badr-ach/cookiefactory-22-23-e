@@ -169,7 +169,6 @@ public class OrderComponent implements OrderCreator, OrderModifier, OrderFinder,
         for (Order order : orders) {
             if (order.getStatus() != EOrderStatus.PREPARED) continue;
             LocalDateTime orderDate = order.getRetrievalDateTime();
-            System.out.println("current date " + currentDate.toString() + " vs " + orderDate.toString());
             Duration duration = Duration.between(orderDate, currentDate);
             Duration limit = Duration.ofHours(2);
             notifyCustomer(duration, order);
